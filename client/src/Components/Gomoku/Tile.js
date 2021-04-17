@@ -3,7 +3,7 @@ import './Tile.css';
 
 export const Tile = ({ value, handleClick, row, col, isWinningPiece }) => {
     return (
-        <div className={`${isWinningPiece ? "bg-green-100" : ""} tile border-2 border-gray-300 text-2xl lg:h-10 w-10 flex justify-center items-center`}
+        <div className={`${isWinningPiece ? "bg-green-100" : ""} tile border-2 border-gray-300 text-2xl lg:h-10 w-10 flex justify-center items-center select-none`}
             onClick={() => handleClick(row, col)}
         >
             {renderSwitch(value)}

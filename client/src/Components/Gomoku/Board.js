@@ -34,33 +34,36 @@ export const Board = () => {
     }
 
     return (
-        <div className="grid grid-cols-15 grid-rows-15">
-            {
-                gameModel.board.map((tile, row) => {
-                    return tile.map((value, col) => {
+        <div className="md:container md:mx-auto min-h-screen min-w-full flex justify-center items-center">
+            <div className="grid grid-cols-15 grid-rows-15">
+                {
+                    gameModel.board.map((tile, row) => {
+                        return tile.map((value, col) => {
 
-                        // check to see if the current piece is a winning one
-                        let isWinningPiece = false;
+                            // check to see if the current piece is a winning one
+                            let isWinningPiece = false;
 
-                        for (let i = 0; i < winningPoints.length; i++) {
-                            if (winningPoints[i].col === col && winningPoints[i].row === row) {
-                                isWinningPiece = true;
-                                break;
+                            for (let i = 0; i < winningPoints.length; i++) {
+                                if (winningPoints[i].col === col && winningPoints[i].row === row) {
+                                    isWinningPiece = true;
+                                    break;
+                                }
                             }
-                        }
 
-                        return <Tile key={`${row}:${col}`}
-                            value={value}
-                            handleClick={handleClick}
-                            row={row}
-                            col={col}
-                            isWinningPiece={isWinningPiece}
-                        />
+                            return <Tile key={`${row}:${col}`}
+                                value={value}
+                                handleClick={handleClick}
+                                row={row}
+                                col={col}
+                                isWinningPiece={isWinningPiece}
+                            />
+                        })
                     })
-                })
-            }
-            <button onClick={() => handleReset()}>Reset</button>
+                }
+                <button onClick={() => handleReset()}>Reset</button>
+            </div>
         </div>
+
     )
 }
 

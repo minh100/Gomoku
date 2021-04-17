@@ -1,0 +1,14 @@
+.room-form-bottons{
+    transition: background-color .28s ease-out;
+}
+
+.room-form-bottons:hover p{
+    color: white
+
+}
+
+.room-form-bottons:hover{
+    cursor: pointer;
+    background-color: #86adeb;
+    color: white
+}
