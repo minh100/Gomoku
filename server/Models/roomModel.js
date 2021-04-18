@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 // model for what a room contains 
 const roomSchema = mongoose.Schema({
-    roomId: {
+    roomName: {
         type: String,
         required: true,
         default: ""

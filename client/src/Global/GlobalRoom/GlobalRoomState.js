@@ -5,7 +5,7 @@ import { fetchAllRooms, createRoom } from '../../Api/ServerRoomIndex.js';
 
 export const GlobalRoomContext = createContext([]);
 
-export const RoomProvider = props => {
+export const GlobalRoomProvider = props => {
     const [roomState, dispatch] = useReducer(RoomReducer, []);
 
     // room actions
@@ -19,11 +19,12 @@ export const RoomProvider = props => {
         }
     };
 
-    const createRoom = async (newRoom) => {
+    // creating new room
+    const createNewRoom = async (newRoom) => {
         try {
-            const {data} = await createRoom(newRoom);
-            dispatch({type: 'CREATE_ROOM', payload: data});
-        } catch(error) {
+            const { data } = await createRoom(newRoom);
+            dispatch({ type: 'CREATE_ROOM', payload: data });
+        } catch (error) {
             console.log(error);
         }
     }
@@ -33,7 +34,7 @@ export const RoomProvider = props => {
             value={{
                 rooms: roomState,
                 getAllRooms,
-                createRoom
+                createNewRoom
             }}
         >
             {props.children}

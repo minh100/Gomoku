@@ -13,4 +13,15 @@ const getRooms = async (req, res) => {
     }
 };
 
-module.exports = { getRooms };
+const createRoom = async (req, res) => {
+    const body = req.body;
+    const newRoom = new RoomModel(body);
+    try {
+        await newRoom.save();
+        res.status(201).json(newRoom);
+    } catch(error) {
+        res.status(400).json({message: error});
+    }
+};
+
+module.exports = { getRooms, createRoom };
