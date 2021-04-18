@@ -37,7 +37,7 @@ export const RoomForm = () => {
         console.log("create game");
         let taken = false;
         for(let i = 0; i < rooms.length; i++) {
-            if(rooms[i].roomName === roomData.roomName) {
+            if(rooms[i].roomName.toLowerCase() === roomData.roomName.toLowerCase()) {
                 taken = true;
                 setNameTaken(true);
                 break;
@@ -45,6 +45,7 @@ export const RoomForm = () => {
         }
         if(!taken) {
             createNewRoom(roomData);
+            toggleCreateCustomGameClicked(false)
             clearRoomData();
         }
     }
@@ -54,7 +55,7 @@ export const RoomForm = () => {
      */
     const handleRandomizeName = async () => {
         const { data } = await axios.get('https://random-word-api.herokuapp.com/word?number=2');
-        setRoomData({ ...roomData, roomName: `${data[0]}${data[1].charAt(0).toUpperCase() + data[1].slice(1)}` });
+        setRoomData({ ...roomData, roomName: `${data[0].charAt(0).toUpperCase() + data[0].slice(1)}${data[1].charAt(0).toUpperCase() + data[1].slice(1)}` });
     }
     console.log(roomData)
 
@@ -123,7 +124,7 @@ export const RoomForm = () => {
                                     <div className="relative p-6 grid grid-rows-2 gap-y-2.5">
                                         <div className="grid grid-cols-2">
                                             {isNameTaken ? (
-                                                <label htmlFor="roomName" className="block text-sm font-medium text-gray-700 pr-2">Room Name is taken</label>
+                                                <label htmlFor="roomName" className="block text-sm font-medium text-red-700 pr-2">Room Name is taken</label>
                                             ) : (
                                                 <label htmlFor="roomName" className="block text-sm font-medium text-gray-700 pr-2">Room Name</label>
                                             )}
@@ -135,14 +136,19 @@ export const RoomForm = () => {
                                                     autoComplete="off"
                                                     value={roomData.roomName}
                                                     onChange={(e) => setRoomData({ ...roomData, roomName: e.target.value })}
-                                                >
-                                                </input>
+                                            >
+                                            </input>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-2">
                                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 pr-2" autoComplete="off">Password (optional)</label>
                                             <div className="mt-1 relative rounded-md shadow-sm">
-                                                <input type="text" name="password" className="focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full pl-12 pr-12 sm:text-sm border-gray-300 rounded-md" placeholder="password...">
+                                                <input type="text" name="password" className="focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full pl-12 pr-12 sm:text-sm border-gray-300 rounded-md" 
+                                                    placeholder="password..."
+                                                    autoComplete="off"
+                                                    value={roomData.password}
+                                                    onChange={(e) => setRoomData({ ...roomData, password: e.target.value })}
+                                                >
                                                 </input>
                                             </div>
                                         </div>
@@ -165,7 +171,6 @@ export const RoomForm = () => {
                                                 className="bg-green-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                 type="button"
                                                 onClick={() => {
-                                                    !isNameTaken && toggleCreateCustomGameClicked(false)
                                                     handleCreateGame()
                                                 }}
                                             >
