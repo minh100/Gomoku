@@ -18,6 +18,9 @@ app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 const roomRoutes = require('./Routes/roomRoute.js');
 app.use('/rooms', roomRoutes);
 
+const userRoutes = require('./Routes/userRoute.js');
+app.use('/users', userRoutes)
+
 // PORT
 const PORT = process.env.PORT || 4001;
 

@@ -1,12 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import {GlobalUserContext} from '../Global/GlobalUser/GlobalUserState.js';
 
 export const Navbar = () => {
 
     const [menuOpen, toggleMenuOpen] = useState(false); // mobile menu
     const [profileOpen, toggleProfileOpen] = useState(false);   // profile menu
     const [navOption, setNavOption] = useState("lobby");
+    const history = useHistory();
+    const {logout} = useContext(GlobalUserContext);
+
+
+    // local storage results from signing up
+    const [userSignup, setUserSignup] = useState();
+    // local storage results from logging in
+    const [userLogin, setUserLogin] = useState();
+
+    useEffect(() => {
+        setUserSignup(JSON.parse(localStorage.getItem('profile')));
+        setUserLogin(JSON.parse(localStorage.getItem('profile')));
+    }, [])
+
+    const handleSignOut = () => {
+        logout();
+        toggleProfileOpen(false);
+        history.push("/login");
+    };
 
     return (
         <nav className="bg-gray-800">
@@ -67,6 +87,15 @@ export const Navbar = () => {
                                 >
                                     Local Play
                                 </Link>
+                                <Link to="/login"
+                                    className={navOption === '' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
+                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
+                                    }
+                                    aria-current="page"
+                                    onClick={() => setNavOption('lobby')}
+                                >
+                                    Login
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -78,7 +107,8 @@ export const Navbar = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
                         </button>
-
+                        <h1 className="text-white pl-2">{userSignup !== undefined && userSignup !== null && userSignup.userResult !== undefined ? userSignup.userResult.username : ""}</h1>
+                        <h1 className="text-white pl-2">{userLogin !== undefined && userSignup !== null && userLogin.result !== undefined ? userLogin.result.username : ""}</h1>
                         {/* <!-- Profile dropdown --> */}
                         <div className="ml-3 relative">
                             <div>
@@ -110,7 +140,13 @@ export const Navbar = () => {
                                     <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
                                         <a href="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Profile</a>
                                         <a href="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-                                        <a href="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign Out</a>
+                                        <button className="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 w-full h-full focus:outline-none"
+                                            role="menuitem"
+                                            onClick={() => handleSignOut()}
+                                            type="button"
+                                        >
+                                            Sign Out
+                                        </button>
                                     </div>
                                 )
                             }

@@ -79,7 +79,7 @@ export const RoomList = () => {
                                 }
                             </tbody>
                         </table>
-                        <div className="px-5 bg-white py-5 flex flex-col xs:flex-row items-center xs:justify-between border-t border-gray-200">
+                        {/* <div className="px-5 bg-white py-5 flex flex-col xs:flex-row items-center xs:justify-between border-t border-gray-200">
                             <div className="flex items-center">
                                 <button type="button" className="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
                                     <svg width="9" fill="currentColor" height="8" className="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +106,7 @@ export const RoomList = () => {
                                     </svg>
                                 </button>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

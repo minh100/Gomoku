@@ -57,7 +57,6 @@ export const RoomForm = () => {
         const { data } = await axios.get('https://random-word-api.herokuapp.com/word?number=2');
         setRoomData({ ...roomData, roomName: `${data[0].charAt(0).toUpperCase() + data[0].slice(1)}${data[1].charAt(0).toUpperCase() + data[1].slice(1)}` });
     }
-    console.log(roomData)
 
     /**
      * Clears the data after successfully creating a game or cancelling

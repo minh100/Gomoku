@@ -1,5 +1,5 @@
 // connection between the server and the database
-// methods and functions to communicate
+// methods and functions to handle rooms
 const mongoose = require('mongoose');
 const RoomModel = require('../Models/roomModel.js');
 

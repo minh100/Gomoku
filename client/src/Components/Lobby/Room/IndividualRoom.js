@@ -10,7 +10,7 @@ export const IndividualRoom = ({ roomName, password, playerArray }) => {
     const [wrongPassword, setWrongPassword] = useState(false);
 
     const handleJoin = () => {
-        if (passwordInput === password && playerArray.length != 2) {
+        if (passwordInput === password && playerArray.length !== 2) {
             // add user to room
             // rerender to room
             setJoinRedirect(true);

@@ -11,7 +11,11 @@ const roomSchema = mongoose.Schema({
         type: String,
         default: ""
     },
-    playerArray: [],
+    playerArray: {
+        type: [mongoose.Schema.Types.ObjectId],
+        required: true,
+        default: []
+    },
 });
 
 const roomModel = mongoose.model('RoomModel', roomSchema);
