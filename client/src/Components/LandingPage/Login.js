@@ -19,7 +19,7 @@ export const Login = () => {
     };
 
     return (
-        <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+        <div className="px-4 py-15 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20" >
             <div className="flex flex-col justify-around lg:flex-row">
                 <div className="mb-12 lg:max-w-lg lg:pr-5 lg:mb-0">
                     <div className="max-w-xl mb-6">
@@ -103,12 +103,21 @@ export const Login = () => {
                         <div className="px-3 text-xs text-gray-500 sm:text-sm">or</div>
                         <hr className="flex-1 border-gray-300" />
                     </div>
-                    <Link
-                        to="/signup"
-                        className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold transition duration-200 bg-white border border-gray-300 rounded md:w-auto hover:bg-gray-100 focus:shadow-outline focus:outline-none"
-                    >
-                        Create Account
-                    </Link>
+                    <div className="flex justify-around">
+                        <Link
+                            to="/signup"
+                            className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold transition duration-200 bg-white border border-gray-300 rounded md:w-auto hover:bg-gray-100 focus:shadow-outline focus:outline-none"
+                        >
+                            Create Account
+                        </Link>
+                        <Link
+                            to="/"
+                            className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold transition duration-200 bg-white border border-gray-300 rounded md:w-auto hover:bg-gray-100 focus:shadow-outline focus:outline-none"
+                        >
+                            Guest Account
+                        </Link>
+                    </div>
+
                 </div>
             </div>
             {error ? (
