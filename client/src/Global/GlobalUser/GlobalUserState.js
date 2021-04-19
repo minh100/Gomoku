@@ -31,6 +31,7 @@ export const GlobalUserProvider = props => {
         }
     }
 
+    // log out user
     const logout = async () => {
         try {
             dispatch({type: "LOGOUT"});

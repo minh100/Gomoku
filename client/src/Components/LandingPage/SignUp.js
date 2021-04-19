@@ -10,6 +10,7 @@ export const SignUp = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [createData, setCreateData] = useState({
         username: '',
+        lowerUsername: '',
         password: '',
         rating: 0,
     })
@@ -36,7 +37,7 @@ export const SignUp = () => {
             setConfirmPassword("");
             setError(false);
         }
-    }
+    };    
 
     return (
         <section className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
@@ -53,7 +54,7 @@ export const SignUp = () => {
                                 name="name"
                                 autoComplete="off"
                                 value={createData.username}
-                                onChange={(e) => setCreateData({ ...createData, username: e.target.value })}
+                                onChange={(e) => setCreateData({ ...createData, username: e.target.value, lowerUsername: e.target.value.toLowerCase()})}
                             />
                         </div>
                         <div className="mb-1 sm:mb-2">

@@ -7,7 +7,7 @@ const UserModel = require('../Models/userModel.js');
 
 const login = async (req, res) => {
     const {username, password} = req.body;
-
+    
     try {
         // check if there is an account made
         const existingUser = await UserModel.findOne({username});
@@ -27,11 +27,11 @@ const login = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const {username, password} = req.body;
-
+    const {username, lowerUsername, password} = req.body;
+    
     try {
         // check if there is an account already exists
-        const existingUser = await UserModel.findOne({username});
+        const existingUser = await UserModel.findOne({lowerUsername});
         if(existingUser) return res.status(400).json({message: "User already exists"});
 
         // create hash password
@@ -39,6 +39,7 @@ const createUser = async (req, res) => {
 
         const userResult = await UserModel.create({
             username,
+            lowerUsername,
             password: hashPassword
         });
 

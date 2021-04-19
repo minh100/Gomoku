@@ -87,15 +87,6 @@ export const Navbar = () => {
                                 >
                                     Local Play
                                 </Link>
-                                <Link to="/login"
-                                    className={navOption === '' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
-                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
-                                    }
-                                    aria-current="page"
-                                    onClick={() => setNavOption('lobby')}
-                                >
-                                    Login
-                                </Link>
                             </div>
                         </div>
                     </div>
@@ -107,8 +98,8 @@ export const Navbar = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
                         </button>
-                        <h1 className="text-white pl-2">{userSignup !== undefined && userSignup !== null && userSignup.userResult !== undefined ? userSignup.userResult.username : ""}</h1>
-                        <h1 className="text-white pl-2">{userLogin !== undefined && userSignup !== null && userLogin.result !== undefined ? userLogin.result.username : ""}</h1>
+                        <h1 className="text-white pl-1">{userSignup !== undefined && userSignup !== null && userSignup.userResult !== undefined ? userSignup.userResult.username : ""}</h1>
+                        <h1 className="text-white pl-1">{userLogin !== undefined && userSignup !== null && userLogin.result !== undefined ? userLogin.result.username : ""}</h1>
                         {/* <!-- Profile dropdown --> */}
                         <div className="ml-3 relative">
                             <div>
@@ -138,9 +129,8 @@ export const Navbar = () => {
                             {
                                 profileOpen && (
                                     <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                                        <a href="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Profile</a>
-                                        <a href="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-                                        <button className="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 w-full h-full focus:outline-none"
+                                        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Profile</Link>
+                                        <button className="block border-t-2 px-4 py-2 text-sm text-red-700 hover:bg-gray-100 w-full h-full focus:outline-none"
                                             role="menuitem"
                                             onClick={() => handleSignOut()}
                                             type="button"
@@ -159,11 +149,44 @@ export const Navbar = () => {
             {
                 menuOpen && (
                     <div className="sm:hidden" id="mobile-menu">
-                        <div className="px-2 pt-2 pb-3 space-y-1">
+                        <div className="px-2 pt-2 pb-3 space-y-1 flex justify-evenly">
                             {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
-                            <Link href="/" className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Lobby</Link>
-                            <Link href="/leaderboard" className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Leaderboard</Link>
-                            <Link href="/localplay" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium">Local Play</Link>
+                            <Link to="/"
+                                    className={navOption === 'lobby' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
+                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
+                                    }
+                                    aria-current="page"
+                                    onClick={() => {
+                                        setNavOption('lobby');
+                                        toggleMenuOpen(false);
+                                    }}
+                                >
+                                    Lobby
+                                </Link>
+                                <Link to="/leaderboard"
+                                    className={navOption === 'leaderboard' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
+                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
+                                    }
+                                    aria-current="page"
+                                    onClick={() => {
+                                        setNavOption('leaderboard');
+                                        toggleMenuOpen(false);
+                                    }}
+                                >
+                                    Leaderboard
+                                </Link>
+                                <Link to="/localplay"
+                                    className={navOption === 'localPlay' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
+                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
+                                    }
+                                    aria-current="page"
+                                    onClick={() => {
+                                        setNavOption('localPlay');
+                                        toggleMenuOpen(false);
+                                    }}
+                                >
+                                    Local Play
+                                </Link>
                         </div>
                     </div>
                 )
