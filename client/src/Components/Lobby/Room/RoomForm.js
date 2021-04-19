@@ -17,16 +17,25 @@ export const RoomForm = () => {
         playerArray: []
     });
 
+    // local storage results from signing up
+    const [userSignup, setUserSignup] = useState();
+    // local storage results from logging in
+    const [userLogin, setUserLogin] = useState();
+    useEffect(() => {
+        setUserSignup(JSON.parse(localStorage.getItem('profile')));
+        setUserLogin(JSON.parse(localStorage.getItem('profile')));
+    }, [])
+
     /**
      * Find a game to join, if no games then create one
      */
     const handleFindGame = () => {
         console.log("find game");
         // check if any available games
-            // join game
+        // join game
         // if no games are available
-            // randomize roomName
-            // create room
+        // randomize roomName
+        // create room
     }
 
     /**
@@ -36,20 +45,20 @@ export const RoomForm = () => {
     const handleCreateGame = () => {
         console.log("create game");
         let taken = false;
-        for(let i = 0; i < rooms.length; i++) {
-            if(rooms[i].roomName.toLowerCase() === roomData.roomName.toLowerCase()) {
+        for (let i = 0; i < rooms.length; i++) {
+            if (rooms[i].roomName.toLowerCase() === roomData.roomName.toLowerCase()) {
                 taken = true;
                 setNameTaken(true);
                 break;
             }
         }
-        if(!taken) {
+        if (!taken) {
             createNewRoom(roomData);
             toggleCreateCustomGameClicked(false)
             clearRoomData();
         }
     }
-    
+
     /**
      * Creates a random name as the roomName
      */
@@ -71,40 +80,55 @@ export const RoomForm = () => {
 
     return (
         <>
-            <div className="grid gap-4 row-gap-3 sm:grid-cols-2 lg:grid-cols-2">
-                <div className="room-form-bottons flex flex-col justify-between p-5 border rounded-lg shadow-md" onClick={() => handleFindGame()}>
-                    <div className="flex">
-                        <div className="flex items-center justify-center w-12 h-12 mb-4 pr-3 pl-3 rounded-full bg-indigo-50">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="black">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
+            {
+                ((userSignup !== undefined && userSignup !== null) || (userLogin !== undefined && userSignup !== null)) ? (
+                    <div className="grid gap-4 row-gap-3 sm:grid-cols-2 lg:grid-cols-2">
+                        <div className="room-form-bottons flex flex-col justify-between p-5 border rounded-lg shadow-md" onClick={() => handleFindGame()}>
+                            <div className="flex">
+                                <div className="flex items-center justify-center w-12 h-12 mb-4 pr-3 pl-3 rounded-full bg-indigo-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="black">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                                <div className="pl-7 sm:pr-9 sm:pt-6 sm:pl-0">
+                                    <h6 className="mb-2 font-semibold leading-5 text-xl">Find a Game</h6>
+                                    <p className="mb-3 text-sm text-gray-900">
+                                        Join an available game. If no games are available then a new game will be created.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div className="pl-7 sm:pr-9 sm:pt-6 sm:pl-0">
-                            <h6 className="mb-2 font-semibold leading-5 text-xl">Find a Game</h6>
-                            <p className="mb-3 text-sm text-gray-900">
-                                Join an available game. If no games are available then a new game will be created.
-                            </p>
+                        <div className="room-form-bottons flex flex-col justify-between p-5 border rounded-lg shadow-md"
+                            onClick={() => toggleCreateCustomGameClicked(true)}
+                        >
+                            <div className="flex">
+                                <div className="flex items-center justify-center w-12 h-12 mb-4 pr-3 pl-3 rounded-full bg-indigo-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="black">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                </div>
+                                <div className="pl-7 sm:pr-2 sm:pt-6 sm:pl-0">
+                                    <h6 className="mb-2 font-semibold leading-5 text-xl">Create Custom Game</h6>
+                                    <p className="mb-3 text-sm text-gray-900">
+                                        Make your own game and invite or wait for others to join.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="room-form-bottons flex flex-col justify-between p-5 border rounded-lg shadow-md"
-                    onClick={() => toggleCreateCustomGameClicked(true)}
-                >
-                    <div className="flex">
-                        <div className="flex items-center justify-center w-12 h-12 mb-4 pr-3 pl-3 rounded-full bg-indigo-50">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="black">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                ) : (
+                    <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-purple-600 flex justify-center">
+                        <span className="text-xl inline-block mr-5 align-middle">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                             </svg>
-                        </div>
-                        <div className="pl-7 sm:pr-2 sm:pt-6 sm:pl-0">
-                            <h6 className="mb-2 font-semibold leading-5 text-xl">Create Custom Game</h6>
-                            <p className="mb-3 text-sm text-gray-900">
-                                Make your own game and invite or wait for others to join.
-                            </p>
-                        </div>
+                        </span>
+                        <span className="inline-block align-middle mr-8 text-base font-semibold">
+                            LOGIN TO PLAY AGAINST OTHERS
+                        </span>
                     </div>
-                </div>
-            </div>
+                )
+            }
             {
                 createCustomGameClicked && (
                     <>
@@ -128,21 +152,22 @@ export const RoomForm = () => {
                                                 <label htmlFor="roomName" className="block text-sm font-medium text-gray-700 pr-2">Room Name</label>
                                             )}
                                             <div className="mt-1 relative rounded-md shadow-sm">
-                                            <input type="text" name="roomName"
+                                                <input type="text" name="roomName"
                                                     className="focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full pl-12 pr-12 sm:text-sm border-gray-300 rounded-md"
                                                     placeholder="room name..."
                                                     required="on"
+                                                    maxlength="26"
                                                     autoComplete="off"
                                                     value={roomData.roomName}
                                                     onChange={(e) => setRoomData({ ...roomData, roomName: e.target.value })}
-                                            >
-                                            </input>
+                                                >
+                                                </input>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-2">
                                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 pr-2" autoComplete="off">Password (optional)</label>
                                             <div className="mt-1 relative rounded-md shadow-sm">
-                                                <input type="text" name="password" className="focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full pl-12 pr-12 sm:text-sm border-gray-300 rounded-md" 
+                                                <input type="text" name="password" className="focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full pl-12 pr-12 sm:text-sm border-gray-300 rounded-md"
                                                     placeholder="password..."
                                                     autoComplete="off"
                                                     value={roomData.password}

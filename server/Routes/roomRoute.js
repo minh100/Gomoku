@@ -1,4 +1,4 @@
-// server communication
+// server 'rooms' communication
 const express = require('express');
 
 const {getRooms, createRoom} = require('../Controller/roomControls.js');

@@ -1,6 +1,5 @@
 // connection between the server and the database
 // methods and functions to handle rooms
-const mongoose = require('mongoose');
 const RoomModel = require('../Models/roomModel.js');
 
 // retrieve all rooms in database
@@ -13,6 +12,7 @@ const getRooms = async (req, res) => {
     }
 };
 
+// create a new room in database
 const createRoom = async (req, res) => {
     const body = req.body;
     const newRoom = new RoomModel(body);

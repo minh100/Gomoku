@@ -1,9 +1,11 @@
+// server 'users' communication
 const express = require('express');
 
-const {login, createUser} = require('../Controller/userControls.js');
+const {login, createUser, getUsers} = require('../Controller/userControls.js');
 
 const router = express.Router();
 
+router.get('/', getUsers);
 router.post('/login', login);
 router.post('/signup', createUser);
 

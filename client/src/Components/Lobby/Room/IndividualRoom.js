@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import './IndividualRoom.css';
@@ -8,6 +8,15 @@ export const IndividualRoom = ({ roomName, password, playerArray }) => {
     const [passwordInput, setPasswordInput] = useState("");
     const [joinRedirect, setJoinRedirect] = useState(false);
     const [wrongPassword, setWrongPassword] = useState(false);
+
+    // local storage results from signing up
+    const [userSignup, setUserSignup] = useState();
+    // local storage results from logging in
+    const [userLogin, setUserLogin] = useState();
+    useEffect(() => {
+        setUserSignup(JSON.parse(localStorage.getItem('profile')));
+        setUserLogin(JSON.parse(localStorage.getItem('profile')));
+    }, [])
 
     const handleJoin = () => {
         if (passwordInput === password && playerArray.length !== 2) {
@@ -36,7 +45,7 @@ export const IndividualRoom = ({ roomName, password, playerArray }) => {
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">
                         {playerArray.length}/2
-                </p>
+                    </p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm flex w-25 justify-between">
                     <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -60,13 +69,17 @@ export const IndividualRoom = ({ roomName, password, playerArray }) => {
                         )
                     }
                 </td>
-                <td className="px-5 pb-5 pt-3 border-b border-gray-200 bg-white text-sm">
-                    <button className="flex-shrink-0 px-4 py-1 pb-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200"
-                        onClick={() => handleJoin()}
-                    >
-                        Join
-                    </button>
-                </td>
+                {
+                    ((userSignup !== undefined && userSignup !== null) || (userLogin !== undefined && userSignup !== null)) ? (
+                        <td className="px-5 pb-5 pt-3 border-b border-gray-200 bg-white text-sm">
+                            <button className="flex-shrink-0 px-4 py-1 pb-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200"
+                                onClick={() => handleJoin()}
+                            >
+                                Join
+                            </button>
+                        </td>
+                    ) : <></>
+                }
             </tr>
             {wrongPassword ? (
                 <div className="notification">

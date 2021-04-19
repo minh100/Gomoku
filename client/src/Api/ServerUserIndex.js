@@ -6,6 +6,10 @@ import axios from 'axios';
 
 const SERVER_URL_USER = 'http://localhost:4001/users';
 
+export const fetchAllUsers = () => {
+    return axios.get(SERVER_URL_USER);
+}
+
 export const logIn = (formData) => {
     return axios.post(`${SERVER_URL_USER}/login`, formData);
 }

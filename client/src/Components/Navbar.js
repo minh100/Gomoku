@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 
 import { Link, useHistory } from 'react-router-dom';
-import { signUp } from '../Api/ServerUserIndex.js';
 import { GlobalUserContext } from '../Global/GlobalUser/GlobalUserState.js';
 
 export const Navbar = () => {
@@ -11,7 +10,6 @@ export const Navbar = () => {
     const [navOption, setNavOption] = useState("lobby");
     const history = useHistory();
     const { logout } = useContext(GlobalUserContext);
-
 
     // local storage results from signing up
     const [userSignup, setUserSignup] = useState();
@@ -28,8 +26,6 @@ export const Navbar = () => {
         toggleProfileOpen(false);
         history.push("/login");
     };
-    console.log(userLogin);
-    console.log(userSignup);
 
     return (
         <nav className="bg-gray-800">
@@ -98,7 +94,7 @@ export const Navbar = () => {
                         <h1 className="text-white pl-1">{userLogin !== undefined && userLogin !== null && userLogin.result !== undefined ? userLogin.result.username : ""}</h1>
                         {/* <!-- Profile dropdown --> */}
                         {
-                            (userSignup !== undefined && userSignup !== null || userLogin !== undefined && userSignup !== null) ? (
+                            ((userSignup !== undefined && userSignup !== null) || (userLogin !== undefined && userSignup !== null)) ? (
                                 <div className="ml-3 relative">
                                     <div>
                                         <button type="button"

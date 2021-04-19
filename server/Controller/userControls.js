@@ -5,6 +5,16 @@ const jwt = require('jsonwebtoken'); // keeps user logged in
 
 const UserModel = require('../Models/userModel.js');
 
+// retrieve all users in database
+const getUsers = async(req, res) => {
+    try {
+        const users = await UserModel.find();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(404).json({message: error});
+    }
+};
+
 const login = async (req, res) => {
     const {username, password} = req.body;
     
@@ -52,4 +62,4 @@ const createUser = async (req, res) => {
     }
 };
 
-module.exports = {login, createUser};
+module.exports = {login, createUser, getUsers};

@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react'
 import UserReducer from './UserReducer.js';
 
-import { logIn, signUp } from '../../Api/ServerUserIndex.js';
+import { fetchAllUsers, logIn, signUp } from '../../Api/ServerUserIndex.js';
 
 export const GlobalUserContext = createContext([]);
 
@@ -9,6 +9,15 @@ export const GlobalUserProvider = props => {
     const [userState, dispatch] = useReducer(UserReducer, []);
 
     // user actions
+    const getAllUsers = async() => {
+        try {
+            const {data} = await fetchAllUsers();
+            dispatch({type: 'FETCH_ALL_USERS', payload: data});
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     // create a new user
     const createNewUser = async (newUser, history, setError) => {
         try {
@@ -44,6 +53,7 @@ export const GlobalUserProvider = props => {
         <GlobalUserContext.Provider
             value={{
                 users: userState,
+                getAllUsers,
                 createNewUser,
                 login,
                 logout
