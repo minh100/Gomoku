@@ -12,7 +12,7 @@ export const Navbar = () => {
     const { logout } = useContext(GlobalUserContext);
 
     // local storage results 
-    const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('profile')));
+    const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
 
     const handleSignOut = () => {
         logout();
@@ -85,12 +85,12 @@ export const Navbar = () => {
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         <h1 className="text-white pl-1">
                             {
-                                (userAccount?.userResult?.username) || (userAccount?.result?.username)
+                                (userAccount[0]?.userResult?.username) || (userAccount[0]?.result?.username)
                             }
                         </h1>
                         {/* <!-- Profile dropdown --> */}
                         {
-                            ((userAccount !== undefined && userAccount !== null)) ? (
+                            ((userAccount[0] !== undefined && userAccount[0] !== null)) ? (
                                 <div className="ml-3 relative">
                                     <div>
                                         <button type="button"

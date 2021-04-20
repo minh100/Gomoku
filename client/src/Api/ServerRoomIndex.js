@@ -15,3 +15,13 @@ export const fetchAllRooms = () => {
 export const createRoom = (newRoom) => {
     return axios.post(SERVER_URL_ROOM, newRoom);
 }
+
+// deletes a room from server
+export const deleteRoom = (id) => {
+    return axios.delete(`${SERVER_URL_ROOM}/${id}`);
+}
+
+// updates room with a new player
+export const addPlayerToRoom = (id, updatedRoom) => {
+    return axios.patch(`${SERVER_URL_ROOM}/${id}`);
+}

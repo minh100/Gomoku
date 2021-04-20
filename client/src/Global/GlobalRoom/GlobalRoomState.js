@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react'
 import RoomReducer from './RoomReducer.js';
 
-import { fetchAllRooms, createRoom } from '../../Api/ServerRoomIndex.js';
+import { fetchAllRooms, createRoom, deleteRoom, addPlayerToRoom } from '../../Api/ServerRoomIndex.js';
 
 export const GlobalRoomContext = createContext([]);
 
@@ -27,14 +27,36 @@ export const GlobalRoomProvider = props => {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
+
+    // delete room
+    const deleteGameRoom = async(id) => {
+        try {
+            await deleteRoom(id);
+            dispatch({type: 'DELETE_ROOM', payload: id});
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    // add player to room
+    const addPlayer = async(id, updatedRoom) => {
+        try {
+            const {data} = await addPlayerToRoom(id, updatedRoom);
+            dispatch({type: 'ADD_PLAYER_TO_ROOM', payload: data});
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <GlobalRoomContext.Provider
             value={{
                 rooms: roomState,
                 getAllRooms,
-                createNewRoom
+                createNewRoom,
+                deleteGameRoom,
+                addPlayer
             }}
         >
             {props.children}

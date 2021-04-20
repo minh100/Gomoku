@@ -1,19 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react'
 
 import { GlobalRoomContext } from '../../../Global/GlobalRoom/GlobalRoomState.js';
-import { GlobalUserContext } from '../../../Global/GlobalUser/GlobalUserState.js';
 import { IndividualRoom } from './IndividualRoom.js';
 
 export const RoomList = () => {
 
-    const { rooms, getAllRooms } = useContext(GlobalRoomContext);
-    const { getAllUsers } = useContext(GlobalUserContext);
+    const { rooms } = useContext(GlobalRoomContext);
     const [roomFilter, setRoomFilter] = useState(rooms);
     const [filter, setFilter] = useState("");
 
     useEffect(() => {
-        getAllRooms();
-        getAllUsers();
         setRoomFilter(rooms);
         if (filter !== "") {
             let roomSearch = rooms.filter(room => room.roomName.toLowerCase().indexOf(filter.toLowerCase()) !== -1)

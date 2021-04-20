@@ -1,28 +1,38 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import axios from 'axios';
 
 import { GlobalRoomContext } from '../../../Global/GlobalRoom/GlobalRoomState.js';
+import { GlobalUserContext } from '../../../Global/GlobalUser/GlobalUserState.js';
 
 import './RoomForm.css';
 
 export const RoomForm = () => {
 
     const { rooms, createNewRoom } = useContext(GlobalRoomContext);
+    const { addPlayer } = useContext(GlobalUserContext);
     const [createCustomGameClicked, toggleCreateCustomGameClicked] = useState(false);
     const [isNameTaken, setNameTaken] = useState(false);
 
-    const [roomData, setRoomData] = useState({
-        roomName: '',
-        password: '',
-        playerArray: []
-    });
-
     // local storage results
-    const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('profile')));
-   
-    useEffect(() => {
-        console.log(userAccount)
-    }, []);
+    const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
+
+    const setInitalState = () => {
+        if(userAccount[0] === null) {
+            return {
+                roomName: '',
+                password: '',
+                playerArray: [],
+            }
+        } else {
+            return {
+                roomName: '',
+                password: '',
+                playerArray: [(userAccount[0].userResult !== undefined) ? (userAccount[0]?.userResult?.username) : (userAccount[0]?.result?.username)]
+            }
+        };
+    }
+
+    const [roomData, setRoomData] = useState(setInitalState);
 
     /**
      * Find a game to join, if no games then create one
@@ -33,7 +43,9 @@ export const RoomForm = () => {
         // join game
         // if no games are available
         // randomize roomName
-        // create room
+        // set no password
+        // set room data with randomize roomName, no password, and player array with current user in
+        // call create create game function
     };
 
     /**
@@ -52,6 +64,7 @@ export const RoomForm = () => {
         }
         if (!taken) {
             createNewRoom(roomData);
+            // needs to redirect to new url where game/room lies
             toggleCreateCustomGameClicked(false)
             clearRoomData();
         }
@@ -81,7 +94,9 @@ export const RoomForm = () => {
             {
                 ((userAccount !== undefined && userAccount !== null)) ? (
                     <div className="grid gap-4 row-gap-3 sm:grid-cols-2 lg:grid-cols-2">
-                        <div className="room-form-bottons flex flex-col justify-between p-5 border rounded-lg shadow-md" onClick={() => handleFindGame()}>
+                        <div className="room-form-bottons flex flex-col justify-between p-5 border rounded-lg shadow-md"
+                            onClick={() => handleFindGame()}
+                        >
                             <div className="flex">
                                 <div className="flex items-center justify-center w-12 h-12 mb-4 pr-3 pl-3 rounded-full bg-indigo-50">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="black">

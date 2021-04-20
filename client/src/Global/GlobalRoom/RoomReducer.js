@@ -4,6 +4,13 @@ export default function RoomReducer(roomState, action) {
             return action.payload;
         case 'CREATE_ROOM':
             return [...roomState, action.payload];
+        case 'DELETE_ROOM':
+            return roomState.filter(room => room._id !== action.payload);
+        case 'ADD_PLAYER_TO_ROOM':
+            return roomState.map(room => {
+                return room._id === action.payload._id ? 
+                action.payload : room
+            });
         default:
             return roomState;
     }

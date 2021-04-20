@@ -1,5 +1,6 @@
 // connection between the server and the database
 // methods and functions to handle rooms
+const mongoose = require('mongoose');
 const RoomModel = require('../Models/roomModel.js');
 
 // retrieve all rooms in database
@@ -24,4 +25,27 @@ const createRoom = async (req, res) => {
     }
 };
 
-module.exports = { getRooms, createRoom };
+// delete a room from database
+const deleteRoom = async (req, res) => {
+    const {id} = req.params;
+    console.log(req);
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send("No room with that id");
+    }
+
+    await RoomModel.findByIdAndDelete(id);
+    
+    res.json({message: 'Room has been successfully deleted'});
+}
+
+// updates room by adding player
+const addPlayerToRoom = async(req, res) => {
+    console.log(req);
+}
+
+// updates room by removing
+const removePlayerFromRoom = async(req, res) => {
+
+}
+
+module.exports = { getRooms, createRoom, deleteRoom, addPlayerToRoom };
