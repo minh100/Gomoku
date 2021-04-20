@@ -85,7 +85,7 @@ export const Navbar = () => {
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         <h1 className="text-white pl-1">
                             {
-                                (userAccount !== undefined && userAccount !== null) ? (userAccount.userResult !== undefined) ? (userAccount.userResult.username) : (userAccount.result !== undefined) ? (userAccount.result.username ): "" : ""
+                                (userAccount?.userResult?.username) || (userAccount?.result?.username)
                             }
                         </h1>
                         {/* <!-- Profile dropdown --> */}
