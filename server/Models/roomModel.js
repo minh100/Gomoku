@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// model for what a room contains 
+// model for what a room contains  
 const roomSchema = mongoose.Schema({
     roomName: {
         type: String,
@@ -12,7 +12,7 @@ const roomSchema = mongoose.Schema({
         default: ""
     },
     playerArray: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: [String],
         required: true,
         default: []
     },

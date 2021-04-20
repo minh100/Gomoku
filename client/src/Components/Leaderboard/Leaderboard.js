@@ -4,14 +4,11 @@ import { GlobalUserContext } from '../../Global/GlobalUser/GlobalUserState.js';
 
 export const Leaderboard = () => {
 
-    const { users, getAllUsers } = useContext(GlobalUserContext);
-    const [userFilter, setUserFilter] = useState([]);
+    const { users } = useContext(GlobalUserContext);
+    const [userFilter, setUserFilter] = useState(users);
     const [filter, setFilter] = useState("");
 
-
     useEffect(() => {
-        getAllUsers();
-
         setUserFilter(users);
         if (filter !== "") {
             let userSearch = users.filter(user => user.username.toLowerCase().indexOf(filter.toLowerCase()) !== -1);
@@ -79,11 +76,11 @@ export const Leaderboard = () => {
                                                             </div>
                                                         </td>
                                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                            <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                                <span aria-hidden="true" className="absolute inset-0 bg-green-200 opacity-50 rounded-full">
+                                                            <span className="relative inline-block px-3 py-1 font-semibold text-purple-900 leading-tight">
+                                                                <span aria-hidden="true" className="absolute inset-0 bg-purple-600 rounded-full">
                                                                 </span>
                                                                 <span className="relative">
-                                                                    <p className="text-gray-900 whitespace-no-wrap ">
+                                                                    <p className="text-white whitespace-no-wrap ">
                                                                         {user.rating}
                                                                     </p>
                                                                 </span>
@@ -113,9 +110,15 @@ export const Leaderboard = () => {
                                                             </div>
                                                         </td>
                                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                            <p className="ml-2 text-gray-900 whitespace-no-wrap">
-                                                                {user.rating}
-                                                            </p>
+                                                            <span className="relative inline-block px-3 py-1 font-semibold text-purple-900 leading-tight">
+                                                                <span aria-hidden="true" className="absolute inset-0 bg-purple-600 rounded-full">
+                                                                </span>
+                                                                <span className="relative">
+                                                                    <p className="text-white whitespace-no-wrap ">
+                                                                        {user.rating}
+                                                                    </p>
+                                                                </span>
+                                                            </span>
                                                         </td>
                                                     </tr>
                                                 )

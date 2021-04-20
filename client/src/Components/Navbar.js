@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 
 import { Link, useHistory } from 'react-router-dom';
 import { GlobalUserContext } from '../Global/GlobalUser/GlobalUserState.js';
@@ -11,15 +11,8 @@ export const Navbar = () => {
     const history = useHistory();
     const { logout } = useContext(GlobalUserContext);
 
-    // local storage results from signing up
-    const [userSignup, setUserSignup] = useState();
-    // local storage results from logging in
-    const [userLogin, setUserLogin] = useState();
-
-    useEffect(() => {
-        setUserSignup(JSON.parse(localStorage.getItem('profile')));
-        setUserLogin(JSON.parse(localStorage.getItem('profile')));
-    }, [])
+    // local storage results 
+    const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('profile')));
 
     const handleSignOut = () => {
         logout();
@@ -90,11 +83,14 @@ export const Navbar = () => {
                         </div>
                     </div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        <h1 className="text-white pl-1">{userSignup !== undefined && userSignup !== null && userSignup.userResult !== undefined ? userSignup.userResult.username : ""}</h1>
-                        <h1 className="text-white pl-1">{userLogin !== undefined && userLogin !== null && userLogin.result !== undefined ? userLogin.result.username : ""}</h1>
+                        <h1 className="text-white pl-1">
+                            {
+                                (userAccount !== undefined && userAccount !== null) ? (userAccount.userResult !== undefined) ? (userAccount.userResult.username) : (userAccount.result !== undefined) ? (userAccount.result.username ): "" : ""
+                            }
+                        </h1>
                         {/* <!-- Profile dropdown --> */}
                         {
-                            ((userSignup !== undefined && userSignup !== null) || (userLogin !== undefined && userSignup !== null)) ? (
+                            ((userAccount !== undefined && userAccount !== null)) ? (
                                 <div className="ml-3 relative">
                                     <div>
                                         <button type="button"

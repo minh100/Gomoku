@@ -9,13 +9,11 @@ export const IndividualRoom = ({ roomName, password, playerArray }) => {
     const [joinRedirect, setJoinRedirect] = useState(false);
     const [wrongPassword, setWrongPassword] = useState(false);
 
-    // local storage results from signing up
-    const [userSignup, setUserSignup] = useState();
-    // local storage results from logging in
-    const [userLogin, setUserLogin] = useState();
+    // local storage results
+    const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('profile')));
+
     useEffect(() => {
-        setUserSignup(JSON.parse(localStorage.getItem('profile')));
-        setUserLogin(JSON.parse(localStorage.getItem('profile')));
+        
     }, [])
 
     const handleJoin = () => {
@@ -70,7 +68,7 @@ export const IndividualRoom = ({ roomName, password, playerArray }) => {
                     }
                 </td>
                 {
-                    ((userSignup !== undefined && userSignup !== null) || (userLogin !== undefined && userSignup !== null)) ? (
+                    ((userAccount !== undefined && userAccount !== null)) ? (
                         <td className="px-5 pb-5 pt-3 border-b border-gray-200 bg-white text-sm">
                             <button className="flex-shrink-0 px-4 py-1 pb-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200"
                                 onClick={() => handleJoin()}

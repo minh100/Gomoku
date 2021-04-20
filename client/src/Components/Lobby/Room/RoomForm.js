@@ -17,14 +17,12 @@ export const RoomForm = () => {
         playerArray: []
     });
 
-    // local storage results from signing up
-    const [userSignup, setUserSignup] = useState();
-    // local storage results from logging in
-    const [userLogin, setUserLogin] = useState();
+    // local storage results
+    const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('profile')));
+   
     useEffect(() => {
-        setUserSignup(JSON.parse(localStorage.getItem('profile')));
-        setUserLogin(JSON.parse(localStorage.getItem('profile')));
-    }, [])
+        console.log(userAccount)
+    }, []);
 
     /**
      * Find a game to join, if no games then create one
@@ -36,7 +34,7 @@ export const RoomForm = () => {
         // if no games are available
         // randomize roomName
         // create room
-    }
+    };
 
     /**
      * Create a custom game 
@@ -57,7 +55,7 @@ export const RoomForm = () => {
             toggleCreateCustomGameClicked(false)
             clearRoomData();
         }
-    }
+    };
 
     /**
      * Creates a random name as the roomName
@@ -65,7 +63,7 @@ export const RoomForm = () => {
     const handleRandomizeName = async () => {
         const { data } = await axios.get('https://random-word-api.herokuapp.com/word?number=2');
         setRoomData({ ...roomData, roomName: `${data[0].charAt(0).toUpperCase() + data[0].slice(1)}${data[1].charAt(0).toUpperCase() + data[1].slice(1)}` });
-    }
+    };
 
     /**
      * Clears the data after successfully creating a game or cancelling
@@ -76,12 +74,12 @@ export const RoomForm = () => {
             roomName: '',
             password: '',
         })
-    }
+    };
 
     return (
         <>
             {
-                ((userSignup !== undefined && userSignup !== null) || (userLogin !== undefined && userSignup !== null)) ? (
+                ((userAccount !== undefined && userAccount !== null)) ? (
                     <div className="grid gap-4 row-gap-3 sm:grid-cols-2 lg:grid-cols-2">
                         <div className="room-form-bottons flex flex-col justify-between p-5 border rounded-lg shadow-md" onClick={() => handleFindGame()}>
                             <div className="flex">
@@ -156,7 +154,7 @@ export const RoomForm = () => {
                                                     className="focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full pl-12 pr-12 sm:text-sm border-gray-300 rounded-md"
                                                     placeholder="room name..."
                                                     required="on"
-                                                    maxlength="26"
+                                                    maxLength="26"
                                                     autoComplete="off"
                                                     value={roomData.roomName}
                                                     onChange={(e) => setRoomData({ ...roomData, roomName: e.target.value })}

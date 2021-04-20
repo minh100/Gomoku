@@ -1,18 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react'
 
 import { GlobalRoomContext } from '../../../Global/GlobalRoom/GlobalRoomState.js';
+import { GlobalUserContext } from '../../../Global/GlobalUser/GlobalUserState.js';
 import { IndividualRoom } from './IndividualRoom.js';
 
 export const RoomList = () => {
 
     const { rooms, getAllRooms } = useContext(GlobalRoomContext);
+    const { getAllUsers } = useContext(GlobalUserContext);
     const [roomFilter, setRoomFilter] = useState(rooms);
     const [filter, setFilter] = useState("");
 
     useEffect(() => {
         getAllRooms();
+        getAllUsers();
         setRoomFilter(rooms);
-        if(filter !== ""){
+        if (filter !== "") {
             let roomSearch = rooms.filter(room => room.roomName.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
             setRoomFilter(roomSearch);
         }
@@ -28,7 +31,7 @@ export const RoomList = () => {
                     <div className="text-end pr-2">
                         <form className="flex w-full max-w-sm space-x-3">
                             <div className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md flex justify-center items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="white">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="white">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                                 </svg>
                             </div>
