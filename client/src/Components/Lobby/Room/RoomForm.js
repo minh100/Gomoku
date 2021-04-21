@@ -1,17 +1,18 @@
 import React, { useState, useContext } from 'react'
 import axios from 'axios';
+import {useHistory} from 'react-router-dom';
 
 import { GlobalRoomContext } from '../../../Global/GlobalRoom/GlobalRoomState.js';
-import { GlobalUserContext } from '../../../Global/GlobalUser/GlobalUserState.js';
 
 import './RoomForm.css';
 
 export const RoomForm = () => {
 
-    const { rooms, createNewRoom } = useContext(GlobalRoomContext);
-    const { addPlayer } = useContext(GlobalUserContext);
+    const { rooms, createNewRoom, addPlayer } = useContext(GlobalRoomContext);
     const [createCustomGameClicked, toggleCreateCustomGameClicked] = useState(false);
     const [isNameTaken, setNameTaken] = useState(false);
+
+    const history = useHistory();
 
     // local storage results
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
@@ -40,12 +41,14 @@ export const RoomForm = () => {
     const handleFindGame = () => {
         console.log("find game");
         // check if any available games
-        // join game
+            // use addPlayer method to add a player to the room
+            // updates room playerArray
+            // join game by redirecting and checking if the current user is logged in ? check if user username is in room player array ? play game : redirect to lobby : redirect
         // if no games are available
-        // randomize roomName
-        // set no password
-        // set room data with randomize roomName, no password, and player array with current user in
-        // call create create game function
+            // randomize roomName
+            // set no password
+            // set room data with randomize roomName, no password, and player array with current user in
+            // call create create game function
     };
 
     /**
@@ -64,9 +67,9 @@ export const RoomForm = () => {
         }
         if (!taken) {
             createNewRoom(roomData);
-            // needs to redirect to new url where game/room lies
             toggleCreateCustomGameClicked(false)
             clearRoomData();
+            history.push(`/play?${roomData.roomName}`); // redirects user to game room
         }
     };
 
@@ -92,7 +95,7 @@ export const RoomForm = () => {
     return (
         <>
             {
-                ((userAccount !== undefined && userAccount !== null)) ? (
+                ((userAccount[0] !== undefined && userAccount[0] !== null)) ? (
                     <div className="grid gap-4 row-gap-3 sm:grid-cols-2 lg:grid-cols-2">
                         <div className="room-form-bottons flex flex-col justify-between p-5 border rounded-lg shadow-md"
                             onClick={() => handleFindGame()}

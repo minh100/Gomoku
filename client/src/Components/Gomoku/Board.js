@@ -11,8 +11,6 @@ export const Board = () => {
     const [rerender, toggleRerender] = useState(false);
     const [winningPoints, setWinningPoints] = useState([]);
 
-    console.log(gameModel);
-
     const handleClick = (row, col) => {
         if (gameModel.winner === -1) {
             console.log(`Clicked row: ${row} col: ${col}`);

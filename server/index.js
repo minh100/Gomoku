@@ -24,9 +24,29 @@ app.use('/users', userRoutes)
 // PORT
 const PORT = process.env.PORT || 4001;
 
-// connect to database
+/**Possibly needs Refractoring */
+// --- Socket Io --- //
+const socketio = require('socket.io');
+const server = require('http').createServer(app);
+
+const io = socketio(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+
+// socketio functions and connection calls
+io.on('connection', (socket) => {
+    console.log(`socket connection`);
+    
+
+});
+
+// connect to database and server
 mongoose.connect(process.env.CONNECTION_URL , {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => app.listen(PORT, () => console.log(`Listening on port: ${PORT}`)))
+    .then(() => server.listen(PORT, () => console.log(`Listening on port: ${PORT}`)))
     .catch((error) => console.log(error));
 
 mongoose.set('useFindAndModify', false);
+

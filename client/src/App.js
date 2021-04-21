@@ -7,7 +7,8 @@ import { Navbar } from './Components/Navbar.js';
 import { Board } from './Components/Gomoku/Board.js';
 import { Login } from './Components/LandingPage/Login.js';
 import { SignUp } from './Components/LandingPage/SignUp.js';
-import { Leaderboard} from './Components/Leaderboard/Leaderboard.js';
+import { Leaderboard } from './Components/Leaderboard/Leaderboard.js';
+import { SocketContext, socket } from './Global/GlobalSocket/Socket.js';
 
 function App() {
   return (
@@ -18,10 +19,14 @@ function App() {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
             <>
-              <Navbar />
-              <Route exact path="/" component={Lobby} />
-              <Route exact path="/leaderboard" component={Leaderboard} />
-              <Route exact path="/localplay" component={Board} />
+              <SocketContext.Provider value={socket} >
+                <Navbar />
+                <Route exact path="/" component={Lobby} />
+                <Route exact path="/leaderboard" component={Leaderboard} />
+                <Route exact path="/localplay" component={Board} />
+                <Route path="/play" component={Board} />
+              </SocketContext.Provider>
+
             </>
           </Switch>
         </GlobalRoomProvider>
