@@ -1,26 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import {GlobalRoomContext} from '../../../Global/GlobalRoom/GlobalRoomState.js';
 
 import './IndividualRoom.css';
 
-export const IndividualRoom = ({ roomName, password, playerArray }) => {
+export const IndividualRoom = ({ roomId, roomName, password, playerArray }) => {
 
     const [passwordInput, setPasswordInput] = useState("");
-    const [joinRedirect, setJoinRedirect] = useState(false);
     const [wrongPassword, setWrongPassword] = useState(false);
+    const {addPlayer} = useContext(GlobalRoomContext);
+    const history = useHistory();
 
     // local storage results
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
 
-    useEffect(() => {
-        
-    }, [])
+    useEffect(() => {   
+        console.log(playerArray);
+    }, [playerArray])
 
     const handleJoin = () => {
         if (passwordInput === password && playerArray.length !== 2) {
             // add user to room
+            const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+            playerArray.push(currentUser);
+            addPlayer(roomId, playerArray);
             // rerender to room
-            setJoinRedirect(true);
+            history.push(`/play/${roomName}`, [roomName, playerArray]);
             setWrongPassword(false);
         } else {
             setWrongPassword(true);
@@ -29,9 +35,6 @@ export const IndividualRoom = ({ roomName, password, playerArray }) => {
 
     return (
         <>
-            {
-                joinRedirect && (<Redirect to="/localplay" />)  // if password inputted is correct then redirect to the game
-            }
             <tr>
                 <td className="px-8 py-5 border-b border-gray-200 bg-white text-sm">
                     <div className="flex items-center">
@@ -68,7 +71,7 @@ export const IndividualRoom = ({ roomName, password, playerArray }) => {
                     }
                 </td>
                 {
-                    ((userAccount[0] !== undefined && userAccount[0] !== null)) ? (
+                    ((userAccount[0] !== undefined && userAccount[0] !== null) && (playerArray.length !== 2)) ? (
                         <td className="px-5 pb-5 pt-3 border-b border-gray-200 bg-white text-sm">
                             <button className="flex-shrink-0 px-4 py-1 pb-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200"
                                 onClick={() => handleJoin()}

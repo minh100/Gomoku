@@ -40,12 +40,17 @@ const deleteRoom = async (req, res) => {
 
 // updates room by adding player
 const addPlayerToRoom = async(req, res) => {
-    console.log(req);
-}
+    const {id} = req.params;
+    const updatedPlayerArray = req.body;
+    
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).sned("No game room with that id");
+    }
 
-// updates room by removing
-const removePlayerFromRoom = async(req, res) => {
+    // actually update database
+    const updatedRoom = await RoomModel.findByIdAndUpdate(id, {playerArray: updatedPlayerArray}, {new: true});
 
+    res.json(updatedRoom);
 }
 
 module.exports = { getRooms, createRoom, deleteRoom, addPlayerToRoom };

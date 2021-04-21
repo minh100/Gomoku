@@ -22,6 +22,6 @@ export const deleteRoom = (id) => {
 }
 
 // updates room with a new player
-export const addPlayerToRoom = (id, updatedRoom) => {
-    return axios.patch(`${SERVER_URL_ROOM}/${id}`);
+export const addPlayerToRoom = (idOfRoom, updatedPlayerArray) => {
+    return axios.patch(`${SERVER_URL_ROOM}/${idOfRoom}`, updatedPlayerArray);
 }

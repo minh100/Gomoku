@@ -3,7 +3,7 @@ import Game from '../../Engine/Game.js';
 import { Tile } from './Tile.js';
 import './Board.css';
 
-export const Board = () => {
+export const LocalBoard = () => {
 
     const game = new Game(15, [0, 1]);
 

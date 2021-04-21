@@ -44,11 +44,23 @@ export const RoomForm = () => {
             // use addPlayer method to add a player to the room
             // updates room playerArray
             // join game by redirecting and checking if the current user is logged in ? check if user username is in room player array ? play game : redirect to lobby : redirect
-        // if no games are available
+        const gamesAvailable = rooms.filter(room => room.playerArray.length < 2);
+        if(gamesAvailable.length !== 0) {
+            const gameToJoin = gamesAvailable[0];
+            const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+            gameToJoin.playerArray.push(currentUser);
+            addPlayer(gameToJoin._id, gameToJoin.playerArray);
+            history.push(`/play/${gameToJoin.roomName}`, [gameToJoin.roomName, gameToJoin.playerArray]);
+        } else {
+            // if no games are available
             // randomize roomName
-            // set no password
             // set room data with randomize roomName, no password, and player array with current user in
             // call create create game function
+            handleRandomizeName();  
+            handleCreateGame();
+        }
+
+        
     };
 
     /**
@@ -69,7 +81,7 @@ export const RoomForm = () => {
             createNewRoom(roomData);
             toggleCreateCustomGameClicked(false)
             clearRoomData();
-            history.push(`/play?${roomData.roomName}`); // redirects user to game room
+            history.push(`/play/${roomData.roomName}`, [roomData.roomName, roomData.playerArray]); // redirects user to game room
         }
     };
 
@@ -171,7 +183,7 @@ export const RoomForm = () => {
                                                 <input type="text" name="roomName"
                                                     className="focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full pl-12 pr-12 sm:text-sm border-gray-300 rounded-md"
                                                     placeholder="room name..."
-                                                    required="on"
+                                                    required
                                                     maxLength="26"
                                                     autoComplete="off"
                                                     value={roomData.roomName}

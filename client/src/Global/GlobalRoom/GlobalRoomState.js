@@ -40,9 +40,9 @@ export const GlobalRoomProvider = props => {
     };
 
     // add player to room
-    const addPlayer = async(id, updatedRoom) => {
+    const addPlayer = async(idOfRoom, updatedPlayerArray) => {
         try {
-            const {data} = await addPlayerToRoom(id, updatedRoom);
+            const {data} = await addPlayerToRoom(idOfRoom, updatedPlayerArray);
             dispatch({type: 'ADD_PLAYER_TO_ROOM', payload: data});
         } catch (error) {
             console.log(error);

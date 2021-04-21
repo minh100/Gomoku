@@ -4,11 +4,12 @@ import { GlobalRoomProvider } from './Global/GlobalRoom/GlobalRoomState.js';
 import { GlobalUserProvider } from './Global/GlobalUser/GlobalUserState.js';
 import { Lobby } from './Components/Lobby/Lobby.js';
 import { Navbar } from './Components/Navbar.js';
-import { Board } from './Components/Gomoku/Board.js';
+import { LocalBoard } from './Components/Gomoku/LocalBoard.js';
 import { Login } from './Components/LandingPage/Login.js';
 import { SignUp } from './Components/LandingPage/SignUp.js';
 import { Leaderboard } from './Components/Leaderboard/Leaderboard.js';
 import { SocketContext, socket } from './Global/GlobalSocket/Socket.js';
+import { GameRoom } from './Components/GameRoom/GameRoom.js';
 
 function App() {
   return (
@@ -23,8 +24,8 @@ function App() {
                 <Navbar />
                 <Route exact path="/" component={Lobby} />
                 <Route exact path="/leaderboard" component={Leaderboard} />
-                <Route exact path="/localplay" component={Board} />
-                <Route path="/play" component={Board} />
+                <Route exact path="/localplay" component={LocalBoard} />
+                <Route path="/play" component={GameRoom} />
               </SocketContext.Provider>
 
             </>

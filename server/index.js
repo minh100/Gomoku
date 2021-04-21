@@ -38,7 +38,7 @@ const io = socketio(server, {
 
 // socketio functions and connection calls
 io.on('connection', (socket) => {
-    console.log(`socket connection`);
+    console.log(`socket connection: ${socket.id}`);
     
 
 });

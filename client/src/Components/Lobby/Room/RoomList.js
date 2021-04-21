@@ -42,7 +42,7 @@ export const RoomList = () => {
                         </form>
                     </div>
                 </div>
-                <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-hidden">
                     <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
                         <table className="min-w-full leading-normal">
                             <thead>
@@ -50,7 +50,7 @@ export const RoomList = () => {
                                     <th scope="col" className="pl-8 py-3 bg-white font-semibold border-b border-gray-300 text-gray-800 text-left text-sm uppercase">
                                         Room
                                     </th>
-                                    <th scope="col" className="px-5 py-3 bg-white font-semibold border-b border-gray-300 text-gray-800 text-left text-sm uppercase">
+                                    <th scope="col" className="px-4 py-3 bg-white font-semibold border-b border-gray-300 text-gray-800 text-left text-sm uppercase">
                                         Player Count
                                     </th>
                                     <th scope="col" className="px-5 py-3 bg-white font-semibold border-b border-gray-300 text-gray-800 text-left text-sm uppercase">
@@ -65,6 +65,7 @@ export const RoomList = () => {
                                     rooms && roomFilter.length !== 0 ? (
                                         roomFilter.map(room => {
                                             return <IndividualRoom key={room._id}
+                                                roomId={room._id}
                                                 roomName={room.roomName}
                                                 password={room.password}
                                                 playerArray={room.playerArray}
@@ -73,6 +74,7 @@ export const RoomList = () => {
                                     ) : (
                                         rooms.map(room => {
                                             return <IndividualRoom key={room._id}
+                                                roomId={room._id}
                                                 roomName={room.roomName}
                                                 password={room.password}
                                                 playerArray={room.playerArray}
