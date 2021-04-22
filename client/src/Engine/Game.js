@@ -1,4 +1,5 @@
 export default class Game {
+
     constructor(size, playerArray) {
         this.size = size;
         this.playerArray = playerArray;
@@ -12,7 +13,7 @@ export default class Game {
 
         // first, randomly chooses the starting player
         let randomInitalTurn = Math.floor(Math.random() * playerArray.length);
-
+        
         // used to decide whose turn is it currently
         this.currentTurn = randomInitalTurn
 

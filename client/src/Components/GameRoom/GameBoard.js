@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
-import Game from '../../Engine/Game.js';
 import { Tile } from '../Gomoku/Tile.js';
 import '../Gomoku/Board.css';
 
-export const GameBoard = () => {
-
-    const game = new Game(15, [0, 1]);
+export const GameBoard = ({ game }) => {
 
     const [gameModel, updateGameModel] = useState(game);
     const [rerender, toggleRerender] = useState(false);
@@ -30,37 +27,47 @@ export const GameBoard = () => {
         toggleRerender(!rerender);
         setWinningPoints([]);
     }
+    console.log(gameModel.currentTurn);
 
     return (
-        <div className="md:container md:mx-auto min-h-screen min-w-full flex justify-center items-center">
-            <div className="grid grid-cols-15 grid-rows-15">
-                {
-                    gameModel.board.map((tile, row) => {
-                        return tile.map((value, col) => {
+        <div className="relative flex flex-col py-16 lg:py-0 lg:flex-col">
+            <div className="w-full max-w-xl px-4 mx-auto md:px-0 lg:px-8 lg:py-20 lg:max-w-screen-xl">
+                <div className="mb-0 lg:max-w-lg lg:pr-8 xl:pr-6">
+                    <h1>{`Current Turn: ${gameModel.playerArray[gameModel.currentTurn]}`}</h1>
+                </div>
+            </div>
+            <div className="inset-y-0 top-0 right-0 w-full max-w-xl px-4 mx-auto mb-6 md:px-0 lg:pl-8 lg:pr-0 lg:mb-0 lg:mx-0 lg:w-1/2 lg:max-w-full lg:absolute xl:px-0">
+                <div className="grid grid-cols-15 grid-rows-15">
+                    {
+                        gameModel.board.map((tile, row) => {
+                            return tile.map((value, col) => {
 
-                            // check to see if the current piece is a winning one
-                            let isWinningPiece = false;
+                                // check to see if the current piece is a winning one
+                                let isWinningPiece = false;
 
-                            for (let i = 0; i < winningPoints.length; i++) {
-                                if (winningPoints[i].col === col && winningPoints[i].row === row) {
-                                    isWinningPiece = true;
-                                    break;
+                                for (let i = 0; i < winningPoints.length; i++) {
+                                    if (winningPoints[i].col === col && winningPoints[i].row === row) {
+                                        isWinningPiece = true;
+                                        break;
+                                    }
                                 }
-                            }
 
-                            return <Tile key={`${row}:${col}`}
-                                value={value}
-                                handleClick={handleClick}
-                                row={row}
-                                col={col}
-                                isWinningPiece={isWinningPiece}
-                            />
+                                return <Tile key={`${row}:${col}`}
+                                    value={value}
+                                    handleClick={handleClick}
+                                    row={row}
+                                    col={col}
+                                    isWinningPiece={isWinningPiece}
+                                />
+                            })
                         })
-                    })
-                }
-                <button onClick={() => handleReset()}>Reset</button>
+                    }
+                    <button onClick={() => handleReset()}>Reset</button>
+                </div>
             </div>
         </div>
+
+
 
     )
 }

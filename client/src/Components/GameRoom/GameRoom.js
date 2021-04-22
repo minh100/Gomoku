@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useLocation, useHistory } from 'react-router-dom';
+import Game from '../../Engine/Game.js';
+
 
 import { GameBoard } from './GameBoard.js';
 import { GlobalRoomContext } from '../../Global/GlobalRoom/GlobalRoomState.js';
@@ -22,9 +24,9 @@ export const GameRoom = () => {
 
         getInit();
 
-        setTimeout(async () => {
+        setTimeout( () => {
             setRerender(!rerender);
-            await checkIfValidUser();
+            checkIfValidUser();
         }, 1600);
 
     }, [])
@@ -44,7 +46,7 @@ export const GameRoom = () => {
             Game Room
             {
                 currentRoom && currentRoom.playerArray.length >= 2 ? (
-                    <GameBoard />
+                    <GameBoard game={new Game(15, currentRoom.playerArray)}/>
                 ) : (
                     <h1>Waiting for others to join...</h1>
                 )

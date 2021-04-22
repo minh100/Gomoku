@@ -40,6 +40,9 @@ const io = socketio(server, {
 io.on('connection', (socket) => {
     console.log(`socket connection: ${socket.id}`);
     
+    socket.on('disconnect', () => {
+        console.log(`socket has disconnected: ${socket.id}`)
+    })
 
 });
 
