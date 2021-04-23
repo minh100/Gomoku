@@ -45,14 +45,14 @@ export const Navbar = () => {
                     <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                         {/* Logo */}
                         <div className="flex-shrink-0 flex items-center">
-                            <Link to="/" onClick={() => setNavOption('lobby')}>
+                            <a href="/Gomoku" onClick={() => setNavOption('lobby')}>
                                 <h1 className="text-3xl  text-white" >Gomoku</h1>
-                            </Link>
+                            </a>
                         </div>
                         <div className="hidden sm:block sm:ml-6">
                             <div className="flex space-x-4">
                                 {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
-                                <Link to="/"
+                                <a href="/Gomoku"
                                     className={navOption === 'lobby' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
                                         "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
                                     }
@@ -60,7 +60,7 @@ export const Navbar = () => {
                                     onClick={() => setNavOption('lobby')}
                                 >
                                     Lobby
-                                </Link>
+                                </a>
                                 <Link to="/leaderboard"
                                     className={navOption === 'leaderboard' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
                                         "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"

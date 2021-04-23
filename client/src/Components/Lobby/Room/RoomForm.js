@@ -3,6 +3,7 @@ import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 
 import { GlobalRoomContext } from '../../../Global/GlobalRoom/GlobalRoomState.js';
+import {SocketContext} from '../../../Global/GlobalSocket/Socket.js';
 
 import './RoomForm.css';
 
@@ -11,6 +12,7 @@ export const RoomForm = () => {
     const { rooms, createNewRoom, addPlayer } = useContext(GlobalRoomContext);
     const [createCustomGameClicked, toggleCreateCustomGameClicked] = useState(false);
     const [isNameTaken, setNameTaken] = useState(false);
+    const socket = useContext(SocketContext);
 
     const history = useHistory();
 
@@ -38,7 +40,7 @@ export const RoomForm = () => {
     /**
      * Find a game to join, if no games then create one
      */
-    const handleFindGame = () => {
+    const handleFindGame = (e) => {
         console.log("find game");
         // check if any available games
             // use addPlayer method to add a player to the room
@@ -50,6 +52,7 @@ export const RoomForm = () => {
             const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
             gameToJoin.playerArray.push(currentUser);
             addPlayer(gameToJoin._id, gameToJoin.playerArray);
+            socket.emit('updateRoom', gameToJoin);
             history.push(`/play/${gameToJoin.roomName}`, [gameToJoin.roomName, gameToJoin.playerArray]);
         } else {
             // if no games are available
@@ -57,17 +60,16 @@ export const RoomForm = () => {
             // set room data with randomize roomName, no password, and player array with current user in
             // call create create game function
             handleRandomizeName();  
-            handleCreateGame();
-        }
-
-        
+            handleCreateGame(e);
+        }        
     };
 
     /**
      * Create a custom game 
      * Checks to see if the roomName is already in use
      */
-    const handleCreateGame = () => {
+    const handleCreateGame = (e) => {
+        e.preventDefault();
         console.log("create game");
         let taken = false;
         for (let i = 0; i < rooms.length; i++) {
@@ -81,6 +83,8 @@ export const RoomForm = () => {
             createNewRoom(roomData);
             toggleCreateCustomGameClicked(false)
             clearRoomData();
+            console.log("emitted")
+            socket.emit('gameCreated', roomData);
             history.push(`/play/${roomData.roomName}`, [roomData.roomName, roomData.playerArray]); // redirects user to game room
         }
     };
@@ -110,7 +114,7 @@ export const RoomForm = () => {
                 ((userAccount[0] !== undefined && userAccount[0] !== null)) ? (
                     <div className="grid gap-4 row-gap-3 sm:grid-cols-2 lg:grid-cols-2">
                         <div className="room-form-bottons flex flex-col justify-between p-5 border rounded-lg shadow-md"
-                            onClick={() => handleFindGame()}
+                            onClick={(e) => handleFindGame(e)}
                         >
                             <div className="flex">
                                 <div className="flex items-center justify-center w-12 h-12 mb-4 pr-3 pl-3 rounded-full bg-indigo-50">

@@ -2,31 +2,35 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import {GlobalRoomContext} from '../../../Global/GlobalRoom/GlobalRoomState.js';
+import {SocketContext} from '../../../Global/GlobalSocket/Socket.js';
 
 import './IndividualRoom.css';
 
-export const IndividualRoom = ({ roomId, roomName, password, playerArray }) => {
+export const IndividualRoom = ({ room }) => {
 
     const [passwordInput, setPasswordInput] = useState("");
     const [wrongPassword, setWrongPassword] = useState(false);
     const {addPlayer} = useContext(GlobalRoomContext);
+    const socket = useContext(SocketContext);
     const history = useHistory();
 
     // local storage results
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
 
     useEffect(() => {   
-        console.log(playerArray);
-    }, [playerArray])
+        console.log(room.playerArray);
+    }, [room.playerArray])
 
     const handleJoin = () => {
-        if (passwordInput === password && playerArray.length !== 2) {
+        if (passwordInput === room.password && room.playerArray.length !== 2) {
             // add user to room
             const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
-            playerArray.push(currentUser);
-            addPlayer(roomId, playerArray);
+            room.playerArray.push(currentUser);
+            console.log(room);
+            addPlayer(room._id, room.playerArray);
             // rerender to room
-            history.push(`/play/${roomName}`, [roomName, playerArray]);
+            socket.emit('updateRoom', room);
+            history.push(`/play/${room.roomName}`, [room.roomName, room.playerArray]);
             setWrongPassword(false);
         } else {
             setWrongPassword(true);
@@ -39,13 +43,13 @@ export const IndividualRoom = ({ roomId, roomName, password, playerArray }) => {
                 <td className="px-8 py-5 border-b border-gray-200 bg-white text-sm">
                     <div className="flex items-center">
                         <p className="text-gray-900 whitespace-no-wrap">
-                            {roomName}
+                            {room.roomName}
                         </p>
                     </div>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                     <p className="text-gray-900 whitespace-no-wrap">
-                        {playerArray.length}/2
+                        {room.playerArray.length}/2
                     </p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm flex w-25 justify-between">
@@ -53,11 +57,11 @@ export const IndividualRoom = ({ roomId, roomName, password, playerArray }) => {
                         <span aria-hidden="true" className="absolute inset-0 bg-green-200 opacity-50 rounded-full">
                         </span>
                         <span className="relative">
-                            {password !== '' ? "Required" : "None"}
+                            {room.password !== '' ? "Required" : "None"}
                         </span>
                     </span>
                     {
-                        password !== "" && (
+                        room.password !== "" && (
                             <input type="text" name="password"
                                 className="focus:outline-none focus:ring-2 focus:ring-blue-600 block w-1/2 pl-2 sm:text-sm border-gray-300 rounded-md"
                                 placeholder="password..."
@@ -71,7 +75,7 @@ export const IndividualRoom = ({ roomId, roomName, password, playerArray }) => {
                     }
                 </td>
                 {
-                    ((userAccount[0] !== undefined && userAccount[0] !== null) && (playerArray.length !== 2)) ? (
+                    ((userAccount[0] !== undefined && userAccount[0] !== null) && (room.playerArray.length !== 2)) ? (
                         <td className="px-5 pb-5 pt-3 border-b border-gray-200 bg-white text-sm">
                             <button className="flex-shrink-0 px-4 py-1 pb-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200"
                                 onClick={() => handleJoin()}

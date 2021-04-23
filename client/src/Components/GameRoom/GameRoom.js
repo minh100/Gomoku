@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useLocation, useHistory } from 'react-router-dom';
 import Game from '../../Engine/Game.js';
 
-
 import { GameBoard } from './GameBoard.js';
 import { GlobalRoomContext } from '../../Global/GlobalRoom/GlobalRoomState.js';
+import {SocketContext} from '../../Global/GlobalSocket/Socket.js';
 
 export const GameRoom = () => {
 
@@ -12,7 +12,11 @@ export const GameRoom = () => {
     const history = useHistory();
     const { rooms, getAllRooms } = useContext(GlobalRoomContext);
     const currentRoom = rooms.find(room => room.roomName === location.state[0]);
+    // const [currentRoom, setCurrentRoom] = useState(() => {
+    //     return rooms.find(room => room.roomName === location.state[0])
+    // });
     const [rerender, setRerender] = useState(false);
+    const socket = useContext(SocketContext);
 
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
 
@@ -25,11 +29,15 @@ export const GameRoom = () => {
         getInit();
 
         setTimeout( () => {
-            setRerender(!rerender);
             checkIfValidUser();
         }, 1600);
 
-    }, [])
+        
+    }, [rerender]);
+
+    useEffect(() => {
+        
+    }, [socket])
 
     // check if current player by local storage is in current room
     // if not then redirect
@@ -40,12 +48,13 @@ export const GameRoom = () => {
         }
     }
     console.log(location);
+    console.log(currentRoom);
 
     return (
         <div>
             Game Room
             {
-                currentRoom && currentRoom.playerArray.length >= 2 ? (
+                currentRoom !== undefined && currentRoom.playerArray.length >= 2 ? (
                     <GameBoard game={new Game(15, currentRoom.playerArray)}/>
                 ) : (
                     <h1>Waiting for others to join...</h1>
