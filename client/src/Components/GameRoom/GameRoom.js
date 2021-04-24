@@ -11,13 +11,11 @@ export const GameRoom = () => {
     const history = useHistory();
     const { rooms, getAllRooms } = useContext(GlobalRoomContext);
     let currentRoom = rooms.find(room => room.roomName === location.state[0]);
-    // const [currentRoom, setCurrentRoom] = useState(() => {
-    //     return rooms.find(room => room.roomName === location.state[0])
-    // });
     const [rerender, setRerender] = useState(false);
     const socket = useContext(SocketContext);
 
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
+    const profile = userAccount[0].userResult !== undefined ? userAccount[0].userResult : userAccount[0].result;
 
     useEffect(() => {
         // used to avoid upon refreshing losing rooms data
@@ -31,42 +29,79 @@ export const GameRoom = () => {
             checkIfValidUser();
         }, 1600);
 
-    }, [rerender]);
+
+    }, [rerender, socket]);
 
     useEffect(() => {
         socket.on('toGameRoom', (updatedRoom) => {
             console.log('toGameRoom', updatedRoom);
             currentRoom = updatedRoom;
-            setRerender(!rerender)
+            setRerender(!rerender);
         })
+
     }, [currentRoom])
+    console.log('currentRoom', currentRoom)
+    console.log('rooms at GameRoom', rooms);
 
     // check if current player by local storage is in current room
     // if not then redirect
     const checkIfValidUser = () => {
-        if (!location.state[1].some(username => [userAccount[0]?.userResult?.username, userAccount[0]?.result?.username].includes(username))) {
-            console.log("going back")
+        console.log(location.state[1]);
+        if (!location.state[1].some(user => user._id === profile._id)) {
+            console.log('not valid user, going back');
             history.goBack();
         }
     }
 
     return (
-        <div>
-            Game Room
-            {
-                currentRoom !== undefined && currentRoom.playerArray.length >= 2 ? (
-                    <GameBoard game={currentRoom.game} />
-                ) : (
-                    <h1>Waiting for others to join...</h1>
-                )
-            }
-            <div>
-                Players in room: {currentRoom && currentRoom.roomName}
-                {
-                    currentRoom && currentRoom.playerArray.map(player => {
-                        return <h1 key={player}>{player}</h1>
-                    })
-                }
+        <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+            <div className="grid gap-5 row-gap-8 lg:grid-cols-2">
+                <div className="flex flex-col justify-start">
+                    <div className="max-w-xl mb-6">
+                        <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
+                            <span className="relative px-1">
+                                <div className="absolute inset-x-0 bottom-0 h-3 transform -skew-x-12 bg-green-400" />
+                                <span className="relative inline-block text-purple-600">
+                                    {currentRoom && currentRoom.roomName}
+                                </span>
+                            </span>
+                            <br className="hidden md:block" />
+                        </h2>
+                        <p className="pl-2 text-base text-gray-700 md:text-lg">
+                            {currentRoom && `win +${currentRoom.ratingWin} / lose -${currentRoom.ratingLose}`}
+                        </p>
+                    </div>
+                    <div className="grid gap-5 sm:grid-cols-2 lg:grid-rows-2">
+                        {
+                            currentRoom && currentRoom.playerArray.map(player => {
+                                return (
+                                    <div key={player._id} className="bg-white w- border-l-4 shadow-sm border-purple-600">
+                                        <div className="h-full p-5 border border-l-0 rounded-r flex">
+                                            <div className="mr-3 mt-1" dangerouslySetInnerHTML={{ __html: `${player.avatar}` }} />
+                                            <div>
+                                                <h6 className="mb-2 font-semibold leading-5">
+                                                    {`${player.username}`}
+                                                </h6>
+                                                <p className="text-sm text-gray-900">
+                                                    {`Rating: ${player.rating}`}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+                <div>
+                    {
+                        currentRoom !== undefined && currentRoom.playerArray.length >= 2 ? (
+                            <GameBoard game={currentRoom.game} />
+                        ) : (
+                            <h1>Waiting for others to join...</h1>
+                        )
+                    }
+                </div>
             </div>
         </div>
     )

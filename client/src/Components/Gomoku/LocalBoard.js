@@ -40,6 +40,9 @@ export const LocalBoard = () => {
 
     return (
         <div className="md:container md:mx-auto min-h-screen min-w-full flex justify-center items-center">
+            <div className="mb-0 lg:max-w-lg lg:pr-8 xl:pr-6">
+                    <h1>{`Current Turn: ${gameModel.playerArray[gameModel.currentTurn]}`}</h1>
+                </div>
             <div className="grid grid-cols-15 grid-rows-15">
                 {
                     rearrangedBoard.map((tile, row) => {

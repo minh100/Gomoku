@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Game from '../../../Engine/Game.js';
 
-import {SocketContext} from '../../../Global/GlobalSocket/Socket.js';
+import { SocketContext } from '../../../Global/GlobalSocket/Socket.js';
 
 import './IndividualRoom.css';
 
@@ -19,14 +19,14 @@ export const IndividualRoom = ({ room }) => {
     const handleJoin = () => {
         if (passwordInput === room.password && room.playerArray.length !== 2) {
             // add user to room
-            const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+            const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult : userAccount[0].result;
             room.playerArray.push(currentUser);
             console.log('handleJoin', room);
             console.log('room id ', room._id);
 
-            let game = new Game(15, room.playerArray, [], 0, -1, false, {}, {});
+            let game = new Game(15, room.playerArray, [], 0, -1, false, {}, {}, 0, 0);
             // rerender to room
-            socket.emit('updateRoom', ({gameToJoin: room, gameObject: game}));
+            socket.emit('updateRoom', ({ gameToJoin: room, gameObject: game }));
             history.push(`/play/${room.roomName}`, [room.roomName, room.playerArray]);
             setWrongPassword(false);
         } else {
@@ -72,7 +72,7 @@ export const IndividualRoom = ({ room }) => {
                     }
                 </td>
                 {
-                    ((userAccount[0] !== undefined && userAccount[0] !== null) && (room.playerArray.length !== 2)) ? (
+                    (userAccount[0] !== undefined && userAccount[0] !== null) ? (room.playerArray.length !== 2) ? (
                         <td className="px-5 pb-5 pt-3 border-b border-gray-200 bg-white text-sm">
                             <button className="flex-shrink-0 px-4 py-1 pb-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200"
                                 onClick={() => handleJoin()}
@@ -80,7 +80,11 @@ export const IndividualRoom = ({ room }) => {
                                 Join
                             </button>
                         </td>
-                    ) : <></>
+                    ) : <td className="px-5 pb-5 pt-3 border-b border-gray-200 bg-white text-sm">
+                            <span className="flex-shrink-0 px-4 py-1 pb-2 text-base font-semibold text-white bg-yellow-400 rounded-lg shadow-md">
+                                In Session
+                            </span>
+                        </td> : <></>
                 }
             </tr>
             {wrongPassword ? (

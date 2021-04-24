@@ -64,11 +64,12 @@ export const RoomList = ({ rooms }) => {
                             <tbody>
                                 {
                                     rooms && roomFilter.length !== 0 ? (
-                                        roomFilter.map(room => {
-                                            return <IndividualRoom key={room._id}
-                                                room={room}
-                                            />
-                                        })
+                                        roomFilter.sort((a, b) => a.playerArray.length - b.playerArray.length)
+                                            .map(room => {
+                                                return <IndividualRoom key={room._id}
+                                                    room={room}
+                                                />
+                                            })
                                     ) : (
                                         rooms.map(room => {
                                             return <IndividualRoom key={room._id}
