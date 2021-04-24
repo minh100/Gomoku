@@ -14,7 +14,7 @@ const getRooms = async () => {
 const createRoom = async (roomData) => {
     const newRoom = new RoomModel(roomData);
     try {
-        console.log(newRoom);
+        console.log('newRoom at socketServer',newRoom);
         return newRoom;
     } catch (error) {
         res.status(400).json({ message: error });
@@ -24,6 +24,8 @@ const createRoom = async (roomData) => {
 const addPlayerToRoom = async (gameToJoin, gameObject) => {
     const { playerArray: updatedPlayerArray } = gameToJoin;
 
+    console.log('updatedPlayerArray', updatedPlayerArray);
+
     if (!mongoose.Types.ObjectId.isValid(gameToJoin._id)) {
         return console.log("No document by that ID")
     }
@@ -32,6 +34,8 @@ const addPlayerToRoom = async (gameToJoin, gameObject) => {
         {
             playerArray: updatedPlayerArray,
             $set: {'game.playerArray': gameObject.playerArray},
+            $set: { 'game.ratingWin': gameObject.ratingWin},
+            $set: { 'game.ratingLose': gameObject.ratingLose}
         },
         { new: true }
     );

@@ -1,4 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+
 import { useHistory, Link } from 'react-router-dom';
 
 import { GlobalUserContext } from '../../Global/GlobalUser/GlobalUserState.js';
@@ -13,9 +15,20 @@ export const SignUp = () => {
         lowerUsername: '',
         password: '',
         rating: 0,
+        avatar: ''
     })
     const [error, setError] = useState(false);
     const [noMatch, setNoMatch] = useState(false);
+
+    const getAvatar = async () => {
+        const { data } = await axios.get('https://random-word-api.herokuapp.com/word?number=1');
+        const avatar = await axios.get(`https://avatars.dicebear.com/api/bottts/${data[0]}.svg?h=35&w=35&r=50`);
+        setCreateData({...createData, avatar: avatar.data});
+    }
+
+    useEffect(() => {
+        getAvatar();;
+    }, [])
 
     const handleCreateAccount = (e) => {
         e.preventDefault();

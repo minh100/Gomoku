@@ -19,12 +19,12 @@ export const IndividualRoom = ({ room }) => {
     const handleJoin = () => {
         if (passwordInput === room.password && room.playerArray.length !== 2) {
             // add user to room
-            const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+            const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult : userAccount[0].result;
             room.playerArray.push(currentUser);
             console.log('handleJoin', room);
             console.log('room id ', room._id);
 
-            let game = new Game(15, room.playerArray, [], 0, -1, false, {}, {});
+            let game = new Game(15, room.playerArray, [], 0, -1, false, {}, {}, 0, 0);
             // rerender to room
             socket.emit('updateRoom', ({gameToJoin: room, gameObject: game}));
             history.push(`/play/${room.roomName}`, [room.roomName, room.playerArray]);

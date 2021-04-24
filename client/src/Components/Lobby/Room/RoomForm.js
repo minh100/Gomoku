@@ -3,7 +3,6 @@ import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import Game from '../../../Engine/Game.js';
 
-
 import { GlobalRoomContext } from '../../../Global/GlobalRoom/GlobalRoomState.js';
 import {SocketContext} from '../../../Global/GlobalSocket/Socket.js';
 
@@ -15,8 +14,10 @@ export const RoomForm = () => {
     const [createCustomGameClicked, toggleCreateCustomGameClicked] = useState(false);
     const [isNameTaken, setNameTaken] = useState(false);
     const socket = useContext(SocketContext);
-
     const history = useHistory();
+
+    const ratingForWin = Math.floor(Math.random() * 6) + 20;  // [20, 25]
+    const ratingForLose = Math.floor(Math.random() * 6) + 20;   // [20, 25]
 
     // local storage results
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
@@ -27,12 +28,16 @@ export const RoomForm = () => {
                 roomName: '',
                 password: '',
                 playerArray: [],
+                ratingWin: ratingForWin,
+                ratingLose: ratingForLose
             }
         } else {
             return {
                 roomName: '',
                 password: '',
-                playerArray: [(userAccount[0].userResult !== undefined) ? (userAccount[0]?.userResult?.username) : (userAccount[0]?.result?.username)]
+                playerArray: [(userAccount[0].userResult !== undefined) ? (userAccount[0]?.userResult) : (userAccount[0]?.result)],
+                ratingWin: ratingForWin,
+                ratingLose: ratingForLose
             }
         };
     }
@@ -52,7 +57,7 @@ export const RoomForm = () => {
             const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
             gameToJoin.playerArray.push(currentUser);
             addPlayer(gameToJoin._id, gameToJoin.playerArray);
-            let game = new Game(15, gameToJoin.playerArray, [], 0, -1, false, {}, {});
+            let game = new Game(15, gameToJoin.playerArray, [], 0, -1, false, {}, {}, 0, 0);
             socket.emit('updateRoom', ({'gameToJoin': gameToJoin, gameObject: game}));
             history.push(`/play/${gameToJoin.roomName}`, [gameToJoin.roomName, gameToJoin.playerArray]);
         } else {
@@ -71,7 +76,6 @@ export const RoomForm = () => {
      */
     const handleCreateGame = (e) => {
         e.preventDefault();
-        console.log("create game");
         let taken = false;
         for (let i = 0; i < rooms.length; i++) {
             if (rooms[i].roomName.toLowerCase() === roomData.roomName.toLowerCase()) {
@@ -81,13 +85,12 @@ export const RoomForm = () => {
             }
         }
         if (!taken) {
+            console.log("emitted and created Game", roomData)
             createNewRoom(roomData);
-            toggleCreateCustomGameClicked(false)
-            clearRoomData();
-            console.log("emitted")
-            console.log(roomData);
             socket.emit('gameCreated', roomData);
             history.push(`/play/${roomData.roomName}`, [roomData.roomName, roomData.playerArray]); // redirects user to game room
+            toggleCreateCustomGameClicked(false)
+            clearRoomData();
         }
     };
 

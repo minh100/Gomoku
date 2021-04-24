@@ -7,6 +7,7 @@ export const Leaderboard = () => {
     const { users } = useContext(GlobalUserContext);
     const [userFilter, setUserFilter] = useState(users);
     const [filter, setFilter] = useState("");
+    const [rerender, setRerender] = useState(false);
 
     useEffect(() => {
         setUserFilter(users);
@@ -14,7 +15,7 @@ export const Leaderboard = () => {
             let userSearch = users.filter(user => user.username.toLowerCase().indexOf(filter.toLowerCase()) !== -1);
             setUserFilter(userSearch);
         }
-    }, [filter]);
+    }, [filter, rerender]);
 
     return (
         <div className="container mx-auto px-4 py-4 sm:px-8 max-w-3xl">
@@ -25,11 +26,13 @@ export const Leaderboard = () => {
                     </h2>
                     <div className="text-end pr-2">
                         <form className="flex w-full max-w-sm space-x-3">
-                            <div className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md flex justify-center items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="white">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                            <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md flex justify-center items-center"
+                                onClick={() => setRerender(!rerender)}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="white">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg>
-                            </div>
+                            </button>
                             <div className=" relative ">
                                 <input type="text" id="&quot;form-subscribe-Filter" className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                                     placeholder="username..."
@@ -64,9 +67,7 @@ export const Leaderboard = () => {
                                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-7/12">
                                                             <div className="flex items-center flex-grow-0">
                                                                 <div className="flex-shrink-0">
-                                                                    <a href="/" className="block relative">
-                                                                        <img alt="profil" src="/images/person/8.jpg" className="mx-auto object-cover rounded-full h-10 w-10 " />
-                                                                    </a>
+                                                                <div dangerouslySetInnerHTML={{__html: `${user.avatar}`}}></div>
                                                                 </div>
                                                                 <div className="ml-3">
                                                                     <p className="text-gray-900 whitespace-no-wrap">

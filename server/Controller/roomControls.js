@@ -16,7 +16,9 @@ const getRooms = async (req, res) => {
 // create a new room in database
 const createRoom = async (req, res) => {
     const body = req.body;
+    console.log('body at room Controls', body);
     const newRoom = new RoomModel(body);
+    console.log('newRoom at room Controls', newRoom);
     try {
         await newRoom.save();
         res.status(201).json(newRoom);

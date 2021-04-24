@@ -37,7 +37,7 @@ const login = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const {username, lowerUsername, password} = req.body;
+    const {username, lowerUsername, password, avatar} = req.body;
     
     try {
         // check if there is an account already exists
@@ -50,7 +50,8 @@ const createUser = async (req, res) => {
         const userResult = await UserModel.create({
             username,
             lowerUsername,
-            password: hashPassword
+            password: hashPassword,
+            avatar: avatar
         });
 
         // tests is a secret key. HAVE TO PUT INTO .ENV

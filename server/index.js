@@ -58,9 +58,8 @@ io.on('connection', (socket) => {
         getRooms().then(res => {
             console.log('Game Created', res);
             createRoom(roomData).then(room => {
-                console.log('Room made');
+                console.log('Room made', res);
                 res.push(room);
-                console.log(res);
                 io.sockets.emit('lobby', res);
             })
         });
@@ -75,7 +74,6 @@ io.on('connection', (socket) => {
         socket.join(gameToJoin.roomName);
 
         addPlayerToRoom(gameToJoin, gameObject).then(updatedRoom => {
-            console.log("UPDATED ROOMS", updatedRoom);
 
             getRooms().then(rooms => {
                 console.log('RRRRRRRRRRRROOOOOOOOOOOOOMMMMMMMM', rooms);
@@ -88,7 +86,8 @@ io.on('connection', (socket) => {
             console.log('updatedPlayerArray',updatedRoom.playerArray);
             io.in(gameToJoin.roomName).emit('toGameRoom', updatedRoom);
         })
-    })
+    });
+
 
     socket.on('disconnect', () => {
         console.log(`socket has disconnected: ${socket.id}`)

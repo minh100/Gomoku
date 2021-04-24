@@ -12,9 +12,20 @@ const roomSchema = mongoose.Schema({
         default: ""
     },
     playerArray: {
-        type: [String],
-        required: true,
+        type: [{
+            username: String,
+            rating: Number,
+            avatar: String
+        }],
         default: []
+    },
+    ratingWin: {
+        type: Number,
+        default: 0
+    },
+    ratingLose: {
+        type: Number,
+        default: 0
     },
     game: {
         size: {
@@ -22,8 +33,12 @@ const roomSchema = mongoose.Schema({
             default: 15
         },
         playerArray: {
-            type: [String],
-            default: ['0','1']
+            type: [{
+                username: String,
+                rating: Number,
+                avatar: String
+            }],
+            default: []
         },
         board: {
             type: [Number],
@@ -60,7 +75,8 @@ const roomSchema = mongoose.Schema({
                 type: Number,
                 default: 0
             }
-        }
+        },
+        
     }
 });
 
