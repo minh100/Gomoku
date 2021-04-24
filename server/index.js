@@ -36,7 +36,7 @@ const io = socketio(server, {
     }
 });
 
-const { getRooms, createRoom, addPlayerToRoom } = require('./socketServer.js');
+const { getRooms, createRoom, addPlayerToRoom, updateGame } = require('./socketServer.js');
 
 // socketio functions and connection calls
 io.on('connection', (socket) => {
@@ -87,6 +87,12 @@ io.on('connection', (socket) => {
             io.in(gameToJoin.roomName).emit('toGameRoom', updatedRoom);
         })
     });
+
+    socket.on('updateGame', ({gameModel, currentRoom}) => {
+        updateGame(gameModel, currentRoom).then(res => {
+            io.in(currentRoom.roomName).emit('sendUpdatedGame', res);
+        })
+    })
 
 
     socket.on('disconnect', () => {

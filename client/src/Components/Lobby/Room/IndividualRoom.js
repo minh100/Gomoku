@@ -81,9 +81,9 @@ export const IndividualRoom = ({ room }) => {
                             </button>
                         </td>
                     ) : <td className="px-5 pb-5 pt-3 border-b border-gray-200 bg-white text-sm">
-                            <span className="flex-shrink-0 px-4 py-1 pb-2 text-base font-semibold text-white bg-yellow-400 rounded-lg shadow-md">
-                                In Session
-                            </span>
+                            <div className="flex-shrink-0 text-center px-4 py-1 pb-2 text-base font-semibold text-white bg-yellow-400 rounded-lg shadow-md">
+                                In Game
+                            </div>
                         </td> : <></>
                 }
             </tr>

@@ -33,12 +33,8 @@ const roomSchema = mongoose.Schema({
             default: 15
         },
         playerArray: {
-            type: [{
-                username: String,
-                rating: Number,
-                avatar: String
-            }],
-            default: []
+            type: [String],
+            default: ["0","1"]
         },
         board: {
             type: [Number],

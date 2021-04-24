@@ -27,7 +27,6 @@ export const Lobby = () => {
 
   useEffect(() => {
     socket.on('lobby', (roomArray) => {
-      console.log(roomArray);
       setAllRooms(roomArray);
       getAllRooms();
     })

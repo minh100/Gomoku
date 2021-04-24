@@ -30,23 +30,21 @@ export const GameRoom = () => {
         }, 1600);
 
 
-    }, [rerender, socket]);
+    }, [rerender]);
 
     useEffect(() => {
         socket.on('toGameRoom', (updatedRoom) => {
             console.log('toGameRoom', updatedRoom);
             currentRoom = updatedRoom;
             setRerender(!rerender);
-        })
+        });
 
-    }, [currentRoom])
+    }, [currentRoom, socket])
     console.log('currentRoom', currentRoom)
-    console.log('rooms at GameRoom', rooms);
 
     // check if current player by local storage is in current room
     // if not then redirect
     const checkIfValidUser = () => {
-        console.log(location.state[1]);
         if (!location.state[1].some(user => user._id === profile._id)) {
             console.log('not valid user, going back');
             history.goBack();
@@ -58,18 +56,14 @@ export const GameRoom = () => {
             <div className="grid gap-5 row-gap-8 lg:grid-cols-2">
                 <div className="flex flex-col justify-start">
                     <div className="max-w-xl mb-6">
-                        <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
+                        <h2 className="max-w-lg mb-1 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
                             <span className="relative px-1">
                                 <div className="absolute inset-x-0 bottom-0 h-3 transform -skew-x-12 bg-green-400" />
                                 <span className="relative inline-block text-purple-600">
                                     {currentRoom && currentRoom.roomName}
                                 </span>
                             </span>
-                            <br className="hidden md:block" />
                         </h2>
-                        <p className="pl-2 text-base text-gray-700 md:text-lg">
-                            {currentRoom && `win +${currentRoom.ratingWin} / lose -${currentRoom.ratingLose}`}
-                        </p>
                     </div>
                     <div className="grid gap-5 sm:grid-cols-2 lg:grid-rows-2">
                         {
@@ -91,12 +85,22 @@ export const GameRoom = () => {
                                 )
                             })
                         }
+                        <div className="pl-2 text-base text-gray-700 md:text-lg">
+                            {
+                                currentRoom &&
+                                (
+                                    <>
+                                        <h1>Win <span className="text-green-400">+{currentRoom.ratingWin}</span> / Lose <span className="text-red-500">-{currentRoom.ratingLose}</span></h1>
+                                    </>
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
                 <div>
                     {
                         currentRoom !== undefined && currentRoom.playerArray.length >= 2 ? (
-                            <GameBoard game={currentRoom.game} />
+                            <GameBoard game={currentRoom.game} currentRoom={currentRoom} profile={profile} />
                         ) : (
                             <h1>Waiting for others to join...</h1>
                         )

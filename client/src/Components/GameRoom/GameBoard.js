@@ -1,22 +1,36 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Tile } from '../Gomoku/Tile.js';
 import '../Gomoku/Board.css';
 import Game from '../../Engine/Game.js';
+import { SocketContext } from '../../Global/GlobalSocket/Socket.js';
 
-export const GameBoard = ({ game }) => {
+export const GameBoard = ({ game, currentRoom, profile }) => {
+    console.log('wewewewe', currentRoom)
 
     let gameInstance = new Game(15, game.playerArray, game.board, game.currentTurn, game.winner, game.draw, game.win1, game.win2, game.ratingWin, game.ratingLose);
 
     const [gameModel, updateGameModel] = useState(gameInstance);
     const [rerender, toggleRerender] = useState(false);
     const [winningPoints, setWinningPoints] = useState([]);
+    const socket = useContext(SocketContext);
 
     const handleClick = (row, col) => {
-        if (gameModel.winner === -1) {
+        if (gameModel.winner === -1 && !gameModel.draw && currentRoom.playerArray[gameModel.currentTurn].username === profile.username) {
             console.log(`Clicked row: ${row} col: ${col}`);
             gameModel.click(row, col);
             updateGameModel(gameModel);
             toggleRerender(!rerender);
+
+            console.log('when clicked', gameModel);
+
+            gameModel.board = gameModel.board.flat();
+            socket.emit('updateGame', ({ gameModel, currentRoom }));
+
+            let rearrangedBoard = [];
+            for (let row = 0; row < 224; row += 15) {
+                rearrangedBoard.push(gameModel.board.slice(row, row + 15))
+            }
+            gameModel.board = rearrangedBoard;
             if (gameModel.winner !== -1) {
                 let res = findWinningPoints(gameModel);
                 setWinningPoints(res);
@@ -30,48 +44,56 @@ export const GameBoard = ({ game }) => {
         toggleRerender(!rerender);
         setWinningPoints([]);
     }
-    console.log('game', game);
     console.log('gameModel', gameModel);
+    console.log('game current player', currentRoom.playerArray[gameModel.currentTurn].username);
+    console.log('current user', profile.username)
 
-    
+    useEffect(() => {
+        socket.on('sendUpdatedGame', (updatedGame) => {
+            console.log('updatedGame from socket', updatedGame);
+            let gameInstance = new Game(15, updatedGame.game.playerArray, updatedGame.game.board, updatedGame.game.currentTurn, updatedGame.game.winner, updatedGame.game.draw, updatedGame.game.win1, updatedGame.game.win2, updatedGame.game.ratingWin, updatedGame.game.ratingLose);
+            console.log('game instance', gameInstance)
+            updateGameModel(gameInstance);
+        })
+    }, [socket])
+
     return (
-        // <div className="relative flex flex-col py-16 lg:py-0 lg:flex-col">
-        //     <div className="w-full max-w-xl px-4 mx-auto md:px-0 lg:px-8 lg:py-20 lg:max-w-screen-xl">
-        //         <div className="mb-0 lg:max-w-lg lg:pr-8 xl:pr-6">
-        //             <h1>{`Current Turn: ${gameModel.playerArray[gameModel.currentTurn]}`}</h1>
-        //         </div>
-        //     </div>
-        //     <div className="inset-y-0 top-0 right-0 w-full max-w-xl px-4 mx-auto mb-6 md:px-0 lg:pl-8 lg:pr-0 lg:mb-0 lg:mx-0 lg:w-1/2 lg:max-w-full lg:absolute xl:px-0">
-                
-        //     </div>
-        // </div>
-        <div className="grid grid-cols-15 grid-rows-15">
-                    {
-                        gameModel.board.map((tile, row) => {
-                            return tile.map((value, col) => {
+        <>
+            {
+                gameModel.winner !== -1 ? (
+                    <h1 className="pl-2 mb-2 text-base text-gray-700 md:text-lg">Winner: <span className="text-purple-600">{currentRoom.playerArray[gameModel.currentTurn].username}</span></h1>
+                ) : (
+                    <h1 className="pl-2 mb-2 text-base text-gray-700 md:text-lg">Current Turn: <span className="text-purple-600">{currentRoom.playerArray[gameModel.currentTurn].username}</span></h1>
+                )
+            }
+            <div className="grid grid-cols-15 grid-rows-15">
+                {
+                    gameModel.board.map((tile, row) => {
+                        return tile.map((value, col) => {
 
-                                // check to see if the current piece is a winning one
-                                let isWinningPiece = false;
+                            // check to see if the current piece is a winning one
+                            let isWinningPiece = false;
 
-                                for (let i = 0; i < winningPoints.length; i++) {
-                                    if (winningPoints[i].col === col && winningPoints[i].row === row) {
-                                        isWinningPiece = true;
-                                        break;
-                                    }
+                            for (let i = 0; i < winningPoints.length; i++) {
+                                if (winningPoints[i].col === col && winningPoints[i].row === row) {
+                                    isWinningPiece = true;
+                                    break;
                                 }
+                            }
 
-                                return <Tile key={`${row}:${col}`}
-                                    value={value}
-                                    handleClick={handleClick}
-                                    row={row}
-                                    col={col}
-                                    isWinningPiece={isWinningPiece}
-                                />
-                            })
+                            return <Tile key={`${row}:${col}`}
+                                value={value}
+                                handleClick={handleClick}
+                                row={row}
+                                col={col}
+                                isWinningPiece={isWinningPiece}
+                            />
                         })
-                    }
-                    <button onClick={() => handleReset()}>Reset</button>
-                </div>
+                    })
+                }
+                <button onClick={() => handleReset()}>Reset</button>
+            </div>
+        </>
     )
 }
 

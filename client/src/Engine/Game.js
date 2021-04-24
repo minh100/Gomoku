@@ -9,8 +9,8 @@ export default class Game {
             for (let i = 0; i < newboard.length; i++) {
                 newboard[i] = new Array(size).fill(-1);
             }
-
-            this.board = newboard;
+            this.matrixBoard = newboard;
+            this.board = newboard.flat();
 
             // first, randomly chooses the starting player
             let randomInitalTurn = Math.floor(Math.random() * playerArray.length);

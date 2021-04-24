@@ -43,5 +43,17 @@ const addPlayerToRoom = async (gameToJoin, gameObject) => {
     return updatedRoom;
 }
 
+const updateGame = async(updatedGame, currentRoom) => {
+    const gameUpdated = await RoomModel.findOneAndUpdate({ roomName: currentRoom.roomName },
+        {
+            game: updatedGame
+        },
+        { new: true }
+    );
 
-module.exports = { getRooms, createRoom, addPlayerToRoom };
+    console.log('gameUpdated', gameUpdated)
+    return gameUpdated;
+}
+
+
+module.exports = { getRooms, createRoom, addPlayerToRoom, updateGame };

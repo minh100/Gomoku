@@ -17,7 +17,7 @@ export const RoomList = ({ rooms }) => {
     }, [filter, rerender]);
 
     return (
-        <div className="container mx-auto px-4 sm:px-8 max-w-5xl">
+        <div className="container mx-auto px-4 sm:px-0 max-w-5xl">
             <div className="py-8">
                 <div className="flex flex-row mb-1 sm:mb-0 justify-between w-full">
                     <h2 className="pl-2 text-2xl leading-tight font-bold">
@@ -71,11 +71,12 @@ export const RoomList = ({ rooms }) => {
                                                 />
                                             })
                                     ) : (
-                                        rooms.map(room => {
-                                            return <IndividualRoom key={room._id}
-                                                room={room}
-                                            />
-                                        })
+                                        rooms.sort((a, b) => a.playerArray.length - b.playerArray.length)
+                                            .map(room => {
+                                                return <IndividualRoom key={room._id}
+                                                    room={room}
+                                                />
+                                            })
                                     )
                                 }
                             </tbody>
