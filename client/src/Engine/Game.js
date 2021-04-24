@@ -1,35 +1,56 @@
 export default class Game {
 
-    constructor(size, playerArray) {
+    constructor(size, playerArray, board, currentTurn, winner, draw, win1, win2) {
         this.size = size;
         this.playerArray = playerArray;
 
-        let newboard = new Array(size);
-        for (let i = 0; i < newboard.length; i++) {
-            newboard[i] = new Array(size).fill(-1);
-        }
+        if (board.length === 0) {
+            let newboard = new Array(size);
+            for (let i = 0; i < newboard.length; i++) {
+                newboard[i] = new Array(size).fill(-1);
+            }
 
-        this.board = newboard;
+            this.board = newboard;
 
-        // first, randomly chooses the starting player
-        let randomInitalTurn = Math.floor(Math.random() * playerArray.length);
-        
-        // used to decide whose turn is it currently
-        this.currentTurn = randomInitalTurn
+            // first, randomly chooses the starting player
+            let randomInitalTurn = Math.floor(Math.random() * playerArray.length);
 
-        this.winner = -1;   // if a player won assign them as winner
-        this.draw = false;      // if game is draw
+            // used to decide whose turn is it currently
+            this.currentTurn = randomInitalTurn
 
-        // end point of winning pieces
-        this.win1 = {   
-            col: 0,
-            row: 0
-        };
+            this.winner = -1;   // if a player won assign them as winner
+            this.draw = false;      // if game is draw
 
-        // starting point of winning pieces
-        this.win2 = {
-            col: 0,
-            row: 0
+            // end point of winning pieces
+            this.win1 = {
+                col: 0,
+                row: 0
+            };
+
+            // starting point of winning pieces
+            this.win2 = {
+                col: 0,
+                row: 0
+            }
+        } else {
+            let rearrangedBoard = [];
+            for (let row = 0; row < 224; row += 15) {
+                rearrangedBoard.push(board.slice(row, row + 15))
+            }
+
+            this.board = rearrangedBoard;
+
+            // used to decide whose turn is it currently
+            this.currentTurn = currentTurn
+
+            this.winner = winner;   // if a player won assign them as winner
+            this.draw = draw;      // if game is draw
+
+            // end point of winning pieces
+            this.win1 = win1;
+
+            // starting point of winning pieces
+            this.win2 = win2;
         }
 
     };
@@ -38,12 +59,12 @@ export default class Game {
      * Resets the game 
      */
     setupNewGame() {
-        let newGame = new Game(this.size, this.playerArray);
+        let newGame = new Game(this.size, this.playerArray, [], 0, -1, false, {}, {});
         this.board = newGame.board;
         this.currentTurn = newGame.currentTurn;
         this.winner = -1;
         this.draw = false;
-        this.win1 = {   
+        this.win1 = {
             col: 0,
             row: 0
         };
@@ -51,6 +72,7 @@ export default class Game {
             col: 0,
             row: 0
         }
+        this.flatBoard = newGame.flatBoard;
     }
 
     /**
@@ -59,15 +81,15 @@ export default class Game {
      * @param {number} col 
      */
     click(row, col) {
-        if(this.winner === -1 && !this.draw) {  // check if game is over
+        if (this.winner === -1 && !this.draw) {  // check if game is over
             if (this.board[row][col] === -1) {  // check if space clicked is a valid space
                 this.board[row][col] = this.currentTurn
                 if (checkWin(this.board, row, col, this.currentTurn, this.win1, this.win2)) {
                     this.winner = this.currentTurn;
-                } 
-                else if(checkDraw(this.board)) {
+                }
+                else if (checkDraw(this.board)) {
                     this.draw = true;
-                } 
+                }
                 else {  // update currentTurn to next player
                     if (this.currentTurn !== this.playerArray.length - 1) {
                         this.currentTurn++;
@@ -100,7 +122,7 @@ export function checkWin(board, row, col, currentTurn, win1, win2) {
     if (count(board, row, col, currentTurn, -1, 1, win1, win2) >= 5) {
         return true;
     }
-    
+
     // // checks negative slope
     if (count(board, row, col, currentTurn, -1, -1, win1, win2) >= 5) {
         return true;
@@ -165,9 +187,9 @@ export function count(board, currentRow, currentCol, currentTurn, dirRow, dirCol
  * @returns false if there is an empty space on the board
  */
 export function checkDraw(board) {
-    for(let row = 0; row < board.length; row++) {
-        for(let col = 0; col < board.length; col++) {
-            if(board[row][col] === -1) {
+    for (let row = 0; row < board.length; row++) {
+        for (let col = 0; col < board.length; col++) {
+            if (board[row][col] === -1) {
                 return false;
             }
         }

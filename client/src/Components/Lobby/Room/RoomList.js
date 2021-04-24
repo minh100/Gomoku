@@ -1,11 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
-import { GlobalRoomContext } from '../../../Global/GlobalRoom/GlobalRoomState.js';
 import { IndividualRoom } from './IndividualRoom.js';
 
 export const RoomList = ({ rooms }) => {
 
-    // const { rooms } = useContext(GlobalRoomContext);
     const [roomFilter, setRoomFilter] = useState(rooms);
     const [filter, setFilter] = useState("");
     const [rerender, setRerender] = useState(false);

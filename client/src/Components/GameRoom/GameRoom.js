@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useLocation, useHistory } from 'react-router-dom';
-import Game from '../../Engine/Game.js';
 
 import { GameBoard } from './GameBoard.js';
 import { GlobalRoomContext } from '../../Global/GlobalRoom/GlobalRoomState.js';
-import {SocketContext} from '../../Global/GlobalSocket/Socket.js';
+import { SocketContext } from '../../Global/GlobalSocket/Socket.js';
 
 export const GameRoom = () => {
 
     const location = useLocation();
     const history = useHistory();
     const { rooms, getAllRooms } = useContext(GlobalRoomContext);
-    const currentRoom = rooms.find(room => room.roomName === location.state[0]);
+    let currentRoom = rooms.find(room => room.roomName === location.state[0]);
     // const [currentRoom, setCurrentRoom] = useState(() => {
     //     return rooms.find(room => room.roomName === location.state[0])
     // });
@@ -28,16 +27,19 @@ export const GameRoom = () => {
 
         getInit();
 
-        setTimeout( () => {
+        setTimeout(() => {
             checkIfValidUser();
         }, 1600);
 
-        
     }, [rerender]);
 
     useEffect(() => {
-        
-    }, [socket])
+        socket.on('toGameRoom', (updatedRoom) => {
+            console.log('toGameRoom', updatedRoom);
+            currentRoom = updatedRoom;
+            setRerender(!rerender)
+        })
+    }, [currentRoom])
 
     // check if current player by local storage is in current room
     // if not then redirect
@@ -47,15 +49,13 @@ export const GameRoom = () => {
             history.goBack();
         }
     }
-    console.log(location);
-    console.log(currentRoom);
 
     return (
         <div>
             Game Room
             {
                 currentRoom !== undefined && currentRoom.playerArray.length >= 2 ? (
-                    <GameBoard game={new Game(15, currentRoom.playerArray)}/>
+                    <GameBoard game={currentRoom.game} />
                 ) : (
                     <h1>Waiting for others to join...</h1>
                 )

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const RoomModel = require('./Models/roomModel.js');
 
-const getRooms = async() => {
+const getRooms = async () => {
     try {
         const rooms = await RoomModel.find({});
         return rooms;
@@ -16,21 +16,28 @@ const createRoom = async (roomData) => {
     try {
         console.log(newRoom);
         return newRoom;
-    } catch(error) {
-        res.status(400).json({message: error});
+    } catch (error) {
+        res.status(400).json({ message: error });
     }
 };
 
-const addPlayerToRoom = async(gameToJoin) => {
-    const {_id, playerArray: updatedPlayerArray} = gameToJoin;
+const addPlayerToRoom = async (gameToJoin, gameObject) => {
+    const { playerArray: updatedPlayerArray } = gameToJoin;
 
-    if(!mongoose.Types.ObjectId.isValid(_id)) {
-        return res.status(404).sned("No game room with that id");
+    if (!mongoose.Types.ObjectId.isValid(gameToJoin._id)) {
+        return console.log("No document by that ID")
     }
 
-    const updatedRoom = await RoomModel.findByIdAndUpdate(_id, {playerArray: updatedPlayerArray}, {new: true});
+    const updatedRoom = await RoomModel.findOneAndUpdate({ roomName: gameToJoin.roomName },
+        {
+            playerArray: updatedPlayerArray,
+            $set: {'game.playerArray': gameObject.playerArray},
+        },
+        { new: true }
+    );
+
     return updatedRoom;
 }
 
 
-module.exports = {getRooms, createRoom, addPlayerToRoom};
+module.exports = { getRooms, createRoom, addPlayerToRoom };

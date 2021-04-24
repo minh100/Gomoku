@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import Game from '../../../Engine/Game.js';
 
-import {GlobalRoomContext} from '../../../Global/GlobalRoom/GlobalRoomState.js';
 import {SocketContext} from '../../../Global/GlobalSocket/Socket.js';
 
 import './IndividualRoom.css';
@@ -10,26 +10,23 @@ export const IndividualRoom = ({ room }) => {
 
     const [passwordInput, setPasswordInput] = useState("");
     const [wrongPassword, setWrongPassword] = useState(false);
-    const {addPlayer} = useContext(GlobalRoomContext);
     const socket = useContext(SocketContext);
     const history = useHistory();
 
     // local storage results
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
 
-    useEffect(() => {   
-        console.log(room.playerArray);
-    }, [room.playerArray])
-
     const handleJoin = () => {
         if (passwordInput === room.password && room.playerArray.length !== 2) {
             // add user to room
             const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
             room.playerArray.push(currentUser);
-            console.log(room);
-            addPlayer(room._id, room.playerArray);
+            console.log('handleJoin', room);
+            console.log('room id ', room._id);
+
+            let game = new Game(15, room.playerArray, [], 0, -1, false, {}, {});
             // rerender to room
-            socket.emit('updateRoom', room);
+            socket.emit('updateRoom', ({gameToJoin: room, gameObject: game}));
             history.push(`/play/${room.roomName}`, [room.roomName, room.playerArray]);
             setWrongPassword(false);
         } else {

@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react'
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
+import Game from '../../../Engine/Game.js';
+
 
 import { GlobalRoomContext } from '../../../Global/GlobalRoom/GlobalRoomState.js';
 import {SocketContext} from '../../../Global/GlobalSocket/Socket.js';
@@ -42,24 +44,23 @@ export const RoomForm = () => {
      */
     const handleFindGame = (e) => {
         console.log("find game");
-        // check if any available games
-            // use addPlayer method to add a player to the room
-            // updates room playerArray
-            // join game by redirecting and checking if the current user is logged in ? check if user username is in room player array ? play game : redirect to lobby : redirect
+        handleRandomizeName();  
+        // check if any games are available
         const gamesAvailable = rooms.filter(room => room.playerArray.length < 2);
-        if(gamesAvailable.length !== 0) {
-            const gameToJoin = gamesAvailable[0];
+        if(gamesAvailable.length !== 0) {                           // some games available
+            const gameToJoin = gamesAvailable[0];                   // take the first game
             const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
             gameToJoin.playerArray.push(currentUser);
             addPlayer(gameToJoin._id, gameToJoin.playerArray);
-            socket.emit('updateRoom', gameToJoin);
+            let game = new Game(15, gameToJoin.playerArray, [], 0, -1, false, {}, {});
+            socket.emit('updateRoom', ({'gameToJoin': gameToJoin, gameObject: game}));
             history.push(`/play/${gameToJoin.roomName}`, [gameToJoin.roomName, gameToJoin.playerArray]);
         } else {
             // if no games are available
             // randomize roomName
             // set room data with randomize roomName, no password, and player array with current user in
             // call create create game function
-            handleRandomizeName();  
+            
             handleCreateGame(e);
         }        
     };
@@ -84,6 +85,7 @@ export const RoomForm = () => {
             toggleCreateCustomGameClicked(false)
             clearRoomData();
             console.log("emitted")
+            console.log(roomData);
             socket.emit('gameCreated', roomData);
             history.push(`/play/${roomData.roomName}`, [roomData.roomName, roomData.playerArray]); // redirects user to game room
         }

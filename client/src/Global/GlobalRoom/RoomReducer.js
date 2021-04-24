@@ -8,6 +8,7 @@ export default function RoomReducer(roomState, action) {
             return roomState.filter(room => room._id !== action.payload);
         case 'ADD_PLAYER_TO_ROOM':
             return roomState.map(room => {
+                console.log(action);
                 return room._id === action.payload._id ? 
                 action.payload : room
             });

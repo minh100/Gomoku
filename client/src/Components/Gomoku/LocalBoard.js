@@ -5,7 +5,7 @@ import './Board.css';
 
 export const LocalBoard = () => {
 
-    const game = new Game(15, [0, 1]);
+    const game = new Game(15, [0, 1], [], 0, -1, false, {}, {});
 
     const [gameModel, updateGameModel] = useState(game);
     const [rerender, toggleRerender] = useState(false);
@@ -31,11 +31,18 @@ export const LocalBoard = () => {
         setWinningPoints([]);
     }
 
+    let rearrangedBoard = [];
+    for(let row = 0; row < 224; row += 15) {
+        rearrangedBoard.push(gameModel.board.flat().slice(row, row+15))
+    }
+    console.log(rearrangedBoard);
+    console.log(gameModel.board.flat());
+
     return (
         <div className="md:container md:mx-auto min-h-screen min-w-full flex justify-center items-center">
             <div className="grid grid-cols-15 grid-rows-15">
                 {
-                    gameModel.board.map((tile, row) => {
+                    rearrangedBoard.map((tile, row) => {
                         return tile.map((value, col) => {
 
                             // check to see if the current piece is a winning one

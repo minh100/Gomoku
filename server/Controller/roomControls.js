@@ -20,36 +20,43 @@ const createRoom = async (req, res) => {
     try {
         await newRoom.save();
         res.status(201).json(newRoom);
-    } catch(error) {
-        res.status(400).json({message: error});
+    } catch (error) {
+        res.status(400).json({ message: error });
     }
 };
 
 // delete a room from database
 const deleteRoom = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
     console.log(req);
-    if(!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send("No room with that id");
     }
 
     await RoomModel.findByIdAndDelete(id);
-    
-    res.json({message: 'Room has been successfully deleted'});
+
+    res.json({ message: 'Room has been successfully deleted' });
 }
 
 // updates room by adding player
-const addPlayerToRoom = async(req, res) => {
-    const {id} = req.params;
-    const updatedPlayerArray = req.body;
-    
-    if(!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).sned("No game room with that id");
+const addPlayerToRoom = async (req, res) => {
+    const { id } = req.params;
+    console.log("reqBody: ", req.body);
+    const gameObject = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send("No game room with that id");
     }
 
     // actually update database
-    const updatedRoom = await RoomModel.findByIdAndUpdate(id, {playerArray: updatedPlayerArray}, {new: true});
-
+    const updatedRoom = await RoomModel.findByIdAndUpdate(id,
+        {
+            playerArray: gameObject.playerArray,
+            $set: { 'game.playerArray': gameObject.playerArray },
+        },
+        { new: true }
+    );
+    console.log('UPDATED ROOMMMMM', updatedRoom);
     res.json(updatedRoom);
 }
 

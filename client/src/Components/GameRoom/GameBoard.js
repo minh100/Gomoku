@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { Tile } from '../Gomoku/Tile.js';
 import '../Gomoku/Board.css';
+import Game from '../../Engine/Game.js';
 
 export const GameBoard = ({ game }) => {
 
-    const [gameModel, updateGameModel] = useState(game);
+    let gameInstance = new Game(15, game.playerArray, game.board, game.currentTurn, game.winner, game.draw, game.win1, game.win2);
+
+    const [gameModel, updateGameModel] = useState(gameInstance);
     const [rerender, toggleRerender] = useState(false);
     const [winningPoints, setWinningPoints] = useState([]);
 
@@ -27,7 +30,8 @@ export const GameBoard = ({ game }) => {
         toggleRerender(!rerender);
         setWinningPoints([]);
     }
-    console.log(gameModel.currentTurn);
+    console.log('game', game);
+    console.log('gameModel', gameModel)
 
     return (
         <div className="relative flex flex-col py-16 lg:py-0 lg:flex-col">
@@ -66,9 +70,6 @@ export const GameBoard = ({ game }) => {
                 </div>
             </div>
         </div>
-
-
-
     )
 }
 

@@ -52,9 +52,11 @@ io.on('connection', (socket) => {
     // when a new room is created, send to all other sockets to update their lobby
     // on from client/RoomForm.js and emits to client/Lobby.js
     socket.on('gameCreated', (roomData) => {
+
+        socket.join(roomData.roomName);
+
         getRooms().then(res => {
-            console.log('Game Created');
-            console.log(res);
+            console.log('Game Created', res);
             createRoom(roomData).then(room => {
                 console.log('Room made');
                 res.push(room);
@@ -66,23 +68,31 @@ io.on('connection', (socket) => {
 
     // when a player joins a room, the room gets updated, and the updated room is sent back
     // to all other sockets
-    // on from client/RoomForm.js and emits to client/Lobby.js
-    socket.on('updateRoom', (gameToJoin) => {
-        console.log("GAME TO JOIN");
-        console.log(gameToJoin);
-        addPlayerToRoom(gameToJoin).then(updatedRoom => {
+    // on from client/RoomForm.js and IndividualRoom.js and emits to client/Lobby.js
+    socket.on('updateRoom', ({gameToJoin, gameObject}) => {
+        console.log("GAME TO JOIN", gameToJoin);
+        console.log('gameOb:', gameObject);
+        socket.join(gameToJoin.roomName);
+
+        addPlayerToRoom(gameToJoin, gameObject).then(updatedRoom => {
+            console.log("UPDATED ROOMS", updatedRoom);
+
             getRooms().then(rooms => {
-                let newRooms = rooms.filter(room => room._id !== updatedRoom._id);
+                console.log('RRRRRRRRRRRROOOOOOOOOOOOOMMMMMMMM', rooms);
+                let newRooms = rooms.filter(room => room.roomName !== updatedRoom.roomName);
                 newRooms.push(updatedRoom);
+                console.log("newRooms",newRooms);
                 io.sockets.emit('lobby', newRooms);
             })
+
+            console.log('updatedPlayerArray',updatedRoom.playerArray);
+            io.in(gameToJoin.roomName).emit('toGameRoom', updatedRoom);
         })
     })
 
     socket.on('disconnect', () => {
         console.log(`socket has disconnected: ${socket.id}`)
     })
-
 });
 
 // connect to database and server
