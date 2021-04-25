@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Tile } from '../Gomoku/Tile.js';
-import '../Gomoku/Board.css';
+
 import Game from '../../Engine/Game.js';
+
 import { SocketContext } from '../../Global/GlobalSocket/Socket.js';
 
+import '../Gomoku/Board.css';
+
 export const GameBoard = ({ game, currentRoom, profile }) => {
-    console.log('wewewewe', currentRoom)
 
     let gameInstance = new Game(15, game.playerArray, game.board, game.currentTurn, game.winner, game.draw, game.win1, game.win2, game.ratingWin, game.ratingLose);
 
     const [gameModel, updateGameModel] = useState(gameInstance);
     const [rerender, toggleRerender] = useState(false);
-    const [winningPoints, setWinningPoints] = useState([]);
+    const [winningPoints, setWinningPoints] = useState(findWinningPoints(gameInstance));
     const socket = useContext(SocketContext);
 
     const handleClick = (row, col) => {
@@ -34,26 +36,19 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
             if (gameModel.winner !== -1) {
                 let res = findWinningPoints(gameModel);
                 setWinningPoints(res);
+                socket.emit('updateWinAndLose', ({gameModel, currentRoom}));
             }
         }
     }
 
-    const handleReset = () => {
-        console.log("reset");
-        gameModel.setupNewGame();
-        toggleRerender(!rerender);
-        setWinningPoints([]);
-    }
     console.log('gameModel', gameModel);
-    console.log('game current player', currentRoom.playerArray[gameModel.currentTurn].username);
-    console.log('current user', profile.username)
+    console.log('currentRoom at Game Board', currentRoom);
 
     useEffect(() => {
         socket.on('sendUpdatedGame', (updatedGame) => {
-            console.log('updatedGame from socket', updatedGame);
             let gameInstance = new Game(15, updatedGame.game.playerArray, updatedGame.game.board, updatedGame.game.currentTurn, updatedGame.game.winner, updatedGame.game.draw, updatedGame.game.win1, updatedGame.game.win2, updatedGame.game.ratingWin, updatedGame.game.ratingLose);
-            console.log('game instance', gameInstance)
             updateGameModel(gameInstance);
+            setWinningPoints(findWinningPoints(gameInstance))
         })
     }, [socket])
 
@@ -74,10 +69,12 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
                             // check to see if the current piece is a winning one
                             let isWinningPiece = false;
 
-                            for (let i = 0; i < winningPoints.length; i++) {
-                                if (winningPoints[i].col === col && winningPoints[i].row === row) {
-                                    isWinningPiece = true;
-                                    break;
+                            if(gameModel.winner !== -1) {
+                                for (let i = 0; i < winningPoints.length; i++) {
+                                    if (winningPoints[i].col === col && winningPoints[i].row === row) {
+                                        isWinningPiece = true;
+                                        break;
+                                    }
                                 }
                             }
 
@@ -91,7 +88,6 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
                         })
                     })
                 }
-                <button onClick={() => handleReset()}>Reset</button>
             </div>
         </>
     )

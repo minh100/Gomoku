@@ -27,7 +27,6 @@ function App() {
                 <Route exact path="/localplay" component={LocalBoard} />
                 <Route path="/play" component={GameRoom} />
               </SocketContext.Provider>
-
             </>
           </Switch>
         </GlobalRoomProvider>

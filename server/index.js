@@ -36,7 +36,7 @@ const io = socketio(server, {
     }
 });
 
-const { getRooms, createRoom, addPlayerToRoom, updateGame } = require('./socketServer.js');
+const { getRooms, createRoom, addPlayerToRoom, updateGame, updateWinner, updateLoser, getAllUsers } = require('./socketServer.js');
 
 // socketio functions and connection calls
 io.on('connection', (socket) => {
@@ -69,17 +69,13 @@ io.on('connection', (socket) => {
     // to all other sockets
     // on from client/RoomForm.js and IndividualRoom.js and emits to client/Lobby.js
     socket.on('updateRoom', ({gameToJoin, gameObject}) => {
-        console.log("GAME TO JOIN", gameToJoin);
-        console.log('gameOb:', gameObject);
         socket.join(gameToJoin.roomName);
 
         addPlayerToRoom(gameToJoin, gameObject).then(updatedRoom => {
 
             getRooms().then(rooms => {
-                console.log('RRRRRRRRRRRROOOOOOOOOOOOOMMMMMMMM', rooms);
                 let newRooms = rooms.filter(room => room.roomName !== updatedRoom.roomName);
                 newRooms.push(updatedRoom);
-                console.log("newRooms",newRooms);
                 io.sockets.emit('lobby', newRooms);
             })
 
@@ -88,12 +84,27 @@ io.on('connection', (socket) => {
         })
     });
 
+    // when a player clicks on a tile, the game updates
+    // to all other sockets in room
+    // on from client/GameBoard.js and emits to client/GameBoard.js
     socket.on('updateGame', ({gameModel, currentRoom}) => {
         updateGame(gameModel, currentRoom).then(res => {
             io.in(currentRoom.roomName).emit('sendUpdatedGame', res);
         })
-    })
+    });
 
+    // at end of a game update the respective winner and loser ratings
+    // then emit to update leaderboard
+    // on from client/GameBoard.js and emits to client/Leaderboard.js
+    socket.on('updateWinAndLose', ({gameModel, currentRoom}) => {
+        updateWinner(gameModel, currentRoom).then(res => {
+            updateLoser(gameModel, currentRoom).then(res => {
+                getAllUsers().then(allUsers => {
+                    io.sockets.emit('updateLeaderboard', allUsers);
+                })
+            })
+        })
+    });
 
     socket.on('disconnect', () => {
         console.log(`socket has disconnected: ${socket.id}`)

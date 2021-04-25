@@ -56,7 +56,8 @@ export const GlobalUserProvider = props => {
                 getAllUsers,
                 createNewUser,
                 login,
-                logout
+                logout,
+                
             }}
         >
             {props.children}

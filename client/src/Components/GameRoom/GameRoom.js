@@ -3,6 +3,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 
 import { GameBoard } from './GameBoard.js';
 import { GlobalRoomContext } from '../../Global/GlobalRoom/GlobalRoomState.js';
+import { GlobalUserContext } from '../../Global/GlobalUser/GlobalUserState.js';
 import { SocketContext } from '../../Global/GlobalSocket/Socket.js';
 
 export const GameRoom = () => {
@@ -14,8 +15,10 @@ export const GameRoom = () => {
     const [rerender, setRerender] = useState(false);
     const socket = useContext(SocketContext);
 
+    const { users } = useContext(GlobalUserContext);
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
-    const profile = userAccount[0].userResult !== undefined ? userAccount[0].userResult : userAccount[0].result;
+    const profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+    const profile = users.find(user => user.username === profileUsername);
 
     useEffect(() => {
         // used to avoid upon refreshing losing rooms data
@@ -41,6 +44,7 @@ export const GameRoom = () => {
 
     }, [currentRoom, socket])
     console.log('currentRoom', currentRoom)
+    console.log('profile', profile);
 
     // check if current player by local storage is in current room
     // if not then redirect

@@ -1,15 +1,17 @@
 import React, { useState, useContext } from 'react'
 import axios from 'axios';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Game from '../../../Engine/Game.js';
 
+import { GlobalUserContext } from '../../../Global/GlobalUser/GlobalUserState.js';
 import { GlobalRoomContext } from '../../../Global/GlobalRoom/GlobalRoomState.js';
-import {SocketContext} from '../../../Global/GlobalSocket/Socket.js';
+import { SocketContext } from '../../../Global/GlobalSocket/Socket.js';
 
 import './RoomForm.css';
 
 export const RoomForm = () => {
 
+    const { users } = useContext(GlobalUserContext);
     const { rooms, createNewRoom, addPlayer } = useContext(GlobalRoomContext);
     const [createCustomGameClicked, toggleCreateCustomGameClicked] = useState(false);
     const [isNameTaken, setNameTaken] = useState(false);
@@ -21,9 +23,11 @@ export const RoomForm = () => {
 
     // local storage results
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
+    const profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+    const profile = users.find(user => user.username === profileUsername);
 
     const setInitalState = () => {
-        if(userAccount[0] === null) {
+        if (userAccount[0] === null) {
             return {
                 roomName: '',
                 password: '',
@@ -35,7 +39,7 @@ export const RoomForm = () => {
             return {
                 roomName: '',
                 password: '',
-                playerArray: [(userAccount[0].userResult !== undefined) ? (userAccount[0]?.userResult) : (userAccount[0]?.result)],
+                playerArray: [profile],
                 ratingWin: ratingForWin,
                 ratingLose: ratingForLose
             }
@@ -49,25 +53,25 @@ export const RoomForm = () => {
      */
     const handleFindGame = (e) => {
         console.log("find game");
-        handleRandomizeName();  
+        handleRandomizeName();
         // check if any games are available
         const gamesAvailable = rooms.filter(room => room.playerArray.length < 2);
-        if(gamesAvailable.length !== 0) {                           // some games available
+        if (gamesAvailable.length !== 0) {                           // some games available
             const gameToJoin = gamesAvailable[0];                   // take the first game
             const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
             gameToJoin.playerArray.push(currentUser);
             addPlayer(gameToJoin._id, gameToJoin.playerArray);
             let game = new Game(15, gameToJoin.playerArray, [], 0, -1, false, {}, {}, 0, 0);
-            socket.emit('updateRoom', ({'gameToJoin': gameToJoin, gameObject: game}));
+            socket.emit('updateRoom', ({ 'gameToJoin': gameToJoin, gameObject: game }));
             history.push(`/play/${gameToJoin.roomName}`, [gameToJoin.roomName, gameToJoin.playerArray]);
         } else {
             // if no games are available
             // randomize roomName
             // set room data with randomize roomName, no password, and player array with current user in
             // call create create game function
-            
+
             handleCreateGame(e);
-        }        
+        }
     };
 
     /**

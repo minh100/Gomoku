@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Game from '../../../Engine/Game.js';
 
+import { GlobalUserContext } from '../../../Global/GlobalUser/GlobalUserState.js';
 import { SocketContext } from '../../../Global/GlobalSocket/Socket.js';
 
 import './IndividualRoom.css';
@@ -14,13 +15,15 @@ export const IndividualRoom = ({ room }) => {
     const history = useHistory();
 
     // local storage results
+    const { users } = useContext(GlobalUserContext);
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
+    const profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+    const profile = users.find(user => user.username === profileUsername);
 
     const handleJoin = () => {
         if (passwordInput === room.password && room.playerArray.length !== 2) {
             // add user to room
-            const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult : userAccount[0].result;
-            room.playerArray.push(currentUser);
+            room.playerArray.push(profile);
             console.log('handleJoin', room);
             console.log('room id ', room._id);
 
@@ -81,10 +84,10 @@ export const IndividualRoom = ({ room }) => {
                             </button>
                         </td>
                     ) : <td className="px-5 pb-5 pt-3 border-b border-gray-200 bg-white text-sm">
-                            <div className="flex-shrink-0 text-center px-4 py-1 pb-2 text-base font-semibold text-white bg-yellow-400 rounded-lg shadow-md">
-                                In Game
+                        <div className="flex-shrink-0 text-center px-4 py-1 pb-2 text-base font-semibold text-white bg-yellow-400 rounded-lg shadow-md">
+                            In Game
                             </div>
-                        </td> : <></>
+                    </td> : <></>
                 }
             </tr>
             {wrongPassword ? (
