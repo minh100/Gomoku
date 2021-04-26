@@ -4,7 +4,7 @@ import { GlobalUserContext } from '../../Global/GlobalUser/GlobalUserState.js';
 import { SocketContext } from '../../Global/GlobalSocket/Socket.js';
 
 export const Leaderboard = () => {
-
+    console.log("HELLO")
     const { users, getAllUsers } = useContext(GlobalUserContext);
     const [userFilter, setUserFilter] = useState(users);
     const [filter, setFilter] = useState("");

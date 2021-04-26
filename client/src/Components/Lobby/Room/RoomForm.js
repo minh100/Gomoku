@@ -9,9 +9,9 @@ import { SocketContext } from '../../../Global/GlobalSocket/Socket.js';
 
 import './RoomForm.css';
 
-export const RoomForm = () => {
+export const RoomForm = ({users}) => {
 
-    const { users } = useContext(GlobalUserContext);
+    // const { users } = useContext(GlobalUserContext);
     const { rooms, createNewRoom } = useContext(GlobalRoomContext);
     const [createCustomGameClicked, toggleCreateCustomGameClicked] = useState(false);
     const [isNameTaken, setNameTaken] = useState(false);
@@ -23,9 +23,12 @@ export const RoomForm = () => {
 
     // local storage results
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
-    const profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+    if(userAccount[0] !== null) {
+        var profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+    }
     console.log('users', users);
-    const profile = users.find(user => user.username === profileUsername);
+    var profile = users.find(user => user.username === profileUsername);
+
 
     const setInitalState = () => {
         if (userAccount[0] === null) {

@@ -13,7 +13,6 @@ export const LocalBoard = () => {
 
     const handleClick = (row, col) => {
         if (gameModel.winner === -1) {
-            console.log(`Clicked row: ${row} col: ${col}`);
             gameModel.click(row, col);
             updateGameModel(gameModel);
             toggleRerender(!rerender);
@@ -25,7 +24,6 @@ export const LocalBoard = () => {
     }
 
     const handleReset = () => {
-        console.log("reset");
         gameModel.setupNewGame();
         toggleRerender(!rerender);
         setWinningPoints([]);
@@ -35,8 +33,6 @@ export const LocalBoard = () => {
     for(let row = 0; row < 224; row += 15) {
         rearrangedBoard.push(gameModel.board.flat().slice(row, row+15))
     }
-    console.log(rearrangedBoard);
-    console.log(gameModel.board.flat());
 
     return (
         <div className="md:container md:mx-auto min-h-screen min-w-full flex justify-center items-center">

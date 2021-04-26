@@ -17,8 +17,11 @@ export const IndividualRoom = ({ room }) => {
     // local storage results
     const { users } = useContext(GlobalUserContext);
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
-    const profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
-    const profile = users.find(user => user.username === profileUsername);
+    if(userAccount[0] !== null) {
+        var profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+        console.log('users', users);
+    }
+    var profile = users.find(user => user.username === profileUsername);
 
     const handleJoin = () => {
         if (passwordInput === room.password && room.playerArray.length !== 2) {

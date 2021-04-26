@@ -49,8 +49,10 @@ io.on('connection', (socket) => {
 
     // gets all rooms and emits to client/Lobby.js
     socket.on('joinLobby', () => {
-        getRooms().then(res => {
-            socket.emit('lobby', res);
+        getRooms().then(roomArray => {
+            getAllUsers().then(userArray => {
+                socket.emit('lobby', ({roomArray, userArray}));
+            })
         });
     })
 
@@ -60,11 +62,12 @@ io.on('connection', (socket) => {
 
         socket.join(roomData.roomName);
 
-        getRooms().then(res => {
-            console.log('Game Created', res);
+        getRooms().then(roomArray => {
             createRoom(roomData).then(room => {
-                res.push(room);
-                io.sockets.emit('lobby', res);
+                roomArray.push(room);
+                getAllUsers().then(userArray => {
+                    io.sockets.emit('lobby', ({roomArray, userArray}));
+                })
             })
         });
     })

@@ -66,14 +66,14 @@ export const Navbar = () => {
                                 >
                                     Lobby
                                 </Link>
-                                <a href="/leaderboard"
+                                <a href="http://localhost:3000/Gomoku/leaderboard"
                                     className={navOption === '/leaderboard' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
                                         "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
                                     }
                                     aria-current="page"
                                 >
                                     Leaderboard
-                                </a >
+                                </a>
                                 <Link to="/localplay"
                                     className={navOption === '/localplay' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
                                         "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"

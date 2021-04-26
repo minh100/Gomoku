@@ -23,7 +23,7 @@ function App() {
               <SocketContext.Provider value={socket} >
                 <Navbar />
                 <Route exact path="/" component={Lobby} />
-                <Route exact path="/leaderboard" component={Leaderboard} />
+                <Route path="/leaderboard" component={Leaderboard} forceRefresh/>
                 <Route exact path="/localplay" component={LocalBoard} />
                 <Route path="/play" component={GameRoom} />
               </SocketContext.Provider>
