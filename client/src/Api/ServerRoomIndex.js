@@ -4,7 +4,9 @@
  */
 import axios from 'axios';
 
-const SERVER_URL_ROOM = 'http://localhost:4001/rooms';
+
+const SERVER_URL_ROOM = 'https://gomoku0server.herokuapp.com/rooms';    // url for deployment
+// const SERVER_URL_ROOM = 'http://localhost:4001/rooms';               // url for development
 
 // fetches all rooms from server
 export const fetchAllRooms = () => {

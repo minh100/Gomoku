@@ -4,7 +4,8 @@
  */
 import axios from 'axios';
 
-const SERVER_URL_USER = 'http://localhost:4001/users';
+const SERVER_URL_USER = 'https://gomoku0server.herokuapp.com/users'     // url for deployment
+// const SERVER_URL_USER = 'http://localhost:4001/users';                  // url for development
 
 export const fetchAllUsers = () => {
     return axios.get(SERVER_URL_USER);
