@@ -12,7 +12,7 @@ import './RoomForm.css';
 export const RoomForm = () => {
 
     const { users } = useContext(GlobalUserContext);
-    const { rooms, createNewRoom, addPlayer } = useContext(GlobalRoomContext);
+    const { rooms, createNewRoom } = useContext(GlobalRoomContext);
     const [createCustomGameClicked, toggleCreateCustomGameClicked] = useState(false);
     const [isNameTaken, setNameTaken] = useState(false);
     const socket = useContext(SocketContext);
@@ -24,6 +24,7 @@ export const RoomForm = () => {
     // local storage results
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
     const profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
+    console.log('users', users);
     const profile = users.find(user => user.username === profileUsername);
 
     const setInitalState = () => {
@@ -47,20 +48,15 @@ export const RoomForm = () => {
     }
 
     const [roomData, setRoomData] = useState(setInitalState);
-
     /**
      * Find a game to join, if no games then create one
      */
-    const handleFindGame = (e) => {
-        console.log("find game");
-        handleRandomizeName();
+    const handleFindGame = async(e) => {
         // check if any games are available
         const gamesAvailable = rooms.filter(room => room.playerArray.length < 2);
         if (gamesAvailable.length !== 0) {                           // some games available
             const gameToJoin = gamesAvailable[0];                   // take the first game
-            const currentUser = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
-            gameToJoin.playerArray.push(currentUser);
-            addPlayer(gameToJoin._id, gameToJoin.playerArray);
+            gameToJoin.playerArray.push(profile);
             let game = new Game(15, gameToJoin.playerArray, [], 0, -1, false, {}, {}, 0, 0);
             socket.emit('updateRoom', ({ 'gameToJoin': gameToJoin, gameObject: game }));
             history.push(`/play/${gameToJoin.roomName}`, [gameToJoin.roomName, gameToJoin.playerArray]);
@@ -69,8 +65,16 @@ export const RoomForm = () => {
             // randomize roomName
             // set room data with randomize roomName, no password, and player array with current user in
             // call create create game function
-
-            handleCreateGame(e);
+            let findingRoomData = roomData;
+            const {data} = await axios.get('https://random-word-api.herokuapp.com/word?number=2');
+            findingRoomData = { ...findingRoomData, 
+                roomName: `${data[0].charAt(0).toUpperCase() + data[0].slice(1)}${data[1].charAt(0).toUpperCase() + data[1].slice(1)}`,
+                playerArray: [profile]
+            }
+            createNewRoom(findingRoomData);
+            socket.emit('gameCreated', findingRoomData);
+            history.push(`/play/${findingRoomData.roomName}`, [findingRoomData.roomName, findingRoomData.playerArray]); // redirects user to game room
+            clearRoomData();
         }
     };
 
@@ -81,6 +85,7 @@ export const RoomForm = () => {
     const handleCreateGame = (e) => {
         e.preventDefault();
         let taken = false;
+
         for (let i = 0; i < rooms.length; i++) {
             if (rooms[i].roomName.toLowerCase() === roomData.roomName.toLowerCase()) {
                 taken = true;
@@ -102,8 +107,12 @@ export const RoomForm = () => {
      * Creates a random name as the roomName
      */
     const handleRandomizeName = async () => {
-        const { data } = await axios.get('https://random-word-api.herokuapp.com/word?number=2');
-        setRoomData({ ...roomData, roomName: `${data[0].charAt(0).toUpperCase() + data[0].slice(1)}${data[1].charAt(0).toUpperCase() + data[1].slice(1)}` });
+        const {data} = await axios.get('https://random-word-api.herokuapp.com/word?number=2');
+
+        setRoomData({ ...roomData, 
+            roomName: `${data[0].charAt(0).toUpperCase() + data[0].slice(1)}${data[1].charAt(0).toUpperCase() + data[1].slice(1)}`,
+            playerArray: [profile]
+        });
     };
 
     /**

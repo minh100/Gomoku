@@ -23,8 +23,6 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
             updateGameModel(gameModel);
             toggleRerender(!rerender);
 
-            console.log('when clicked', gameModel);
-
             gameModel.board = gameModel.board.flat();
             socket.emit('updateGame', ({ gameModel, currentRoom }));
 
@@ -41,15 +39,16 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
         }
     }
 
-    console.log('gameModel', gameModel);
-    console.log('currentRoom at Game Board', currentRoom);
-
     useEffect(() => {
         socket.on('sendUpdatedGame', (updatedGame) => {
             let gameInstance = new Game(15, updatedGame.game.playerArray, updatedGame.game.board, updatedGame.game.currentTurn, updatedGame.game.winner, updatedGame.game.draw, updatedGame.game.win1, updatedGame.game.win2, updatedGame.game.ratingWin, updatedGame.game.ratingLose);
             updateGameModel(gameInstance);
             setWinningPoints(findWinningPoints(gameInstance))
         })
+
+        return () => {
+            socket.off('sendUpdatedGame');
+        }
     }, [socket])
 
     return (

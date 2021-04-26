@@ -58,7 +58,6 @@ io.on('connection', (socket) => {
         getRooms().then(res => {
             console.log('Game Created', res);
             createRoom(roomData).then(room => {
-                console.log('Room made', res);
                 res.push(room);
                 io.sockets.emit('lobby', res);
             })

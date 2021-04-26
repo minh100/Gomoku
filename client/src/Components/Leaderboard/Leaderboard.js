@@ -23,10 +23,13 @@ export const Leaderboard = () => {
     useEffect(() => {
         getAllUsers();
         socket.on('updateLeaderboard', (allNewUsers) => {
-            console.log('updateLeaderboard', allNewUsers);
             getAllUsers();
             setAllUsers(allNewUsers);
         })
+
+        return () => {
+            socket.off('updateLeaderboard');
+        }
     }, [socket]);
     console.log('allUsers', allUsers);
     console.log('users', users);

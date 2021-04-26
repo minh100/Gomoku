@@ -44,7 +44,6 @@ export const GameRoom = () => {
 
     }, [currentRoom, socket])
     console.log('currentRoom', currentRoom)
-    console.log('profile', profile);
 
     // check if current player by local storage is in current room
     // if not then redirect
@@ -81,7 +80,9 @@ export const GameRoom = () => {
                                                     {`${player.username}`}
                                                 </h6>
                                                 <p className="text-sm text-gray-900">
-                                                    {`Rating: ${player.rating}`}
+                                                    {
+                                                       `Rating: ${player.rating}`
+                                                    }
                                                 </p>
                                             </div>
                                         </div>

@@ -5,7 +5,7 @@ import { RoomForm } from './Room/RoomForm.js';
 
 import { GlobalRoomContext } from '../../Global/GlobalRoom/GlobalRoomState.js';
 import { GlobalUserContext } from '../../Global/GlobalUser/GlobalUserState.js';
-import {SocketContext} from '../../Global/GlobalSocket/Socket.js';
+import { SocketContext } from '../../Global/GlobalSocket/Socket.js';
 
 export const Lobby = () => {
 
@@ -31,7 +31,7 @@ export const Lobby = () => {
       getAllRooms();
     })
 
-    return() => {
+    return () => {
       socket.off('lobby');
     }
   }, [allRooms, socket]);
@@ -42,7 +42,7 @@ export const Lobby = () => {
         <RoomForm />
       </div>
       {
-        <RoomList rooms={allRooms}/>
+        <RoomList rooms={allRooms} />
       }
     </div>
   );
