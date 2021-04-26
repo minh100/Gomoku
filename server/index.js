@@ -36,7 +36,7 @@ const io = socketio(server, {
     }
 });
 
-const { getRooms, createRoom, addPlayerToRoom, updateGame, updateWinner, updateLoser, getAllUsers } = require('./socketServer.js');
+const { getRooms, createRoom, addPlayerToRoom, updateGame, updateWinner, updateLoser, getAllUsers, deleteRoom } = require('./socketServer.js');
 
 // socketio functions and connection calls
 io.on('connection', (socket) => {
@@ -104,6 +104,16 @@ io.on('connection', (socket) => {
             })
         })
     });
+
+    // delete a room after a game has ended
+    // on from client/GameBoard.js and emits to client/Lobby.js
+    socket.on('deleteGameRoom', ({currentRoom}) => {
+        socket.leave(currentRoom.roomname);
+        deleteRoom(currentRoom);
+        getRooms().then(res => {
+            io.sockets.emit('lobby', res);
+        });
+    }); 
 
     socket.on('disconnect', () => {
         console.log(`socket has disconnected: ${socket.id}`)

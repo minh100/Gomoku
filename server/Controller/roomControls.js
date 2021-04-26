@@ -16,9 +16,7 @@ const getRooms = async (req, res) => {
 // create a new room in database
 const createRoom = async (req, res) => {
     const body = req.body;
-    console.log('body at room Controls', body);
     const newRoom = new RoomModel(body);
-    console.log('newRoom at room Controls', newRoom);
     try {
         await newRoom.save();
         res.status(201).json(newRoom);
@@ -27,23 +25,9 @@ const createRoom = async (req, res) => {
     }
 };
 
-// delete a room from database
-const deleteRoom = async (req, res) => {
-    const { id } = req.params;
-    console.log(req);
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).send("No room with that id");
-    }
-
-    await RoomModel.findByIdAndDelete(id);
-
-    res.json({ message: 'Room has been successfully deleted' });
-}
-
 // updates room by adding player
 const addPlayerToRoom = async (req, res) => {
     const { id } = req.params;
-    console.log("reqBody: ", req.body);
     const gameObject = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -58,8 +42,7 @@ const addPlayerToRoom = async (req, res) => {
         },
         { new: true }
     );
-    console.log('UPDATED ROOMMMMM', updatedRoom);
     res.json(updatedRoom);
 }
 
-module.exports = { getRooms, createRoom, deleteRoom, addPlayerToRoom };
+module.exports = { getRooms, createRoom, addPlayerToRoom };

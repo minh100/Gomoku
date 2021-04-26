@@ -35,6 +35,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
                 let res = findWinningPoints(gameModel);
                 setWinningPoints(res);
                 socket.emit('updateWinAndLose', ({gameModel, currentRoom}));
+                socket.emit('deleteGameRoom', ({currentRoom}));
             }
         }
     }

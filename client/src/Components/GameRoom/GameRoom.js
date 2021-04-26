@@ -37,7 +37,6 @@ export const GameRoom = () => {
 
     useEffect(() => {
         socket.on('toGameRoom', (updatedRoom) => {
-            console.log('toGameRoom', updatedRoom);
             currentRoom = updatedRoom;
             setRerender(!rerender);
         });

@@ -102,5 +102,13 @@ const getAllUsers = async() => {
     }
 }
 
+// delete a room from database
+const deleteRoom = async (currentRoom) => {
+    try {
+        await RoomModel.findByIdAndDelete(currentRoom._id);
+    } catch(error) {
+        console.log(error);
+    }
+}
 
-module.exports = { getRooms, createRoom, addPlayerToRoom, updateGame, updateWinner, updateLoser, getAllUsers };
+module.exports = { getRooms, createRoom, addPlayerToRoom, updateGame, updateWinner, updateLoser, getAllUsers, deleteRoom };
