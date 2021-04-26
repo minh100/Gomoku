@@ -24,6 +24,11 @@ app.use('/users', userRoutes)
 // PORT
 const PORT = process.env.PORT || 4001;
 
+// Display to server
+app.get('/', (req,res) => {
+    res.send("Gomoku Backend Server")
+})
+
 /**Possibly needs Refractoring */
 // --- Socket Io --- //
 const socketio = require('socket.io');
