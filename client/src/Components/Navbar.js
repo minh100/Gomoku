@@ -62,21 +62,22 @@ export const Navbar = () => {
                             <div className="flex space-x-4">
                                 {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
                                 <Link to="/"
-                                    className={navOption === '/' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
-                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
+                                    className={navOption === '/' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium " :
+                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium " 
                                     }
                                     aria-current="page"
                                 >
                                     Lobby
                                 </Link>
-                                <a href="http://localhost:3000/Gomoku/leaderboard"
-                                    className={navOption === '/leaderboard' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
-                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
+                                <button 
+                                    className={navOption === '/leaderboard' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium focus:outline-none" :
+                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium focus:outline-none"
                                     }
                                     aria-current="page"
+                                    onClick={() => history.push('/leaderboard')}
                                 >
                                     Leaderboard
-                                </a>
+                                </button>
                                 <Link to="/localplay"
                                     className={navOption === '/localplay' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
                                         "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"

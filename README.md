@@ -6,11 +6,11 @@
 
 - [React Error Boundary](https://github.com/bvaughn/react-error-boundary#readme)
 
-## Client-side
+## Deploying to Client-side
 
 - [Github Pages Reference](https://dev.to/yuribenjamin/how-to-deploy-react-app-in-github-pages-2a1f)<br/>
 
-## Server-side
+## Deploying to Server-side
 
 - Since we are using Heroku to deploy the backend server, we need to take into consideration of the subfolders we want to deploy
     - In this case we only want to deploy the **server** folder
