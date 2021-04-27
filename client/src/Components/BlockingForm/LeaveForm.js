@@ -44,10 +44,10 @@ function useCallbackPrompt(when) {
         [confirmedNavigation]
     );
 
-    const confirmNavigation = useCallback(({profile, currentRoom}) => {
+    const confirmNavigation = useCallback(({currentRoom}) => {
         setShowPrompt(false);
         setConfirmedNavigation(true);
-        socket.emit('leftGame', ({profile, currentRoom}));
+        socket.emit('deleteGameRoom', ({currentRoom}));
     }, []);
 
     useEffect(() => {
@@ -61,7 +61,7 @@ function useCallbackPrompt(when) {
     return [showPrompt, confirmNavigation, cancelNavigation];
 }
 
-function SavePrompt({ isBlocking, profile, currentRoom}) {
+function LeavePrompt({ isBlocking, currentRoom}) {
     const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(isBlocking);
     return (
         <>
@@ -75,13 +75,13 @@ function SavePrompt({ isBlocking, profile, currentRoom}) {
                                     {/*header*/}
                                     <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                                         <h3 className="text-3xl font-semibold text-purple-600">
-                                            Leave Current Game?
+                                            Leave Game Room?
                                         </h3>
                                     </div>
                                     {/*body*/}
                                     <div className="relative p-6 flex-auto">
-                                        <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
-                                            Leaving while a game is unfinished will cause you to lose rating.
+                                        <p className="text-blueGray-500 text-lg leading-relaxed">
+                                            Leaving will cause the room to be deleted.
                                             <br/>
                                             <br/>
                                             Do you want to leave anyway?
@@ -99,7 +99,7 @@ function SavePrompt({ isBlocking, profile, currentRoom}) {
                                         <button
                                             className="bg-red-500 text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                             type="button"
-                                            onClick={() => confirmNavigation({profile, currentRoom})}
+                                            onClick={() => confirmNavigation({currentRoom})}
                                         >
                                             Leave Anyway
                                         </button>
@@ -115,8 +115,11 @@ function SavePrompt({ isBlocking, profile, currentRoom}) {
     );
 }
 
-export const BlockForm = ({when, profile, currentRoom}) => {
+export const LeaveForm = ({when, currentRoom}) => {
+    console.log(when)
+    console.log(currentRoom);
+
     return (
-        <SavePrompt isBlocking={when} profile={profile} currentRoom={currentRoom}/>
+        <LeavePrompt isBlocking={when} currentRoom={currentRoom}/>
     );
 }

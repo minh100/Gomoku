@@ -51,6 +51,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
         })
 
         socket.on('opponentLeft', () => {
+            console.log("OPPONENT ETTETE LEFT")
             setBothPlayersRemain(false);
         })
 

@@ -19,7 +19,6 @@ export const IndividualRoom = ({ room }) => {
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
     if(userAccount[0] !== null) {
         var profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
-        console.log('users', users);
     }
     var profile = users.find(user => user.username === profileUsername);
 
@@ -27,8 +26,6 @@ export const IndividualRoom = ({ room }) => {
         if (passwordInput === room.password && room.playerArray.length !== 2) {
             // add user to room
             room.playerArray.push(profile);
-            console.log('handleJoin', room);
-            console.log('room id ', room._id);
 
             let game = new Game(15, room.playerArray, [], 0, -1, false, {}, {}, 0, 0);
             // rerender to room

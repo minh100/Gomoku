@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
     socket.on('joinLobby', () => {
         getRooms().then(roomArray => {
             getAllUsers().then(userArray => {
-                socket.emit('lobby', ({roomArray, userArray}));
+                io.sockets.emit('lobby', ({roomArray, userArray}));
             })
         });
     })
@@ -79,11 +79,12 @@ io.on('connection', (socket) => {
         socket.join(gameToJoin.roomName);
 
         addPlayerToRoom(gameToJoin, gameObject).then(updatedRoom => {
-
             getRooms().then(rooms => {
-                let newRooms = rooms.filter(room => room.roomName !== updatedRoom.roomName);
-                newRooms.push(updatedRoom);
-                io.sockets.emit('lobby', newRooms);
+                let roomArray = rooms.filter(room => room.roomName !== updatedRoom.roomName);
+                roomArray.push(updatedRoom);
+                getAllUsers().then(userArray => {
+                    io.sockets.emit('lobby', ({roomArray, userArray}));
+                })
             })
 
             io.in(gameToJoin.roomName).emit('toGameRoom', updatedRoom);
@@ -112,21 +113,27 @@ io.on('connection', (socket) => {
         })
     });
 
-    // delete a room after a game has ended
+    // delete a room after a game has ended or a user left before a game started
     // on from client/GameBoard.js and emits to client/Lobby.js
+    // on from client/LeaveForm.js and emits to client/Lobby.js
     socket.on('deleteGameRoom', ({currentRoom}) => {
-        socket.leave(currentRoom.roomname);
         deleteRoom(currentRoom);
-        getRooms().then(res => {
-            io.sockets.emit('lobby', res);
+        getRooms().then(roomArray => {
+            getAllUsers().then(userArray => {
+                io.sockets.emit('lobby', ({roomArray, userArray}));
+                socket.leave(currentRoom.roomname);
+            })
         });
     }); 
 
+    // handles users leaving an ongoing game, user leaving will be penalized, and remaining user will be notified to leave
+    // game is deleted and lobby is updated
+    // on from client/BlockForm.js and emits to client/Lobby.js
     socket.on('leftGame', ({profile, currentRoom}) => {
         handleLeaveGame(profile, currentRoom).then(() => {
             getRooms().then(roomArray => {
                 getAllUsers().then(userArray => {
-                    socket.emit('lobby', ({roomArray, userArray}));
+                    io.sockets.emit('lobby', ({roomArray, userArray}));
                     io.in(currentRoom.roomName).emit('opponentLeft');
                     socket.leave(currentRoom.roomname);
                 })

@@ -16,6 +16,8 @@ export const RoomList = ({ rooms }) => {
         }
     }, [filter, rerender]);
 
+    console.log('rooms', rooms);
+
     return (
         <div className="container mx-auto px-4 sm:px-0 max-w-5xl">
             <div className="py-8">
@@ -63,7 +65,7 @@ export const RoomList = ({ rooms }) => {
                             </thead>
                             <tbody>
                                 {
-                                    rooms && roomFilter.length !== 0 ? (
+                                    rooms !== undefined && roomFilter.length !== 0 ? (
                                         roomFilter.sort((a, b) => a.playerArray.length - b.playerArray.length)
                                             .map(room => {
                                                 return <IndividualRoom key={room._id}

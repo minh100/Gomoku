@@ -111,8 +111,6 @@ const deleteRoom = async (currentRoom) => {
 }
 
 const handleLeaveGame = async (userLeft, currentRoom) => {
-    console.log('leftGameprofile', userLeft);
-    console.log('leftGamecurrentRoom', currentRoom);
     try {
         const loserProfile = await UserModel.findOne({ username: userLeft.username });
         const ratingToLoser = loserProfile.rating - currentRoom.ratingLose;

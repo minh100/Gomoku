@@ -58,11 +58,11 @@ export const Navbar = () => {
                                 <h1 className="text-3xl  text-white" >Gomoku</h1>
                             </Link>
                         </div>
-                        <div className="hidden sm:block sm:ml-6">
-                            <div className="flex space-x-4">
+                        <div className="hidden sm:block sm:ml-5">
+                            <div className="flex space-x-3">
                                 {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
                                 <Link to="/"
-                                    className={navOption === '/' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium " :
+                                    className={navOption === '/' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
                                         "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium " 
                                     }
                                     aria-current="page"
