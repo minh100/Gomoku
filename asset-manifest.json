@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/Gomoku/static/css/main.a890c46f.chunk.css",
-    "main.js": "/Gomoku/static/js/main.64be8615.chunk.js",
-    "main.js.map": "/Gomoku/static/js/main.64be8615.chunk.js.map",
+    "main.css": "/Gomoku/static/css/main.6cd250c3.chunk.css",
+    "main.js": "/Gomoku/static/js/main.55025c5f.chunk.js",
+    "main.js.map": "/Gomoku/static/js/main.55025c5f.chunk.js.map",
     "runtime-main.js": "/Gomoku/static/js/runtime-main.c4709cba.js",
     "runtime-main.js.map": "/Gomoku/static/js/runtime-main.c4709cba.js.map",
-    "static/js/2.6b94eb72.chunk.js": "/Gomoku/static/js/2.6b94eb72.chunk.js",
-    "static/js/2.6b94eb72.chunk.js.map": "/Gomoku/static/js/2.6b94eb72.chunk.js.map",
+    "static/js/2.8d8bfebe.chunk.js": "/Gomoku/static/js/2.8d8bfebe.chunk.js",
+    "static/js/2.8d8bfebe.chunk.js.map": "/Gomoku/static/js/2.8d8bfebe.chunk.js.map",
     "index.html": "/Gomoku/index.html",
-    "static/css/main.a890c46f.chunk.css.map": "/Gomoku/static/css/main.a890c46f.chunk.css.map",
-    "static/js/2.6b94eb72.chunk.js.LICENSE.txt": "/Gomoku/static/js/2.6b94eb72.chunk.js.LICENSE.txt",
+    "static/css/main.6cd250c3.chunk.css.map": "/Gomoku/static/css/main.6cd250c3.chunk.css.map",
+    "static/js/2.8d8bfebe.chunk.js.LICENSE.txt": "/Gomoku/static/js/2.8d8bfebe.chunk.js.LICENSE.txt",
     "static/media/404BG.cdb1a3e2.svg": "/Gomoku/static/media/404BG.cdb1a3e2.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.c4709cba.js",
-    "static/js/2.6b94eb72.chunk.js",
-    "static/css/main.a890c46f.chunk.css",
-    "static/js/main.64be8615.chunk.js"
+    "static/js/2.8d8bfebe.chunk.js",
+    "static/css/main.6cd250c3.chunk.css",
+    "static/js/main.55025c5f.chunk.js"
   ]
 }
