@@ -43,6 +43,7 @@ MERN site that allows users to signup/login and play Gomoku online. Find, create
     - Filtering of users to allow for easy search
 - Local Play
 - Leaving a game while unfinished will cause the leave to be punished and the remaining player to be notified of their leave
+- Leaving a game before it has started will prompt the user, if the user continues, then the lobby will be updated accordingly
 - [React Error Boundary](https://github.com/bvaughn/react-error-boundary#readme)
 
 ## Developer Features
