@@ -41,7 +41,7 @@ const io = socketio(server, {
     }
 });
 
-const { getRooms, createRoom, addPlayerToRoom, updateGame, updateWinner, updateLoser, getAllUsers, deleteRoom } = require('./socketServer.js');
+const { getRooms, createRoom, addPlayerToRoom, updateGame, updateWinner, updateLoser, getAllUsers, deleteRoom, handleLeaveGame } = require('./socketServer.js');
 
 // socketio functions and connection calls
 io.on('connection', (socket) => {
@@ -86,7 +86,6 @@ io.on('connection', (socket) => {
                 io.sockets.emit('lobby', newRooms);
             })
 
-            console.log('updatedPlayerArray',updatedRoom.playerArray);
             io.in(gameToJoin.roomName).emit('toGameRoom', updatedRoom);
         })
     });
@@ -122,6 +121,18 @@ io.on('connection', (socket) => {
             io.sockets.emit('lobby', res);
         });
     }); 
+
+    socket.on('leftGame', ({profile, currentRoom}) => {
+        handleLeaveGame(profile, currentRoom).then(() => {
+            getRooms().then(roomArray => {
+                getAllUsers().then(userArray => {
+                    socket.emit('lobby', ({roomArray, userArray}));
+                    io.in(currentRoom.roomName).emit('opponentLeft');
+                    socket.leave(currentRoom.roomname);
+                })
+            });
+        })
+    }) 
 
     socket.on('disconnect', () => {
         console.log(`socket has disconnected: ${socket.id}`)

@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Tile } from '../Gomoku/Tile.js';
-
 import Game from '../../Engine/Game.js';
+
+import {BlockForm} from '../BlockingForm/BlockForm.js'
+import {UserLeftPrompt} from '../BlockingForm/UserLeftPrompt.js';
 
 import { SocketContext } from '../../Global/GlobalSocket/Socket.js';
 
@@ -15,6 +17,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
     const [rerender, toggleRerender] = useState(false);
     const [winningPoints, setWinningPoints] = useState(findWinningPoints(gameInstance));
     const socket = useContext(SocketContext);
+    const [bothPlayersRemain, setBothPlayersRemain] = useState(true);
 
     const handleClick = (row, col) => {
         if (gameModel.winner === -1 && !gameModel.draw && currentRoom.playerArray[gameModel.currentTurn].username === profile.username) {
@@ -47,13 +50,23 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
             setWinningPoints(findWinningPoints(gameInstance))
         })
 
+        socket.on('opponentLeft', () => {
+            setBothPlayersRemain(false);
+        })
+
         return () => {
             socket.off('sendUpdatedGame');
         }
     }, [socket])
+    console.log(gameModel);
 
     return (
         <>
+            {
+                !bothPlayersRemain && <UserLeftPrompt />
+
+            }
+            <BlockForm when={gameModel.winner === -1 && bothPlayersRemain} profile={profile} currentRoom={currentRoom}/>
             {
                 gameModel.winner !== -1 ? (
                     <h1 className="pl-2 mb-2 text-base text-gray-700 md:text-lg">Winner: <span className="text-purple-600">{currentRoom.playerArray[gameModel.currentTurn].username}</span></h1>

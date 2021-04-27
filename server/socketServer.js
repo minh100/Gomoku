@@ -15,7 +15,6 @@ const getRooms = async () => {
 const createRoom = async (roomData) => {
     const newRoom = new RoomModel(roomData);
     try {
-        console.log('newRoom at socketServer', newRoom);
         return newRoom;
     } catch (error) {
         res.status(400).json({ message: error });
@@ -57,7 +56,7 @@ const updateWinner = async (gameModel, currentRoom) => {
     const winnerUser = currentRoom.playerArray[gameModel.winner];
 
     try {
-        const winnerProfile = await UserModel.findOne({username:  winnerUser.username});
+        const winnerProfile = await UserModel.findOne({ username: winnerUser.username });
         const ratingToWinner = winnerProfile.rating + currentRoom.ratingWin;
 
         const winnerUpdated = await UserModel.findOneAndUpdate({ username: winnerUser.username },
@@ -68,7 +67,7 @@ const updateWinner = async (gameModel, currentRoom) => {
         );
         return winnerUpdated;
 
-    } catch(error) {
+    } catch (error) {
         console.log('error occurred', error);
     }
 };
@@ -77,7 +76,7 @@ const updateLoser = async (gameModel, currentRoom) => {
     const loserUser = gameModel.winner === 0 ? currentRoom.playerArray[1] : currentRoom.playerArray[0];
 
     try {
-        const loserProfile = await UserModel.findOne({username:  loserUser.username});
+        const loserProfile = await UserModel.findOne({ username: loserUser.username });
         const ratingToLoser = loserProfile.rating - currentRoom.ratingLose;
         const loserUpdated = await UserModel.findOneAndUpdate({ username: loserUser.username },
             {
@@ -88,12 +87,12 @@ const updateLoser = async (gameModel, currentRoom) => {
 
         return loserUpdated;
 
-    } catch(error) {
+    } catch (error) {
         console.log('error occurred', error);
     }
 };
 
-const getAllUsers = async() => {
+const getAllUsers = async () => {
     try {
         const users = await UserModel.find({});
         return users;
@@ -106,9 +105,28 @@ const getAllUsers = async() => {
 const deleteRoom = async (currentRoom) => {
     try {
         await RoomModel.findByIdAndDelete(currentRoom._id);
-    } catch(error) {
+    } catch (error) {
         console.log(error);
     }
 }
 
-module.exports = { getRooms, createRoom, addPlayerToRoom, updateGame, updateWinner, updateLoser, getAllUsers, deleteRoom };
+const handleLeaveGame = async (userLeft, currentRoom) => {
+    console.log('leftGameprofile', userLeft);
+    console.log('leftGamecurrentRoom', currentRoom);
+    try {
+        const loserProfile = await UserModel.findOne({ username: userLeft.username });
+        const ratingToLoser = loserProfile.rating - currentRoom.ratingLose;
+        const loserUpdated = await UserModel.findOneAndUpdate({ username: userLeft.username },
+            {
+                rating: ratingToLoser,
+            },
+            { new: true }
+        );
+        await RoomModel.findByIdAndDelete(currentRoom._id);
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { getRooms, createRoom, addPlayerToRoom, updateGame, updateWinner, updateLoser, getAllUsers, deleteRoom, handleLeaveGame };

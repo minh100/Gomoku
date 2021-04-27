@@ -17,10 +17,11 @@ const getUsers = async(req, res) => {
 
 const login = async (req, res) => {
     const {username, password} = req.body;
-    
+    const lowerUsername = username.toLowerCase();
+    console.log(lowerUsername);
     try {
         // check if there is an account made
-        const existingUser = await UserModel.findOne({username});
+        const existingUser = await UserModel.findOne({lowerUsername: lowerUsername});
         if(!existingUser) return res.status(404).json({message: "User doesn't exists."});
 
         // check if password provided is correct
