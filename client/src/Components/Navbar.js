@@ -188,6 +188,14 @@ export const Navbar = () => {
                             >
                                 Leaderboard
                             </a>
+                            <Link to="/info"
+                                    className={navOption === '/info' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
+                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
+                                    }
+                                    aria-current="page"
+                                >
+                                    Info
+                                </Link>
                             <Link to="/localplay"
                                 className={navOption === '/localplay' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
                                     "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"

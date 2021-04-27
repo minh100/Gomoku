@@ -17,7 +17,7 @@ MERN site that allows users to signup/login and play Gomoku online. Find, create
 
 - Accounts
     - Create and store profile and ratings in a database
-        - Avatars created from (DiceBear Avatars API)[https://avatars.dicebear.com/]
+        - Avatars created from [DiceBear Avatars API](https://avatars.dicebear.com/)
         - Username checking to see if taken or not
     - Login from anywhere to play
     - Signout to stay secure
@@ -29,7 +29,7 @@ MERN site that allows users to signup/login and play Gomoku online. Find, create
         - Make your own game and invite or wait for others to join
         - Error checking to see if a roomname is taken
         - Password option to make a room private
-    - Game's roomname created from (Random Word Api)[https://random-word-api.herokuapp.com] so that no roomnames are the same
+    - Game's roomname created from [Random Word Api](https://random-word-api.herokuapp.com) so that no roomnames are the same
     - Display list of rooms
         - roomname, playercount, password required, and actions
         - Actions include:
@@ -57,8 +57,8 @@ MERN site that allows users to signup/login and play Gomoku online. Find, create
         - UI, aesthetics, responsive design
     - Error handling
         - [React Error Boundary](https://github.com/bvaughn/react-error-boundary#readme)
-    - (Random Word Api)[https://random-word-api.herokuapp.com]
-    - (DiceBear Avatars API)[https://avatars.dicebear.com/]
+    - [Random Word Api](https://random-word-api.herokuapp.com)
+    - [DiceBear Avatars API](https://avatars.dicebear.com/)
 <br/>
 - Backend
     - Express
