@@ -7,23 +7,26 @@ export const Navbar = () => {
 
     const [menuOpen, toggleMenuOpen] = useState(false); // mobile menu
     const [profileOpen, toggleProfileOpen] = useState(false);   // profile menu
-    
     const history = useHistory();
     const { logout } = useContext(GlobalUserContext);
 
     // local storage results 
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
-
+    const [signedIn, setSignedIn] = useState(true);
     const location = useLocation();
+    
     const [navOption, setNavOption] = useState(location.pathname);
+
     useEffect(() => {
         setNavOption(location.pathname);
-    }, [location.pathname])
+    }, [location.pathname, signedIn])
 
     const handleSignOut = () => {
         logout();
         toggleProfileOpen(false);
+        setSignedIn(false);
         history.push("/login");
+
     };
 
     return (
@@ -88,12 +91,12 @@ export const Navbar = () => {
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         <h1 className="text-white pl-1">
                             {
-                                (userAccount[0]?.userResult?.username) || (userAccount[0]?.result?.username)
+                                signedIn && ((userAccount[0]?.userResult?.username) || (userAccount[0]?.result?.username))
                             }
                         </h1>
                         {/* <!-- Profile dropdown --> */}
                         {
-                            ((userAccount[0] !== undefined && userAccount[0] !== null)) ? (
+                            ((signedIn && userAccount[0] !== undefined && userAccount[0] !== null)) ? (
                                 <div className="ml-3 relative">
                                     <div className="mr-2">
                                         <button type="button"
@@ -124,7 +127,7 @@ export const Navbar = () => {
                                     {
                                         profileOpen && (
                                             <div className="z-50 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                                                <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Profile</Link>
+                                                <h1 className="block px-4 py-2 text-sm text-black w-full h-full focus:outline-none">Rating: {(userAccount[0]?.userResult?.rating) || (userAccount[0]?.result?.rating)}</h1>
                                                 <button className=" block border-t-2 px-4 py-2 text-sm text-red-700 hover:bg-gray-100 w-full h-full focus:outline-none"
                                                     role="menuitem"
                                                     onClick={() => handleSignOut()}

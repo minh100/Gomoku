@@ -50,9 +50,11 @@ export const GameRoom = () => {
     // check if current player by local storage is in current room
     // if not then redirect
     const checkIfValidUser = () => {
-        if (!location.state[1].some(user => user._id === profile._id)) {
-            console.log('not valid user, going back');
-            history.goBack();
+        if(location.state[1] === undefined) {
+            if (!location.state[1].some(user => user._id === profile._id)) {
+                console.log('not valid user, going back');
+                history.goBack();
+            }
         }
     }
 

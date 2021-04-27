@@ -10,6 +10,8 @@ import { SignUp } from './Components/LandingPage/SignUp.js';
 import { Leaderboard } from './Components/Leaderboard/Leaderboard.js';
 import { SocketContext, socket } from './Global/GlobalSocket/Socket.js';
 import { GameRoom } from './Components/GameRoom/GameRoom.js';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorFallBack } from './Components/ErrorFallBack.js';
 
 function App() {
   return (
@@ -19,15 +21,15 @@ function App() {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
-            <>
+            <ErrorBoundary FallbackComponent={ErrorFallBack}>
               <SocketContext.Provider value={socket} >
                 <Navbar />
                 <Route exact path="/" component={Lobby} />
-                <Route path="/leaderboard" component={Leaderboard} forceRefresh/>
+                <Route path="/leaderboard" component={Leaderboard} forceRefresh />
                 <Route exact path="/localplay" component={LocalBoard} />
                 <Route path="/play" component={GameRoom} />
               </SocketContext.Provider>
-            </>
+            </ErrorBoundary>
           </Switch>
         </GlobalRoomProvider>
       </GlobalUserProvider>
