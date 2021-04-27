@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const RoomModel = require('./Models/roomModel.js');
 const UserModel = require('./Models/userModel.js');
 
+// gets all rooms
 const getRooms = async () => {
     try {
         const rooms = await RoomModel.find({});
@@ -21,6 +22,7 @@ const createRoom = async (roomData) => {
     }
 };
 
+// adds a player to the room and initalizes the game object
 const addPlayerToRoom = async (gameToJoin, gameObject) => {
     const { playerArray: updatedPlayerArray } = gameToJoin;
 
@@ -41,6 +43,7 @@ const addPlayerToRoom = async (gameToJoin, gameObject) => {
     return updatedRoom;
 }
 
+// handles updating the game board
 const updateGame = async (updatedGame, currentRoom) => {
     const gameUpdated = await RoomModel.findOneAndUpdate({ roomName: currentRoom.roomName },
         {
@@ -52,6 +55,7 @@ const updateGame = async (updatedGame, currentRoom) => {
     return gameUpdated;
 };
 
+// update the winner's rating
 const updateWinner = async (gameModel, currentRoom) => {
     const winnerUser = currentRoom.playerArray[gameModel.winner];
 
@@ -72,6 +76,7 @@ const updateWinner = async (gameModel, currentRoom) => {
     }
 };
 
+// Updates the loser's rating
 const updateLoser = async (gameModel, currentRoom) => {
     const loserUser = gameModel.winner === 0 ? currentRoom.playerArray[1] : currentRoom.playerArray[0];
 
@@ -92,6 +97,7 @@ const updateLoser = async (gameModel, currentRoom) => {
     }
 };
 
+// retreive all users from database
 const getAllUsers = async () => {
     try {
         const users = await UserModel.find({});
@@ -110,6 +116,8 @@ const deleteRoom = async (currentRoom) => {
     }
 }
 
+// handles when a user leaves an unfinished game
+// leaver will be have the rating deducted from the account
 const handleLeaveGame = async (userLeft, currentRoom) => {
     try {
         const loserProfile = await UserModel.findOne({ username: userLeft.username });

@@ -15,10 +15,10 @@ const getUsers = async(req, res) => {
     }
 };
 
+// Checks database for existing user and logs them in
 const login = async (req, res) => {
     const {username, password} = req.body;
     const lowerUsername = username.toLowerCase();
-    console.log(lowerUsername);
     try {
         // check if there is an account made
         const existingUser = await UserModel.findOne({lowerUsername: lowerUsername});
@@ -37,6 +37,7 @@ const login = async (req, res) => {
     }
 };
 
+// Sign up and create new user
 const createUser = async (req, res) => {
     const {username, lowerUsername, password, avatar} = req.body;
     
