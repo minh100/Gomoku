@@ -16,7 +16,7 @@ export const RoomList = ({ rooms }) => {
         }
     }, [filter, rerender]);
 
-    console.log('rooms', rooms);
+    // console.log('rooms', rooms);
 
     return (
         <div className="container mx-auto px-4 sm:px-0 max-w-5xl">

@@ -21,7 +21,6 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
 
     const handleClick = (row, col) => {
         if (gameModel.winner === -1 && !gameModel.draw && currentRoom.playerArray[gameModel.currentTurn].username === profile.username) {
-            console.log(`Clicked row: ${row} col: ${col}`);
             gameModel.click(row, col);
             updateGameModel(gameModel);
             toggleRerender(!rerender);
@@ -51,7 +50,6 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
         })
 
         socket.on('opponentLeft', () => {
-            console.log("OPPONENT ETTETE LEFT")
             setBothPlayersRemain(false);
         })
 
@@ -59,7 +57,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
             socket.off('sendUpdatedGame');
         }
     }, [socket])
-    console.log(gameModel);
+    // console.log(gameModel);
 
     return (
         <>

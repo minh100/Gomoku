@@ -4,7 +4,6 @@ import { GlobalUserContext } from '../../Global/GlobalUser/GlobalUserState.js';
 import { SocketContext } from '../../Global/GlobalSocket/Socket.js';
 
 export const Leaderboard = () => {
-    console.log("HELLO")
     const { users, getAllUsers } = useContext(GlobalUserContext);
     const [userFilter, setUserFilter] = useState(users);
     const [filter, setFilter] = useState("");
@@ -31,8 +30,8 @@ export const Leaderboard = () => {
             socket.off('updateLeaderboard');
         }
     }, [socket]);
-    console.log('allUsers', allUsers);
-    console.log('users', users);
+    // console.log('allUsers', allUsers);
+    // console.log('users', users);
 
     return (
         <div className="container mx-auto px-4 py-4 sm:px-8 max-w-3xl">

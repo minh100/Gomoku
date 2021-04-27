@@ -26,7 +26,6 @@ export const RoomForm = ({users}) => {
     if(userAccount[0] !== null) {
         var profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
     }
-    console.log('users', users);
     var profile = users.find(user => user.username === profileUsername);
 
 
@@ -97,7 +96,6 @@ export const RoomForm = ({users}) => {
             }
         }
         if (!taken) {
-            console.log("emitted and created Game", roomData)
             createNewRoom(roomData);
             socket.emit('gameCreated', roomData);
             history.push(`/play/${roomData.roomName}`, [roomData.roomName, roomData.playerArray]); // redirects user to game room

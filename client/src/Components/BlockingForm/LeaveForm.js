@@ -116,9 +116,6 @@ function LeavePrompt({ isBlocking, currentRoom}) {
 }
 
 export const LeaveForm = ({when, currentRoom}) => {
-    console.log(when)
-    console.log(currentRoom);
-
     return (
         <LeavePrompt isBlocking={when} currentRoom={currentRoom}/>
     );
