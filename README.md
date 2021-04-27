@@ -4,9 +4,11 @@
 
 # Deployment
 
+- [React Error Boundary](https://github.com/bvaughn/react-error-boundary#readme)
+
 ## Client-side
 
-- [Github Pages reference](https://dev.to/yuribenjamin/how-to-deploy-react-app-in-github-pages-2a1f)<br/>
+- [Github Pages Reference](https://dev.to/yuribenjamin/how-to-deploy-react-app-in-github-pages-2a1f)<br/>
 
 ## Server-side
 
@@ -25,3 +27,5 @@
             ```
             git subtree push --prefix server heroku master
             ```
+- [Heroku Reference](https://jtway.co/deploying-subdirectory-projects-to-heroku-f31ed65f3f2)<br/>
+
