@@ -31,13 +31,18 @@ export const InfoPage = () => {
                             https://en.wikipedia.org/wiki/Gomoku
                         </a>
                     </div>
-                    <div>
+                    <div className="space-x-2">
                         <Link
                             to="/"
                             className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-purple-600 hover:bg-purple-700 focus:shadow-outline focus:outline-none"
                         >
                             Play
                         </Link>
+                        <a className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-purple-600 transition duration-200 rounded shadow-md hover:bg-gray-700 hover:text-white focus:shadow-outline focus:outline-none" 
+                            href="https://minh100.github.io/portfolio/" target="_blank" rel="noreferrer"
+                        >
+                            Minh Truong
+                        </a>
                     </div>
                 </div>
             </div>

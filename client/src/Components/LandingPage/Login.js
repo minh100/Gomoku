@@ -32,7 +32,7 @@ export const Login = () => {
                     </div>
                     <hr className="mb-6 border-gray-300" />
                     <div className="flex">
-                        <a href="https://www.linkedin.com/in/minh100/" target="_blank" rel="noreferrer" aria-label="Play Song" className="mr-3">
+                        <a href="https://minh100.github.io/portfolio/" target="_blank" rel="noreferrer" aria-label="Play Song" className="mr-3">
                             <div className="flex items-center justify-center w-10 h-10 transition duration-300 transform rounded-full shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 hover:scale-110">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="#7C3AED">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -40,7 +40,7 @@ export const Login = () => {
                             </div>
                         </a>
                         <div className="flex justify-center items-center">
-                            <a href="https://www.linkedin.com/in/minh100/" target="_blank" rel="noreferrer" className="text-sm font-semibold">
+                            <a href="https://minh100.github.io/portfolio/" target="_blank" rel="noreferrer" className="text-sm font-semibold">
                                 Minh Truong
                             </a>
                         </div>

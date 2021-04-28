@@ -177,7 +177,7 @@ export const Navbar = () => {
                             >
                                 Lobby
                             </Link>
-                            <a href="/leaderboard"
+                            <Link to="/leaderboard"
                                 className={navOption === '/leaderboard' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
                                     "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
                                 }
@@ -187,7 +187,7 @@ export const Navbar = () => {
                                 }}
                             >
                                 Leaderboard
-                            </a>
+                            </Link>
                             <Link to="/info"
                                     className={navOption === '/info' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
                                         "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"

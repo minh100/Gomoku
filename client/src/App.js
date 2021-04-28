@@ -27,8 +27,8 @@ function App() {
                 <Navbar />
                 <Route exact path="/" component={Lobby} />
                 <Route path="/leaderboard" component={Leaderboard} forceRefresh />
-                <Route exact path="/localplay" component={LocalBoard} />
-                <Route exact path="/info" component={InfoPage} />
+                <Route path="/localplay" component={LocalBoard} />
+                <Route path="/info" component={InfoPage} />
                 <Route path="/play" component={GameRoom} />
               </SocketContext.Provider>
             </ErrorBoundary>
