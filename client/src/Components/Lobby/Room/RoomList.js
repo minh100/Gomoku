@@ -16,7 +16,7 @@ export const RoomList = ({ rooms }) => {
         }
     }, [filter, rerender]);
 
-    console.log('rooms', rooms);
+    // console.log('rooms', rooms);
 
     return (
         <div className="container mx-auto px-4 sm:px-0 max-w-5xl">
@@ -26,7 +26,7 @@ export const RoomList = ({ rooms }) => {
                         List of Rooms
                     </h2>
                     <div className="text-end pr-2">
-                        <form className="flex w-full max-w-sm space-x-3">
+                        <div className="flex w-full max-w-sm space-x-3">
                             <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md flex justify-center items-center"
                                 onClick={() => setRerender(!rerender)}
                             >
@@ -40,9 +40,10 @@ export const RoomList = ({ rooms }) => {
                                     autoComplete="off"
                                     value={filter}
                                     onChange={(e) => setFilter(e.target.value)}
+                                    onSubmit={(e) => e.preventDefault()}
                                 />
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-hidden">
