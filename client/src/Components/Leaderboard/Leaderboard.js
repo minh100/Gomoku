@@ -41,7 +41,7 @@ export const Leaderboard = () => {
                         Users
                     </h2>
                     <div className="text-end pr-2">
-                        <form className="flex w-full max-w-sm space-x-3">
+                        <div className="flex w-full max-w-sm space-x-3">
                             <div className=" relative ">
                                 <input type="text" id="&quot;form-subscribe-Filter" className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                                     placeholder="username..."
@@ -50,7 +50,7 @@ export const Leaderboard = () => {
                                     onChange={(e) => setFilter(e.target.value)}
                                 />
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">

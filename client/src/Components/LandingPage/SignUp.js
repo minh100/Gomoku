@@ -66,6 +66,7 @@ export const SignUp = () => {
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                 name="name"
                                 maxLength="26"
+                                minLength="4"
                                 autoComplete="off"
                                 value={createData.username}
                                 onChange={(e) => setCreateData({ ...createData, username: e.target.value, lowerUsername: e.target.value.toLowerCase()})}
@@ -78,6 +79,7 @@ export const SignUp = () => {
                                 type="password"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                 name="password"
+                                minLength="4"
                                 autoComplete="off"
                                 value={createData.password}
                                 onChange={(e) => setCreateData({ ...createData, password: e.target.value })}

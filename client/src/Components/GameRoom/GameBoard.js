@@ -55,6 +55,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
 
         return () => {
             socket.off('sendUpdatedGame');
+            socket.off('opponentLeft');
         }
     }, [socket])
     // console.log(gameModel);

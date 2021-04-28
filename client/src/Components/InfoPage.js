@@ -21,13 +21,13 @@ export const InfoPage = () => {
                             What is Gomoku
                         </h2>
                         <div className="text-base text-gray-700 md:text-lg">
-                            <div class="text-3xl text-purple-600 text-left leading-tight h-3">“</div>
+                            <div className="text-3xl text-purple-600 text-left leading-tight h-3">“</div>
                             Gomoku, also called <em>Five in a Row</em>, <em>Caro</em>, <em>Omok</em>, is an abstract strategy board game. <br />
                             Players take turn placing their pieces on an empty space on a 15x15 board.
                             The winner is the first player to form an unbroken chain of five of the same pieces.
-                            <div class="text-3xl text-purple-600 text-right leading-tight h-3">“</div>
+                            <div className="text-3xl text-purple-600 text-right leading-tight h-3">“</div>
                         </div>
-                        <a href="https://en.wikipedia.org/wiki/Gomoku" target="_blank" rel="noreferrer" class="text-xs text-gray-500 dark:text-gray-300 text-center">
+                        <a href="https://en.wikipedia.org/wiki/Gomoku" target="_blank" rel="noreferrer" className="text-xs text-gray-500 dark:text-gray-300 text-center">
                             https://en.wikipedia.org/wiki/Gomoku
                         </a>
                     </div>

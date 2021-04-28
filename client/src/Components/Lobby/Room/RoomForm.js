@@ -9,10 +9,10 @@ import { SocketContext } from '../../../Global/GlobalSocket/Socket.js';
 
 import './RoomForm.css';
 
-export const RoomForm = ({users}) => {
+export const RoomForm = ({users, rooms}) => {
 
     // const { users } = useContext(GlobalUserContext);
-    const { rooms, createNewRoom } = useContext(GlobalRoomContext);
+    const { createNewRoom } = useContext(GlobalRoomContext);
     const [createCustomGameClicked, toggleCreateCustomGameClicked] = useState(false);
     const [isNameTaken, setNameTaken] = useState(false);
     const socket = useContext(SocketContext);
@@ -55,7 +55,10 @@ export const RoomForm = ({users}) => {
      */
     const handleFindGame = async(e) => {
         // check if any games are available
+        e.preventDefault();
+        console.log('handleFind', rooms)
         const gamesAvailable = rooms.filter(room => room.playerArray.length < 2);
+        console.log('gamesAvailable', gamesAvailable)
         if (gamesAvailable.length !== 0) {                           // some games available
             const gameToJoin = gamesAvailable[0];                   // take the first game
             gameToJoin.playerArray.push(profile);
