@@ -109,7 +109,7 @@ git push origin master
 ```
 
 - To update server do **_step 4_** of **_Deploying to Server-side_**<br/>
-- To update client do **_Deploying to Client-side_**
+- To update client do **_Actual Deployment and New Deployments_** of **_Deploying to Client-side_**
 
 
 ### Deploying to Client-side (Netlify)
