@@ -26,7 +26,7 @@ export const RoomList = ({ rooms }) => {
                         List of Rooms
                     </h2>
                     <div className="text-end pr-2">
-                        <div className="flex w-full max-w-sm space-x-3">
+                        <form className="flex w-full max-w-sm space-x-3">
                             <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md flex justify-center items-center"
                                 onClick={() => setRerender(!rerender)}
                             >
@@ -43,7 +43,7 @@ export const RoomList = ({ rooms }) => {
                                     onSubmit={(e) => e.preventDefault()}
                                 />
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-hidden">

@@ -17,6 +17,8 @@ export const GameRoom = () => {
     const [rerender, setRerender] = useState(false);
     const socket = useContext(SocketContext);
 
+    const [howToPlay, toggleHowToPlay] = useState(false);
+
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
     if (userAccount[0] !== null) {
         var profileUsername = userAccount[0].userResult !== undefined ? userAccount[0].userResult.username : userAccount[0].result.username;
@@ -105,14 +107,138 @@ export const GameRoom = () => {
                                 }
                             </div>
                         </div>
+                        <>
+                            <div className="flex flex-wrap">
+                                <div className="w-full text-center">
+                                    <button
+                                        className={
+                                            "bg-purple-600 text-white active:bg-purple-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                        }
+                                        type="button"
+                                        onClick={() => toggleHowToPlay(!howToPlay)}
+                                    >
+                                        How To Play
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                        {
+                            howToPlay && (
+                                <div className="px-4 py-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+                                    <div className="max-w-2xl sm:mx-auto lg:max-w-3xl">
+                                        <section className="grid gap-8 row-gap-0 lg:grid-cols-4">
+                                            <div className="relative text-center">
+                                                <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20">
+                                                    <svg
+                                                        className="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 52 52"
+                                                    >
+                                                        <polygon
+                                                            strokeWidth="3"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            fill="none"
+                                                            points="29 13 14 29 25 29 23 39 38 23 27 23"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                                <h6 className="mb-2 text-2xl font-extrabold">First Move</h6>
+                                                <p className="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto sm:w-3/5 md:w-full">
+                                                    First player will have their piece automatically played at the center of the board
+                                                </p>
+                                                <div className="top-0 right-0 flex items-center justify-center h-24 lg:-mr-8 lg:absolute">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-9 text-gray-700 transform rotate-90 lg:rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div className="relative text-center">
+                                                <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20">
+                                                    <svg
+                                                        className="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 52 52"
+                                                    >
+                                                        <polygon
+                                                            strokeWidth="3"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            fill="none"
+                                                            points="29 13 14 29 25 29 23 39 38 23 27 23"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                                <h6 className="mb-2 text-2xl font-extrabold">Second Move</h6>
+                                                <p className="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto sm:w-3/5 md:w-full">
+                                                    Second player can put their stone anywhere on the board
+                                                </p>
+                                                <div className="top-0 right-0 flex items-center justify-center h-24 lg:-mr-8 lg:absolute">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-9 text-gray-700 transform rotate-90 lg:rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div className="relative text-center">
+                                                <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20">
+                                                    <svg
+                                                        className="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 52 52"
+                                                    >
+                                                        <polygon
+                                                            strokeWidth="3"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            fill="none"
+                                                            points="29 13 14 29 25 29 23 39 38 23 27 23"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                                <h6 className="mb-2 text-2xl font-extrabold">Third Move</h6>
+                                                <p className="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto sm:w-3/5 md:w-full">
+                                                    The third piece must be placed outside of the center 7x7 square
+                                                </p>
+                                                <div className="top-0 right-0 flex items-center justify-center h-24 lg:-mr-8 lg:absolute">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-9 text-gray-700 transform rotate-90 lg:rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div className="relative text-center">
+                                                <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20">
+                                                    <svg
+                                                        className="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 52 52"
+                                                    >
+                                                        <polygon
+                                                            strokeWidth="3"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            fill="none"
+                                                            points="29 13 14 29 25 29 23 39 38 23 27 23"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                                <h6 className="mb-2 text-2xl font-extrabold">To Win</h6>
+                                                <p className="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto sm:w-3/5 md:w-full">
+                                                    Now play the game like normal and try to make an unbroken chain of 5 of your pieces to win!
+                                                </p>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            )
+                        }
                     </div>
                     <div>
                         {
                             currentRoom !== undefined && currentRoom.playerArray.length >= 2 ? (
                                 <GameBoard game={currentRoom.game} currentRoom={currentRoom} profile={profile} />
                             ) : (
-                                <> 
-                                    
+                                <>
+
                                     {
                                         currentRoom !== undefined ? (
                                             <>
@@ -126,6 +252,7 @@ export const GameRoom = () => {
                             )
                         }
                     </div>
+
                 </div>
             </div>
         </>
