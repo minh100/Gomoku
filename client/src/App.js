@@ -16,7 +16,7 @@ import { InfoPage } from './Components/InfoPage.js';
 
 function App() {
   return (
-    <Router basename="/Gomoku">
+    <Router basename="/">
       <GlobalUserProvider>
         <GlobalRoomProvider>
           <Switch>
