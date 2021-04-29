@@ -1,7 +1,7 @@
 # Gomoku Online
 
 ## View the site
-https://minh100.github.io/Gomoku/
+https://playgomoku.netlify.app/
 
 ## About
 MERN site that allows users to signup/login and play Gomoku online. Find, create, and play against others for rating. Rating is displayed on a leaderboard so you can see how your skills rank amongst everyone else!.
