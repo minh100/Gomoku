@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import Game from '../../../Engine/Game.js';
 
-import { GlobalUserContext } from '../../../Global/GlobalUser/GlobalUserState.js';
 import { GlobalRoomContext } from '../../../Global/GlobalRoom/GlobalRoomState.js';
 import { SocketContext } from '../../../Global/GlobalSocket/Socket.js';
 
@@ -11,7 +10,6 @@ import './RoomForm.css';
 
 export const RoomForm = ({users, rooms}) => {
 
-    // const { users } = useContext(GlobalUserContext);
     const { createNewRoom } = useContext(GlobalRoomContext);
     const [createCustomGameClicked, toggleCreateCustomGameClicked] = useState(false);
     const [isNameTaken, setNameTaken] = useState(false);
@@ -56,13 +54,13 @@ export const RoomForm = ({users, rooms}) => {
     const handleFindGame = async(e) => {
         // check if any games are available
         e.preventDefault();
-        console.log('handleFind', rooms)
+        // console.log('handleFind', rooms)
         const gamesAvailable = rooms.filter(room => room.playerArray.length < 2);
-        console.log('gamesAvailable', gamesAvailable)
+        // console.log('gamesAvailable', gamesAvailable)
         if (gamesAvailable.length !== 0) {                           // some games available
             const gameToJoin = gamesAvailable[0];                   // take the first game
             gameToJoin.playerArray.push(profile);
-            let game = new Game(15, gameToJoin.playerArray, [], 0, -1, false, {}, {}, 0, 0);
+            let game = new Game(15, gameToJoin.playerArray, [], 0, -1, false, {}, {}, 0);
             socket.emit('updateRoom', ({ 'gameToJoin': gameToJoin, gameObject: game }));
             history.push(`/play/${gameToJoin.roomName}`, [gameToJoin.roomName, gameToJoin.playerArray]);
         } else {

@@ -28,7 +28,7 @@ export const Navbar = () => {
 
             const username = (userAccount[0]?.userResult?.username) || (userAccount[0]?.result?.username);
             const profileFound = userArray.find(user => user.username === username);
-            console.log(profileFound);
+            // console.log(profileFound);
             setProfile(profileFound);
         })
 

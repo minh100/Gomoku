@@ -27,7 +27,7 @@ export const IndividualRoom = ({ room }) => {
             // add user to room
             room.playerArray.push(profile);
 
-            let game = new Game(15, room.playerArray, [], 0, -1, false, {}, {}, 0, 0);
+            let game = new Game(15, room.playerArray, [], 0, -1, false, {}, {}, 0);
             // rerender to room
             socket.emit('updateRoom', ({ gameToJoin: room, gameObject: game }));
             history.push(`/play/${room.roomName}`, [room.roomName, room.playerArray]);

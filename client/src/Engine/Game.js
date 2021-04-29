@@ -1,6 +1,6 @@
 export default class Game {
 
-    constructor(size, playerArray, board, currentTurn, winner, draw, win1, win2) {
+    constructor(size, playerArray, board, currentTurn, winner, draw, win1, win2, turnNumber) {
         this.size = size;
         this.playerArray = playerArray;
 
@@ -12,11 +12,13 @@ export default class Game {
             this.matrixBoard = newboard;
             this.board = newboard.flat();
 
-            // first, randomly chooses the starting player
-            let randomInitalTurn = Math.floor(Math.random() * playerArray.length);
+            this.turnNumber = 1;    // counts the turns
 
             // used to decide whose turn is it currently
-            this.currentTurn = randomInitalTurn
+            this.currentTurn = 0
+
+            this.board[112] = this.currentTurn  // inital piece placed
+            this.currentTurn++;
 
             this.winner = -1;   // if a player won assign them as winner
             this.draw = false;      // if game is draw
@@ -39,6 +41,7 @@ export default class Game {
             }
 
             this.board = rearrangedBoard;
+            this.turnNumber = turnNumber;
 
             // used to decide whose turn is it currently
             this.currentTurn = currentTurn
@@ -59,7 +62,7 @@ export default class Game {
      * Resets the game 
      */
     setupNewGame() {
-        let newGame = new Game(this.size, this.playerArray, [], 0, -1, false, {}, {});
+        let newGame = new Game(this.size, this.playerArray, [], 0, -1, false, {}, {}, 0);
         this.board = newGame.board;
         this.currentTurn = newGame.currentTurn;
         this.winner = -1;
@@ -73,15 +76,34 @@ export default class Game {
             row: 0
         }
         this.flatBoard = newGame.flatBoard;
+        this.turnNumber = newGame.turnNumber;
     }
-
+    
     /**
      * Handles what happens when a tile is clicked on
      * @param {number} row 
      * @param {number} col 
      */
     click(row, col) {
-        if (this.winner === -1 && !this.draw) {  // check if game is over
+
+        if (this.turnNumber ===  2) { // long pro version
+            if (this.board[row][col] === -1) {  // check if space clicked is a valid space
+
+                const notValidRow = row >= 4 && row <= 10;
+                const notValidCol = col >= 4 && col <=10;
+                if (!notValidRow || !notValidCol) {  
+                    this.turnNumber++;
+                    this.board[row][col] = this.currentTurn
+                    // update currentTurn to next player
+                    if (this.currentTurn !== this.playerArray.length - 1) {
+                        this.currentTurn++;
+                    } else {
+                        this.currentTurn = 0;
+                    }
+                }
+
+            }
+        } else if (this.winner === -1 && !this.draw) {  // check if game is over
             if (this.board[row][col] === -1) {  // check if space clicked is a valid space
                 this.board[row][col] = this.currentTurn
                 if (checkWin(this.board, row, col, this.currentTurn, this.win1, this.win2)) {
@@ -91,6 +113,7 @@ export default class Game {
                     this.draw = true;
                 }
                 else {  // update currentTurn to next player
+                    this.turnNumber++;
                     if (this.currentTurn !== this.playerArray.length - 1) {
                         this.currentTurn++;
                     } else {

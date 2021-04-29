@@ -4,7 +4,9 @@
 https://playgomoku.netlify.app/
 
 ## About
-MERN site that allows users to signup/login and play Gomoku online. Find, create, and play against others for rating. Rating is displayed on a leaderboard so you can see how your skills rank amongst everyone else!.
+MERN site that allows users to signup/login and play Gomoku online. Find, create, and play against others for rating. Rating is displayed on a leaderboard so you can see how your skills rank amongst everyone else!. 
+<br/>
+Uses long pro variation to make the game more fair.
 
 ## Tech Stack
 - MERN
@@ -42,7 +44,7 @@ MERN site that allows users to signup/login and play Gomoku online. Find, create
     - username, avatar, rating
     - Filtering of users to allow for easy search
 - Local Play
-- Leaving a game while unfinished will cause the leave to be punished and the remaining player to be notified of their leave
+- Leaving a game while unfinished will cause the leave to be penalized and the remaining player to be notified of their leave
 - Leaving a game before it has started will prompt the user, if the user continues, then the lobby will be updated accordingly
 - [React Error Boundary](https://github.com/bvaughn/react-error-boundary#readme)
 

@@ -44,6 +44,10 @@ const roomSchema = mongoose.Schema({
             type: Number,
             default: 0
         },
+        turnNumber: {
+            type: Number,
+            default: 0
+        },
         winner: {
             type: Number,
             default: -1,

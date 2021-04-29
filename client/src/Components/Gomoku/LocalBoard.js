@@ -5,23 +5,31 @@ import './Board.css';
 
 export const LocalBoard = () => {
 
-    const game = new Game(15, [0, 1], [], 0, -1, false, {}, {});
-
+    const game = new Game(15, [0, 1], [], 0, -1, false, {}, {}, 0);
     const [gameModel, updateGameModel] = useState(game);
     const [rerender, toggleRerender] = useState(false);
     const [winningPoints, setWinningPoints] = useState([]);
 
     const handleClick = (row, col) => {
-        if (gameModel.winner === -1) {
+        console.log('row', row, " col", col)
+        if (gameModel.winner === -1 && !gameModel.draw) {
+            let rearrangedBoard = [];
+            for (let row = 0; row < 224; row += 15) {
+                rearrangedBoard.push(gameModel.board.flat().slice(row, row + 15))
+            }
+            gameModel.board = rearrangedBoard;
             gameModel.click(row, col);
             updateGameModel(gameModel);
             toggleRerender(!rerender);
+
             if (gameModel.winner !== -1) {
                 let res = findWinningPoints(gameModel);
                 setWinningPoints(res);
+
             }
         }
     }
+    console.log(gameModel)
 
     const handleReset = () => {
         gameModel.setupNewGame();
@@ -30,15 +38,15 @@ export const LocalBoard = () => {
     }
 
     let rearrangedBoard = [];
-    for(let row = 0; row < 224; row += 15) {
-        rearrangedBoard.push(gameModel.board.flat().slice(row, row+15))
+    for (let row = 0; row < 224; row += 15) {
+        rearrangedBoard.push(gameModel.board.flat().slice(row, row + 15))
     }
 
     return (
         <div className="md:container md:mx-auto min-h-screen min-w-full flex justify-center items-center">
             <div className="mb-0 lg:max-w-lg lg:pr-8 xl:pr-6">
-                    <h1>{`Current Turn: ${gameModel.playerArray[gameModel.currentTurn]}`}</h1>
-                </div>
+                <h1>{`Current Turn: ${gameModel.playerArray[gameModel.currentTurn]}`}</h1>
+            </div>
             <div className="grid grid-cols-15 grid-rows-15">
                 {
                     rearrangedBoard.map((tile, row) => {

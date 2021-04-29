@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Tile } from '../Gomoku/Tile.js';
 import Game from '../../Engine/Game.js';
 
-import {BlockForm} from '../BlockingForm/BlockForm.js'
-import {UserLeftPrompt} from '../BlockingForm/UserLeftPrompt.js';
+import { BlockForm } from '../BlockingForm/BlockForm.js'
+import { UserLeftPrompt } from '../BlockingForm/UserLeftPrompt.js';
 
 import { SocketContext } from '../../Global/GlobalSocket/Socket.js';
 
@@ -11,7 +11,7 @@ import '../Gomoku/Board.css';
 
 export const GameBoard = ({ game, currentRoom, profile }) => {
 
-    let gameInstance = new Game(15, game.playerArray, game.board, game.currentTurn, game.winner, game.draw, game.win1, game.win2, game.ratingWin, game.ratingLose);
+    let gameInstance = new Game(15, game.playerArray, game.board, game.currentTurn, game.winner, game.draw, game.win1, game.win2, game.turnNumber);
 
     const [gameModel, updateGameModel] = useState(gameInstance);
     const [rerender, toggleRerender] = useState(false);
@@ -21,6 +21,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
 
     const handleClick = (row, col) => {
         if (gameModel.winner === -1 && !gameModel.draw && currentRoom.playerArray[gameModel.currentTurn].username === profile.username) {
+
             gameModel.click(row, col);
             updateGameModel(gameModel);
             toggleRerender(!rerender);
@@ -36,15 +37,16 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
             if (gameModel.winner !== -1) {
                 let res = findWinningPoints(gameModel);
                 setWinningPoints(res);
-                socket.emit('updateWinAndLose', ({gameModel, currentRoom}));
-                socket.emit('deleteGameRoom', ({currentRoom}));
+                socket.emit('updateWinAndLose', ({ gameModel, currentRoom }));
+                socket.emit('deleteGameRoom', ({ currentRoom }));
             }
+
         }
     }
 
     useEffect(() => {
         socket.on('sendUpdatedGame', (updatedGame) => {
-            let gameInstance = new Game(15, updatedGame.game.playerArray, updatedGame.game.board, updatedGame.game.currentTurn, updatedGame.game.winner, updatedGame.game.draw, updatedGame.game.win1, updatedGame.game.win2, updatedGame.game.ratingWin, updatedGame.game.ratingLose);
+            let gameInstance = new Game(15, updatedGame.game.playerArray, updatedGame.game.board, updatedGame.game.currentTurn, updatedGame.game.winner, updatedGame.game.draw, updatedGame.game.win1, updatedGame.game.win2, updatedGame.game.turnNumber);
             updateGameModel(gameInstance);
             setWinningPoints(findWinningPoints(gameInstance))
         })
@@ -58,7 +60,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
             socket.off('opponentLeft');
         }
     }, [socket])
-    // console.log(gameModel);
+    // console.log('constant gameModel', gameModel);
 
     return (
         <>
@@ -66,7 +68,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
                 !bothPlayersRemain && <UserLeftPrompt />
 
             }
-            <BlockForm when={gameModel.winner === -1 && bothPlayersRemain} profile={profile} currentRoom={currentRoom}/>
+            <BlockForm when={gameModel.winner === -1 && bothPlayersRemain} profile={profile} currentRoom={currentRoom} />
             {
                 gameModel.winner !== -1 ? (
                     <h1 className="pl-2 mb-2 text-base text-gray-700 md:text-lg">Winner: <span className="text-purple-600">{currentRoom.playerArray[gameModel.currentTurn].username}</span></h1>
@@ -82,7 +84,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
                             // check to see if the current piece is a winning one
                             let isWinningPiece = false;
 
-                            if(gameModel.winner !== -1) {
+                            if (gameModel.winner !== -1) {
                                 for (let i = 0; i < winningPoints.length; i++) {
                                     if (winningPoints[i].col === col && winningPoints[i].row === row) {
                                         isWinningPiece = true;

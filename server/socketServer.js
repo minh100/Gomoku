@@ -35,7 +35,8 @@ const addPlayerToRoom = async (gameToJoin, gameObject) => {
             playerArray: updatedPlayerArray,
             $set: { 'game.playerArray': gameObject.playerArray },
             $set: { 'game.ratingWin': gameObject.ratingWin },
-            $set: { 'game.ratingLose': gameObject.ratingLose }
+            $set: { 'game.ratingLose': gameObject.ratingLose },
+            game: gameObject
         },
         { new: true }
     );
