@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { GlobalUserContext } from '../Global/GlobalUser/GlobalUserState.js';
+import { SocketContext } from '../Global/GlobalSocket/Socket.js';
 
 export const Navbar = () => {
 
@@ -14,12 +15,28 @@ export const Navbar = () => {
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
     const [signedIn, setSignedIn] = useState(true);
     const location = useLocation();
-    
+
     const [navOption, setNavOption] = useState(location.pathname);
+
+    const socket = useContext(SocketContext);
+    const [profile, setProfile] = useState("");
 
     useEffect(() => {
         setNavOption(location.pathname);
-    }, [location.pathname, signedIn])
+
+        socket.on('lobby', ({ roomArray, userArray }) => {
+
+            const username = (userAccount[0]?.userResult?.username) || (userAccount[0]?.result?.username);
+            const profileFound = userArray.find(user => user.username === username);
+            console.log(profileFound);
+            setProfile(profileFound);
+        })
+
+        return () => {
+            socket.off('lobby');
+        }
+
+    }, [location.pathname, signedIn, socket])
 
     const handleSignOut = () => {
         logout();
@@ -63,13 +80,13 @@ export const Navbar = () => {
                                 {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
                                 <Link to="/"
                                     className={navOption === '/' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
-                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium " 
+                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium "
                                     }
                                     aria-current="page"
                                 >
                                     Lobby
                                 </Link>
-                                <button 
+                                <button
                                     className={navOption === '/leaderboard' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium focus:outline-none" :
                                         "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium focus:outline-none"
                                     }
@@ -100,7 +117,7 @@ export const Navbar = () => {
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         <h1 className="text-white pl-1">
                             {
-                                signedIn && ((userAccount[0]?.userResult?.username) || (userAccount[0]?.result?.username))
+                                signedIn && (profile !== undefined ? profile.username : (userAccount[0]?.userResult?.username) || (userAccount[0]?.result?.username))
                             }
                         </h1>
                         {/* <!-- Profile dropdown --> */}
@@ -136,7 +153,7 @@ export const Navbar = () => {
                                     {
                                         profileOpen && (
                                             <div className="z-50 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                                                <h1 className="block px-4 py-2 text-sm text-black w-full h-full focus:outline-none">Rating: {(userAccount[0]?.userResult?.rating) || (userAccount[0]?.result?.rating)}</h1>
+                                                <h1 className="block px-4 py-2 text-sm text-black w-full h-full focus:outline-none">Rating: {profile !== "" ? profile.rating : (userAccount[0]?.userResult?.rating) || (userAccount[0]?.result?.rating)}</h1>
                                                 <button className=" block border-t-2 px-4 py-2 text-sm text-red-700 hover:bg-gray-100 w-full h-full focus:outline-none"
                                                     role="menuitem"
                                                     onClick={() => handleSignOut()}
@@ -189,12 +206,12 @@ export const Navbar = () => {
                                 Leaderboard
                             </Link>
                             <Link to="/info"
-                                    className={navOption === '/info' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
-                                        "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
-                                    }
-                                    aria-current="page"
-                                >
-                                    Info
+                                className={navOption === '/info' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
+                                    "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
+                                }
+                                aria-current="page"
+                            >
+                                Info
                                 </Link>
                             <Link to="/localplay"
                                 className={navOption === '/localplay' ? "bg-gray-900 text-white px-3 py-2 rounded-md text-md font-medium" :
