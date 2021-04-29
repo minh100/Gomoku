@@ -1,0 +1,6 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(15, minMax(10px, 1fr));
+    grid-template-rows: repeat(15, minMax(10px, 1fr));
+    padding-top: 15px;
+}

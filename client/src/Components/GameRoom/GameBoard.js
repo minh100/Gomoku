@@ -76,7 +76,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
                     <h1 className="pl-2 mb-2 text-base text-gray-700 md:text-lg">Current Turn: <span className="text-purple-600">{currentRoom.playerArray[gameModel.currentTurn].username}</span></h1>
                 )
             }
-            <div className="grid grid-cols-15 grid-rows-15">
+            <div className="board">
                 {
                     gameModel.board.map((tile, row) => {
                         return tile.map((value, col) => {

@@ -47,7 +47,7 @@ export const LocalBoard = () => {
             <div className="mb-0 lg:max-w-lg lg:pr-8 xl:pr-6">
                 <h1>{`Current Turn: ${gameModel.playerArray[gameModel.currentTurn]}`}</h1>
             </div>
-            <div className="grid grid-cols-15 grid-rows-15">
+            <div className="board">
                 {
                     rearrangedBoard.map((tile, row) => {
                         return tile.map((value, col) => {
