@@ -10,7 +10,7 @@ export const Tile = ({ value, handleClick, row, col, isWinningPiece }) => {
     const isBottomLeft = row === 10 && col === 4;
     const isRight = col === 10 && (row >= 4 && row <= 10);
     const isTopRight = col === 10 && row === 4;
-    const isBottomRight = col === 10 && row == 10;
+    const isBottomRight = col === 10 && row === 10;
 
     return (
         <div className={`${isWinningPiece ? "bg-green-100" : ""} 

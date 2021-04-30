@@ -8,7 +8,7 @@ export const ErrorFallBack = ({ error, onReset }) => {
     return (
         <>
             <div className="bg-white relative overflow-hidden h-screen">
-                <img src={background} className="absolute h-full w-full object-cover" />
+                <img src={background} className="absolute h-full w-full object-cover" alt="bg"/>
                 <div >
                 </div>
                 <div className="container mx-auto px-6 md:px-12 relative z-10 flex items-center py-32 xl:py-40">

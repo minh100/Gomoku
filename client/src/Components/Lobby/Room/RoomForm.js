@@ -98,6 +98,7 @@ export const RoomForm = ({users, rooms}) => {
         }
         if (!taken) {
             createNewRoom(roomData);
+            console.log('pwwwww', roomData)
             socket.emit('gameCreated', roomData);
             history.push(`/play/${roomData.roomName}`, [roomData.roomName, roomData.playerArray]); // redirects user to game room
             toggleCreateCustomGameClicked(false)
