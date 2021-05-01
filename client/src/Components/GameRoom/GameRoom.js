@@ -17,7 +17,7 @@ export const GameRoom = () => {
     const [rerender, setRerender] = useState(false);
     const socket = useContext(SocketContext);
 
-    const [howToPlay, toggleHowToPlay] = useState(true);
+    const [howToPlay, toggleHowToPlay] = useState(false);
 
     const userAccount = useState(JSON.parse(localStorage.getItem('profile')));
     if (userAccount[0] !== null) {
@@ -108,7 +108,7 @@ export const GameRoom = () => {
                             </div>
                         </div>
                         <>
-                            <div className="flex flex-wrap">
+                            <div className="flex flex-wrap lg:mr-3">
                                 <div className="w-full text-center">
                                     <button
                                         className={
@@ -124,7 +124,7 @@ export const GameRoom = () => {
                         </>
                         {
                             howToPlay && (
-                                <div className="px-4 py-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+                                <div className="px-4 py-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-4 lg:mr-3">
                                     <div className="max-w-2xl sm:mx-auto lg:max-w-3xl">
                                         <section className="grid gap-8 row-gap-0 lg:grid-cols-4">
                                             <div className="relative text-center">
@@ -201,7 +201,7 @@ export const GameRoom = () => {
                                                 </p>
                                                 <div className="top-0 right-0 flex items-center justify-center h-24 lg:-mr-8 lg:absolute">
                                                     <svg xmlns="http://www.w3.org/2000/svg" className="w-9 text-gray-700 transform rotate-90 lg:rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                                     </svg>
                                                 </div>
                                             </div>

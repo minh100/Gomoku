@@ -117,13 +117,15 @@ io.on('connection', (socket) => {
     // on from client/GameBoard.js and emits to client/Lobby.js
     // on from client/LeaveForm.js and emits to client/Lobby.js
     socket.on('deleteGameRoom', ({currentRoom}) => {
-        deleteRoom(currentRoom);
-        getRooms().then(roomArray => {
-            getAllUsers().then(userArray => {
-                io.sockets.emit('lobby', ({roomArray, userArray}));
-                socket.leave(currentRoom.roomname);
-            })
+        deleteRoom(currentRoom).then(() => {
+            getRooms().then(roomArray => {
+                getAllUsers().then(userArray => {
+                    io.sockets.emit('lobby', ({roomArray, userArray}));
+                    socket.leave(currentRoom.roomname);
+                })
+            });
         });
+       
     }); 
 
     // handles users leaving an ongoing game, user leaving will be penalized, and remaining user will be notified to leave

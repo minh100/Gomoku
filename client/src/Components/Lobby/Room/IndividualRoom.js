@@ -39,7 +39,7 @@ export const IndividualRoom = ({ room }) => {
 
     const [showPlayers, toggleShowPlayers] = useState(false);
 
-    // console.log(room);
+    console.log(room);
 
     return (
         <>
@@ -54,7 +54,7 @@ export const IndividualRoom = ({ room }) => {
                         </h1>
                     </div>
                     {
-                        showPlayers && (
+                        showPlayers && room.playerArray[0] !== undefined (
                             <div className="text-sm text-purple-600">
                                 {
                                     room.playerArray.length === 2 ? (

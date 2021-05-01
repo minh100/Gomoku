@@ -54,9 +54,7 @@ export const RoomForm = ({users, rooms}) => {
     const handleFindGame = async(e) => {
         // check if any games are available
         e.preventDefault();
-        // console.log('handleFind', rooms)
         const gamesAvailable = rooms.filter(room => room.playerArray.length < 2);
-        // console.log('gamesAvailable', gamesAvailable)
         if (gamesAvailable.length !== 0) {                           // some games available
             const gameToJoin = gamesAvailable[0];                   // take the first game
             gameToJoin.playerArray.push(profile);
@@ -85,10 +83,9 @@ export const RoomForm = ({users, rooms}) => {
      * Create a custom game 
      * Checks to see if the roomName is already in use
      */
-    const handleCreateGame = (e) => {
+    const handleCreateGame = async(e) => {
         e.preventDefault();
         let taken = false;
-
         for (let i = 0; i < rooms.length; i++) {
             if (rooms[i].roomName.toLowerCase() === roomData.roomName.toLowerCase()) {
                 taken = true;
@@ -97,10 +94,15 @@ export const RoomForm = ({users, rooms}) => {
             }
         }
         if (!taken) {
-            createNewRoom(roomData);
-            console.log('pwwwww', roomData)
-            socket.emit('gameCreated', roomData);
-            history.push(`/play/${roomData.roomName}`, [roomData.roomName, roomData.playerArray]); // redirects user to game room
+
+            let findingRoomData = roomData;
+            findingRoomData = { ...findingRoomData, 
+                playerArray: [profile]
+            }
+            
+            createNewRoom(findingRoomData);
+            socket.emit('gameCreated', findingRoomData);
+            history.push(`/play/${findingRoomData.roomName}`, [findingRoomData.roomName, findingRoomData.playerArray]); // redirects user to game room
             toggleCreateCustomGameClicked(false)
             clearRoomData();
         }
@@ -123,9 +125,11 @@ export const RoomForm = ({users, rooms}) => {
      */
     const clearRoomData = () => {
         setNameTaken(false);
-        setRoomData({
+        setRoomData({...roomData,
             roomName: '',
             password: '',
+            ratingWin: Math.floor(Math.random() * 6) + 20,
+            ratingLose: Math.floor(Math.random() * 6) + 20
         })
     };
 
