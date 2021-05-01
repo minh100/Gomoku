@@ -45,7 +45,7 @@ export const LocalBoard = () => {
     return (
         <div className="md:container md:mx-auto min-h-screen min-w-full flex justify-center items-center">
             <div className="mb-0 lg:max-w-lg lg:pr-8 xl:pr-6">
-                <h1>{`Current Turn: ${gameModel.playerArray[gameModel.currentTurn]}`}</h1>
+                <h1>{gameModel.winner === -1 ? (`Current Turn: ${gameModel.currentTurn === 0 ? 'X' : "0"}`) : `Winner: ${gameModel.winner === 0 ? 'X' : '0'}`}</h1>
             </div>
             <div className="board">
                 {
