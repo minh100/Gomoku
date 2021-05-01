@@ -37,7 +37,7 @@ export const IndividualRoom = ({ room }) => {
         }
     }
 
-    console.log(room);
+    // console.log(room);
 
     return (
         <>

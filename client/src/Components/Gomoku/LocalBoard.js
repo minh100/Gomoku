@@ -11,7 +11,7 @@ export const LocalBoard = () => {
     const [winningPoints, setWinningPoints] = useState([]);
 
     const handleClick = (row, col) => {
-        console.log('row', row, " col", col)
+        // console.log('row', row, " col", col)
         if (gameModel.winner === -1 && !gameModel.draw) {
             let rearrangedBoard = [];
             for (let row = 0; row < 224; row += 15) {
@@ -29,7 +29,7 @@ export const LocalBoard = () => {
             }
         }
     }
-    console.log(gameModel)
+    // console.log(gameModel)
 
     const handleReset = () => {
         gameModel.setupNewGame();
