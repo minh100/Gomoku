@@ -37,32 +37,27 @@ export const IndividualRoom = ({ room }) => {
         }
     }
 
-    const [showPlayers, toggleShowPlayers] = useState(false);
-
     console.log(room);
 
     return (
         <>
             {
-                room != undefined && (
+                typeof room != undefined && (
                     <>
                         <tr>
-                            <td className="px-8 py-5 border-b border-gray-200 bg-white text-sm"
-                                onMouseEnter={() => toggleShowPlayers(true)}
-                                onMouseLeave={() => toggleShowPlayers(false)}
-                            >
+                            <td className="px-8 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                     <h1 className="text-gray-900 whitespace-no-wrap focus:outline-none">
                                         {room.roomName}
                                     </h1>
                                 </div>
                                 {
-                                    showPlayers && room.playerArray[0] !== undefined(
+                                    room.playerArray[0] !== undefined && (
                                         <div className="text-sm text-purple-600">
                                             {
                                                 room.playerArray.length === 2 ? (
                                                     <h1>{room.playerArray[0].username} <span className="text-black">vs</span> {room.playerArray[1].username}</h1>
-                                                ) : (<h1>{room.playerArray[0].username} vs ...</h1>)
+                                                ) : (<h1>{room.playerArray[0].username} <span className="text-black">vs</span> ...</h1>)
                                             }
                                         </div>
                                     )
@@ -130,7 +125,7 @@ export const IndividualRoom = ({ room }) => {
                                     </button>
                                 </tbody>
                             </tbody>
-                        ) : null}
+                        ) : ""}
                     </>
                 )
             }

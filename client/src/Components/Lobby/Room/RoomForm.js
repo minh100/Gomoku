@@ -54,7 +54,7 @@ export const RoomForm = ({users, rooms}) => {
     const handleFindGame = async(e) => {
         // check if any games are available
         e.preventDefault();
-        const gamesAvailable = rooms.filter(room => room.playerArray.length < 2);
+        const gamesAvailable = rooms.filter(room => room.playerArray.length < 2 && room.password === "");
         if (gamesAvailable.length !== 0) {                           // some games available
             const gameToJoin = gamesAvailable[0];                   // take the first game
             gameToJoin.playerArray.push(profile);
