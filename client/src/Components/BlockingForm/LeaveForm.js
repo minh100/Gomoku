@@ -48,13 +48,13 @@ function useCallbackPrompt(when) {
         setShowPrompt(false);
         setConfirmedNavigation(true);
         socket.emit('deleteGameRoom', ({currentRoom}));
-    }, []);
+    }, [socket]);
 
     useEffect(() => {
         if (confirmedNavigation && lastLocation) {
             history.push(lastLocation.pathname);
         }
-    }, [confirmedNavigation, lastLocation]);
+    }, [confirmedNavigation, lastLocation, history]);
 
     usePrompt(handleBlockedNavigation, when);
 
