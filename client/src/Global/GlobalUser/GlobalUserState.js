@@ -23,7 +23,7 @@ export const GlobalUserProvider = props => {
         try {
             const {data} = await signUp(newUser);
             dispatch({type: 'CREATE_USER', data});
-            history.push('/');
+            history.push('/info');
         } catch (error) {
             setError(true);
         }
