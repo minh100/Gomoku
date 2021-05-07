@@ -9,8 +9,6 @@ import { SocketContext } from '../../Global/GlobalSocket/Socket.js';
 
 import '../Gomoku/Board.css';
 
-import DayDream from '../../Media/naruto.mp3';
-
 export const GameBoard = ({ game, currentRoom, profile }) => {
 
     let gameInstance = new Game(15, game.playerArray, game.board, game.currentTurn, game.winner, game.draw, game.win1, game.win2, game.turnNumber);
@@ -21,15 +19,7 @@ export const GameBoard = ({ game, currentRoom, profile }) => {
     const socket = useContext(SocketContext);
     const [bothPlayersRemain, setBothPlayersRemain] = useState(true);
 
-    const [audio] = useState(new Audio(DayDream));
-    const [isPlaying, toggleIsPlaying] = useState(true);
-
-    useEffect(() => {
-        isPlaying ? audio.play() : audio.pause();
-    }, [isPlaying]);
-
     const handleClick = (row, col) => {
-        toggleIsPlaying(false);
         if (gameModel.winner === -1 && !gameModel.draw && currentRoom.playerArray[gameModel.currentTurn].username === profile.username) {
 
             gameModel.click(row, col);
