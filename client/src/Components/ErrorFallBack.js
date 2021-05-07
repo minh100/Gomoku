@@ -1,4 +1,4 @@
-import background from '../Images/404BG.svg';
+import background from '../Media/404BG.svg';
 import {useHistory} from 'react-router-dom';
 
 export const ErrorFallBack = ({ error, onReset }) => {
