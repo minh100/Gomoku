@@ -62,7 +62,7 @@ Uses long pro variation to make the game more fair.
         - [React Error Boundary](https://github.com/bvaughn/react-error-boundary#readme)
     - [Random Word Api](https://random-word-api.herokuapp.com)
     - [DiceBear Avatars API](https://avatars.dicebear.com/)
-<br/>
+
 - Backend
     - Express
     - bycryptjs
@@ -75,11 +75,11 @@ Uses long pro variation to make the game more fair.
         - Avoid cors errors
     - Body-parser
         - Correctly parse JSON for information retrieval and usage
-<br/>
+
 - Database
     - MongoDB Atlas
         - Mongoose for Object Data Modeling of MongoDB
-<br/>
+
 - SocketIO
     - Real-time communication between clients <-> clients and clients <-> server
 
